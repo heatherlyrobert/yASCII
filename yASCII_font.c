@@ -805,9 +805,9 @@ yASCII_wrapping         (char *a_text, int x, int y, int *a_wide, int *a_tall, c
 static void      o___UNITTEST________________o (void) {;}
 
 char*        /*-> unit test accessor ---------------------[ light  [ 2----1 ]-*/
-FONT__unit           (char *a_question, int a_num)
+yascii__font_unit    (char *a_question, int a_num)
 {
-   char        t           [LEN_LABEL] = "[]";
+   char        t           [LEN_LABEL] = "еж";
    /*---(prepare)------------------------*/
    strcpy  (unit_answer, "FONT unit        : question not understood");
    /*---(current)------------------------*/
@@ -815,7 +815,7 @@ FONT__unit           (char *a_question, int a_num)
       if (s_curr < 0 || s_curr >= s_count) {
          snprintf (unit_answer, LEN_RECD, "FONT current     : %2d  %2d  %-17.17s  %2d  %2d", s_count, s_curr, t, -1, -1);
       } else {
-         sprintf (t, "[%s]", s_fonts [s_curr].name);
+         sprintf (t, "е%sж", s_fonts [s_curr].name);
          snprintf (unit_answer, LEN_RECD, "FONT current     : %2d  %2d  %-17.17s  %2d  %2d", s_count, s_curr, t, s_fonts [s_curr].wide + s_fonts [s_curr].xoff, s_fonts [s_curr].tall + s_fonts [s_curr].yoff);
       }
    }
@@ -824,7 +824,7 @@ FONT__unit           (char *a_question, int a_num)
          snprintf (unit_answer, LEN_RECD, "FONT line   (%2d) : out of range", a_num);
       } else {
          sprintf (t, "[%s]", s_fonts [s_curr].name);
-         snprintf (unit_answer, LEN_RECD, "FONT line   (%2d) : [%-.45s]", a_num, s_working [a_num]);
+         snprintf (unit_answer, LEN_RECD, "FONT line   (%2d) : е%-.45sж", a_num, s_working [a_num]);
       }
    }
    /*---(complete)-----------------------*/
