@@ -1,0 +1,61 @@
+.TH yASCII 3 2013-sep "linux" "interfacing applications with library"
+
+
+.SH SYNOPSIS
+.nf
+.B #include  <yASCII.h>
+.sp
+---(languages)---------------------------------
+.BI "char yASCII_language (char *" "a_iso" ", char *" "r_name" ");"
+.BI "char yASCII_host     (char "  "n"     ", char *" "r_title" ", char *" "r_host" ");"
+.BI "char yASCII_cluster  (char "  "n"     ", char *" "r_title" ", char *" "r_cluster" ");"
+
+
+.B yASCII_language (a_iso, r_name)
+sets the language to be used by all other functions.
+   -  a_iso     > accepts two-letter iso code for language
+   -  r_name    > returns name of language selected
+   -  returns   < index of language or negative for failure
+
+   the current iso table only includes...
+      et    estonian
+      nl    dutch
+      fi    finnish
+      gl    galacian
+      de    german
+      is    icelandic
+      pl    polish
+      sv    swedish
+      tr    turkish
+      cy    welsh
+      ga    irish
+      gd    scottish
+      la    latin
+      mt    maltese
+      en    english
+
+.B yASCII_host     (n, r_title, r_host)
+returns information on fake host (chess engine names).
+   -  n         > accepts an index for a host, negative means random
+   -  r_title   > returns language-specific word for "host"
+   -  r_host    > returns a fake host name
+   -  returns   < index for the host
+
+   the current host table has 65+ entries, including...
+     deep_blue     blue_gene     hydra         deep_crack    kaissa
+     belle         blitz         deep_thought  gideon        deep_junior
+     zappa         junior        sjeng         rondo         rybka
+     ...
+
+.B yASCII_cluster  (n, r_title, r_cluster)
+returns information on fake clusters (roman emperor names).
+   -  n         > accepts an index for a cluster, negative means random
+   -  r_title   > returns language-specific word for "cluster"
+   -  r_cluster > returns a fake cluster name
+   -  returns   < index for the cluster
+
+   the current cluster table has 65+ entries, including...
+      augustus  tiberius  caligula   claudius    nero        ...
+      galba     otho      vitellius  vespasian   titus       ...
+      nerva     trajan    hadrian    antoninus   lucius      ...
+      ...

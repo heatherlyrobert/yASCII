@@ -3,8 +3,6 @@
 #include    "yASCII_priv.h"
 
 
-static char  (*s_displayer)  (int x, int y, char *a_text, char a_mode) = NULL;
-
 
 #define     MAX_WIDTH     450
 #define     MAX_HEIGHT     10
@@ -129,6 +127,100 @@ static const char stampatello [MAX_HEIGHT][MAX_WIDTH] = {
    "                         '     _|             _|                           |      |                                      /|                                                         ",
 };
 
+static const char chess  [MAX_HEIGHT][MAX_WIDTH] = {
+ /*23456-123456-123456-123456-123456-123456-123456-123456-123456-123456-123456-123456- */
+ "                                                                                    "
+ "          ww     (\     ()     OO    ŽŽ           ww     (\     ()     OO    ŽŽ "
+ "   ()     ¨¨     )\     )(     )(     )(     ()     ¨¨     )\     )(     )(     )(  "
+ "  /<>\   /<>\   /<>\   /<>\   /<>\   /<>\   /½¼\   /½¼\   /½¼\   /½¼\   /½¼\   /½¼\ "
+ };
+
+/*
+ * got plans for this both in security and a chess front-end
+ *
+ *   favorite original from internet
+ *
+ *          ww   (\   ()   vv   VV
+ *     ()   ||   )\   )(   )(   )(
+ *    /__\ /__\ /__\ /__\ /__\ /__\
+ *
+ *          ww   (\   ()   vv   VV
+ *     ()   ||   )\   )(   )(   )(
+ *    /##\ /##\ /##\ /##\ /##\ /##\
+ *
+ *
+ *   updated on chess board
+ *    
+ *   ƒ······‰······‰······‰······‰······‰······‰······‰······‚
+ *   ·  ww  ···(\···  ()  ···UU··· ŽŽ ···()···  (\  ···ww···
+ *   ·  ¨¨  ···)\···  )(  ···)(···  )(  ···)(···  )\  ···¨¨···
+ *   · /¿¾\ ··/¿¾\·· /¿¾\ ··/¿¾\·· /¿¾\ ··/¿¾\·· /¿¾\ ··/¿¾\··
+ *   ‡······Š······Š······Š······Š······Š······Š······Š······†
+ *   ········      ········      ········      ········      ·
+ *   ···()···  ()  ···()···  ()  ···()···  ()  ···()···  ()  ·
+ *   ··/¿¾\·· /¿¾\ ··/¿¾\·· /¿¾\ ··/¿¾\·· /¿¾\ ··/¿¾\·· /¿¾\ ·
+ *   ‡······Š······Š······Š······Š······Š······Š······Š······†
+ *   ·      ········      ········      ········      ········
+ *   ·      ········      ········      ········      ········
+ *   ·      ········      ········      ········      ········
+ *   ‡······Š······Š······Š······Š······Š······Š······Š······†
+ *   ········      ········      ········      ········      ·
+ *   ········      ········      ········      ········      ·
+ *   ········      ········      ········      ········      ·
+ *   ‡······Š······Š······Š······Š······Š······Š······Š······†
+ *   ·      ········      ········      ········      ········
+ *   ·      ········      ········      ········      ········
+ *   ·      ········      ········      ········      ········
+ *   ‡······Š······Š······Š······Š······Š······Š······Š······†
+ *   ········      ········      ········      ········      ·
+ *   ········      ········      ········      ········      ·
+ *   ········      ········      ········      ········      ·
+ *   ‡······Š······Š······Š······Š······Š······Š······Š······†
+ *   ·      ········      ········      ········      ········
+ *   ·  ()  ···()···  ()  ···()···  ()  ···()···  ()  ···()···
+ *   · /½¼\ ··/½¼\·· /½¼\ ··/½¼\·· /½¼\ ··/½¼\·· /½¼\ ··/½¼\··
+ *   ‡······Š······Š······Š······Š······Š······Š······Š······†
+ *   ···ww···  (\  ···()···  UU  ··ŽŽ··  ()  ···(\···  ww  ·
+ *   ···¨¨···  )\  ···)(···  )(  ···)(···  )(  ···)\···  ¨¨  ·
+ *   ··/½¼\·· /½¼\ ··/½¼\·· /½¼\ ··/½¼\·· /½¼\ ··/½¼\·· /½¼\ ·
+ *   „······ˆ······ˆ······ˆ······ˆ······ˆ······ˆ······ˆ······…
+ *
+ *    
+ *   ƒ······‰······‰······‰······‰······‰······‰······‰······‚
+ *   · \¿¾/ ··\¿¾/·· \¿¾/ ··\¿¾/·· \¿¾/ ··\¿¾/·· \¿¾/ ··\¿¾/··
+ *   ·  ¨¨  ···\(···  )(  ···)(···  )(  ···)(···  \(  ···¨¨···
+ *   ·  mm  ···\)···  ()  ···OO··· ŽŽ ···()···  \)  ···mm···
+ *   ‡······Š······Š······Š······Š······Š······Š······Š······†
+ *   ··\¿¾/·· \¿¾/ ··\¿¾/·· \¿¾/ ··\¿¾/·· \¿¾/ ··\¿¾/·· \¿¾/ ·
+ *   ···()···  ()  ···()···  ()  ···()···  ()  ···()···  ()  ·
+ *   ········      ········      ········      ········      ·
+ *   ‡······Š······Š······Š······Š······Š······Š······Š······†
+ *   ·      ········      ········      ········      ········
+ *   ·      ········      ········      ········      ········
+ *   ·      ········      ········      ········      ········
+ *   ‡······Š······Š······Š······Š······Š······Š······Š······†
+ *   ········      ········      ········      ········      ·
+ *   ········      ········      ········      ········      ·
+ *   ········      ········      ········      ········      ·
+ *   ‡······Š······Š······Š······Š······Š······Š······Š······†
+ *   ·      ········      ········      ········      ········
+ *   ·      ········      ········      ········      ········
+ *   ·      ········      ········      ········      ········
+ *   ‡······Š······Š······Š······Š······Š······Š······Š······†
+ *   ········      ········      ········      ········      ·
+ *   ········      ········      ········      ········      ·
+ *   ········      ········      ········      ········      ·
+ *   ‡······Š······Š······Š······Š······Š······Š······Š······†
+ *   ·      ········      ········      ········      ········
+ *   ·  ()  ···()···  ()  ···()···  ()  ···()···  ()  ···()···
+ *   · /½¼\ ··/½¼\·· /½¼\ ··/½¼\·· /½¼\ ··/½¼\·· /½¼\ ··/½¼\··
+ *   ‡······Š······Š······Š······Š······Š······Š······Š······†
+ *   ···ww···  (\  ···()···  OO  ··ŽŽ··  ()  ···(\···  ww  ·
+ *   ···¨¨···  )\  ···)(···  )(  ···)(···  )(  ···)\···  ¨¨  ·
+ *   ··/½¼\·· /½¼\ ··/½¼\·· /½¼\ ··/½¼\·· /½¼\ ··/½¼\·· /½¼\ ·
+ *   „······ˆ······ˆ······ˆ······ˆ······ˆ······ˆ······ˆ······…
+ *
+ */
 
 
 /*====================------------------------------------====================*/
@@ -414,7 +506,6 @@ static  int     s_curr     =   -1;
 static  int     s_count    =   37;
 
 
-char yASCII_displayer   (void *a_displayer) { s_displayer = a_displayer; }
 
 char         /*-> find a font by name ------------------[ spur   [se1-73-431]-*/
 yASCII_font             (char a_font [LEN_LABEL], int *r_wide, int *r_tall)
@@ -423,44 +514,44 @@ yASCII_font             (char a_font [LEN_LABEL], int *r_wide, int *r_tall)
    char        rce         =  -10;
    int         i           =    0;
    /*---(header)-------------------------*/
-   DEBUG_YSTR   yLOG_enter   (__FUNCTION__);
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
    /*---(prepare)------------------------*/
    if (r_wide != NULL)  *r_wide = -1;
    if (r_tall != NULL)  *r_tall = -1;
    /*---(find)---------------------------*/
-   DEBUG_YSTR   yLOG_point   ("a_font"    , a_font);
+   DEBUG_YASCII   yLOG_point   ("a_font"    , a_font);
    --rce;  if (a_font == NULL) {
-      DEBUG_YSTR   yLOG_exitr   (__FUNCTION__, rce);
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
    }
-   DEBUG_YSTR   yLOG_info    ("a_font"    , a_font);
+   DEBUG_YASCII   yLOG_info    ("a_font"    , a_font);
    /*---(shortcut)-----------------------*/
-   DEBUG_YSTR   yLOG_info    ("a_font"    , a_font);
+   DEBUG_YASCII   yLOG_info    ("a_font"    , a_font);
    if (s_curr >= 0 && s_curr < s_count) {
       if (strcmp (a_font, s_fonts [s_curr].name) == 0) {
-         DEBUG_YSTR   yLOG_note    ("current matches, shortcut used");
-         DEBUG_YSTR   yLOG_exit    (__FUNCTION__);
+         DEBUG_YASCII   yLOG_note    ("current matches, shortcut used");
+         DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
          if (r_wide != NULL)  *r_wide = s_fonts [s_curr].wide + s_fonts [s_curr].xoff;
          if (r_tall != NULL)  *r_tall = s_fonts [s_curr].tall + s_fonts [s_curr].yoff;
          return 1;
       }
    }
    /*---(shortcut)-----------------------*/
-   DEBUG_YSTR   yLOG_note    ("does not match current, walk through fonts");
+   DEBUG_YASCII   yLOG_note    ("does not match current, walk through fonts");
    --rce;
    s_curr = -1;
    for (i = 0; i < s_count; ++i) {
-      DEBUG_YSTR   yLOG_bullet  (i           , s_fonts [i].name);
+      DEBUG_YASCII   yLOG_bullet  (i           , s_fonts [i].name);
       if (strcmp (a_font, s_fonts [i].name) != 0)  continue;
-      DEBUG_YSTR   yLOG_note    ("found");
+      DEBUG_YASCII   yLOG_note    ("found");
       s_curr = i;
       if (r_wide != NULL)  *r_wide = s_fonts [s_curr].wide + s_fonts [s_curr].xoff;
       if (r_tall != NULL)  *r_tall = s_fonts [s_curr].tall + s_fonts [s_curr].yoff;
-      DEBUG_YSTR   yLOG_exit    (__FUNCTION__);
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
       return 0;
    }
    /*---(error)--------------------------*/
-   DEBUG_YSTR   yLOG_exitr   (__FUNCTION__, rce);
+   DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
    return rce;
 }
 
@@ -471,91 +562,91 @@ yascii_font__index      (char a_range, int a_letter)
    char        rce         =  -10;
    char        x_letter    =  '-';
    /*---(prepare)------------------------*/
-   DEBUG_YSTR   yLOG_senter (__FUNCTION__);
+   DEBUG_YASCII   yLOG_senter (__FUNCTION__);
    x_letter = tolower (a_letter);
    /*---(defense)------------------------*/
    --rce;  if (a_letter < 32 || a_letter > 126) {
-      DEBUG_YSTR   yLOG_snote  ("non-printable");
-      DEBUG_YSTR   yLOG_sexitr (__FUNCTION__, rce);
+      DEBUG_YASCII   yLOG_snote  ("non-printable");
+      DEBUG_YASCII   yLOG_sexitr (__FUNCTION__, rce);
       return rce;
    }
    /*---(numeric)------------------------*/
    --rce;  if (a_range == YASCII_NUMS) {
-      DEBUG_YSTR   yLOG_snote  ("number-type");
+      DEBUG_YASCII   yLOG_snote  ("number-type");
       if (strchr (YSTR_NUMBER, x_letter) != NULL) {
-         DEBUG_YSTR   yLOG_sint   (x_letter - '0');
-         DEBUG_YSTR   yLOG_sexit  (__FUNCTION__);
+         DEBUG_YASCII   yLOG_sint   (x_letter - '0');
+         DEBUG_YASCII   yLOG_sexit  (__FUNCTION__);
          return x_letter - '0';
       }
-      DEBUG_YSTR   yLOG_snote  ("out of range [0-9]");
-      DEBUG_YSTR   yLOG_sexitr (__FUNCTION__, rce);
+      DEBUG_YASCII   yLOG_snote  ("out of range [0-9]");
+      DEBUG_YASCII   yLOG_sexitr (__FUNCTION__, rce);
       return rce;
    }
    /*---(alpha)--------------------------*/
    --rce;  if (a_range == YASCII_ALPHA) {
-      DEBUG_YSTR   yLOG_snote  ("alpha-type");
+      DEBUG_YASCII   yLOG_snote  ("alpha-type");
       if (strchr (TYPE_ALPHA, x_letter) != NULL) {
          if (x_letter == ' ')  x_letter = 'z' + 1;
-         DEBUG_YSTR   yLOG_sint   (x_letter - 'a');
-         DEBUG_YSTR   yLOG_sexit  (__FUNCTION__);
+         DEBUG_YASCII   yLOG_sint   (x_letter - 'a');
+         DEBUG_YASCII   yLOG_sexit  (__FUNCTION__);
          return x_letter - 'a';
       }
-      DEBUG_YSTR   yLOG_snote  ("out of range [a-z]");
-      DEBUG_YSTR   yLOG_sexitr (__FUNCTION__, rce);
+      DEBUG_YASCII   yLOG_snote  ("out of range [a-z]");
+      DEBUG_YASCII   yLOG_sexitr (__FUNCTION__, rce);
       return rce;
    }
    /*---(full)---------------------------*/
    --rce;  if (a_range == YASCII_FULL) {
-      DEBUG_YSTR   yLOG_snote  ("full-type");
+      DEBUG_YASCII   yLOG_snote  ("full-type");
       if (strchr (TYPE_ALPHA, x_letter) != NULL) {
          if (x_letter == ' ')  x_letter = 'z' + 1;
-         DEBUG_YSTR   yLOG_sint   (x_letter - 'a');
-         DEBUG_YSTR   yLOG_sexit  (__FUNCTION__);
+         DEBUG_YASCII   yLOG_sint   (x_letter - 'a');
+         DEBUG_YASCII   yLOG_sexit  (__FUNCTION__);
          return x_letter - 'a';
       }
       if (strchr (YSTR_NUMBER, x_letter) != NULL) {
-         DEBUG_YSTR   yLOG_sint   (x_letter - '0');
-         DEBUG_YSTR   yLOG_sexit  (__FUNCTION__);
+         DEBUG_YASCII   yLOG_sint   (x_letter - '0');
+         DEBUG_YASCII   yLOG_sexit  (__FUNCTION__);
          return x_letter - '0' + 27;
       }
-      DEBUG_YSTR   yLOG_snote  ("out of range [a-z0-9]");
-      DEBUG_YSTR   yLOG_sexitr (__FUNCTION__, rce);
+      DEBUG_YASCII   yLOG_snote  ("out of range [a-z0-9]");
+      DEBUG_YASCII   yLOG_sexitr (__FUNCTION__, rce);
       return rce;
    }
    /*---(binary)-------------------------*/
    --rce;  if (a_range == YASCII_BINARY) {
-      DEBUG_YSTR   yLOG_snote  ("binary-type");
+      DEBUG_YASCII   yLOG_snote  ("binary-type");
       if (strchr (YSTR_BINARY " ", x_letter) != NULL) {
          switch (x_letter) {
          case '0' :
-            DEBUG_YSTR   yLOG_sint   (0);
-            DEBUG_YSTR   yLOG_sexit  (__FUNCTION__);
+            DEBUG_YASCII   yLOG_sint   (0);
+            DEBUG_YASCII   yLOG_sexit  (__FUNCTION__);
             return 0;
          case '1' :
-            DEBUG_YSTR   yLOG_sint   (1);
-            DEBUG_YSTR   yLOG_sexit  (__FUNCTION__);
+            DEBUG_YASCII   yLOG_sint   (1);
+            DEBUG_YASCII   yLOG_sexit  (__FUNCTION__);
             return 1;
          case ' ' :
-            DEBUG_YSTR   yLOG_sint   (2);
-            DEBUG_YSTR   yLOG_sexit  (__FUNCTION__);
+            DEBUG_YASCII   yLOG_sint   (2);
+            DEBUG_YASCII   yLOG_sexit  (__FUNCTION__);
             return 2;
          }
       }
-      DEBUG_YSTR   yLOG_snote  ("out of range [0-1]");
-      DEBUG_YSTR   yLOG_sexitr (__FUNCTION__, rce);
+      DEBUG_YASCII   yLOG_snote  ("out of range [0-1]");
+      DEBUG_YASCII   yLOG_sexitr (__FUNCTION__, rce);
       return rce;
    }
    /*---(mayan)--------------------------*/
    --rce;  if (a_range == YASCII_MAYANC) {
-      DEBUG_YSTR   yLOG_snote  ("mayan consonant-type");
+      DEBUG_YASCII   yLOG_snote  ("mayan consonant-type");
       if (strchr (YSTR_MAYANC, x_letter) != NULL) {
-         DEBUG_YSTR   yLOG_sint   (x_letter - 'a');
-         DEBUG_YSTR   yLOG_sexit  (__FUNCTION__);
+         DEBUG_YASCII   yLOG_sint   (x_letter - 'a');
+         DEBUG_YASCII   yLOG_sexit  (__FUNCTION__);
          return x_letter - 'a';
       }
       if (strchr (YSTR_NUMBER, x_letter) != NULL) {
-         DEBUG_YSTR   yLOG_sint   (x_letter - '0');
-         DEBUG_YSTR   yLOG_sexit  (__FUNCTION__);
+         DEBUG_YASCII   yLOG_sint   (x_letter - '0');
+         DEBUG_YASCII   yLOG_sexit  (__FUNCTION__);
          return x_letter - '0' + 27;
       }
 
@@ -564,31 +655,29 @@ yascii_font__index      (char a_range, int a_letter)
       if (strchr (YSTR_MAYANC " ", x_letter) != NULL) {
          switch (x_letter) {
          case '0' :
-            DEBUG_YSTR   yLOG_sint   (0);
-            DEBUG_YSTR   yLOG_sexit  (__FUNCTION__);
+            DEBUG_YASCII   yLOG_sint   (0);
+            DEBUG_YASCII   yLOG_sexit  (__FUNCTION__);
             return 0;
          case '1' :
-            DEBUG_YSTR   yLOG_sint   (1);
-            DEBUG_YSTR   yLOG_sexit  (__FUNCTION__);
+            DEBUG_YASCII   yLOG_sint   (1);
+            DEBUG_YASCII   yLOG_sexit  (__FUNCTION__);
             return 1;
          case ' ' :
-            DEBUG_YSTR   yLOG_sint   (2);
-            DEBUG_YSTR   yLOG_sexit  (__FUNCTION__);
+            DEBUG_YASCII   yLOG_sint   (2);
+            DEBUG_YASCII   yLOG_sexit  (__FUNCTION__);
             return 2;
          }
       }
-      DEBUG_YSTR   yLOG_snote  ("out of range [0-1]");
-      DEBUG_YSTR   yLOG_sexitr (__FUNCTION__, rce);
+      DEBUG_YASCII   yLOG_snote  ("out of range [0-1]");
+      DEBUG_YASCII   yLOG_sexitr (__FUNCTION__, rce);
       return rce;
    }
    /*---(unknown)------------------------*/
    --rce;
-   DEBUG_YSTR   yLOG_snote  ("font type unknown");
-   DEBUG_YSTR   yLOG_sexitr (__FUNCTION__, rce);
+   DEBUG_YASCII   yLOG_snote  ("font type unknown");
+   DEBUG_YASCII   yLOG_sexitr (__FUNCTION__, rce);
    return rce;
 }
-
-static char s_working  [MAX_HEIGHT][MAX_WIDTH];
 
 int
 yascii_font__addltr     (char a_ltr)
@@ -604,37 +693,37 @@ yascii_font__addltr     (char a_ltr)
    int         x_row       =    0;
    char        t           [LEN_LABEL];
    /*---(header)-------------------------*/
-   DEBUG_YSTR   yLOG_senter  (__FUNCTION__);
+   DEBUG_YASCII   yLOG_senter  (__FUNCTION__);
    /*---(set letter)---------------------*/
-   DEBUG_YSTR   yLOG_schar   (a_ltr);
+   DEBUG_YASCII   yLOG_schar   (a_ltr);
    /*---(sizes)--------------------------*/
    x_wide   = s_fonts [s_curr].wide;
-   DEBUG_YSTR   yLOG_sint    (x_wide);
+   DEBUG_YASCII   yLOG_sint    (x_wide);
    x_gap    = s_fonts [s_curr].gap;
-   DEBUG_YSTR   yLOG_sint    (x_gap);
+   DEBUG_YASCII   yLOG_sint    (x_gap);
    x_offx   = s_fonts [s_curr].xoff;
-   DEBUG_YSTR   yLOG_sint    (x_offx);
+   DEBUG_YASCII   yLOG_sint    (x_offx);
    x_tall   = s_fonts [s_curr].tall;
-   DEBUG_YSTR   yLOG_sint    (x_tall);
+   DEBUG_YASCII   yLOG_sint    (x_tall);
    /*---(pointers)-----------------------*/
    x_ptr    = s_fonts [s_curr].ptr;
-   DEBUG_YSTR   yLOG_spoint  (x_ptr);
+   DEBUG_YASCII   yLOG_spoint  (x_ptr);
    x_offset = yascii_font__index  (s_fonts [s_curr].range, a_ltr);
    if (x_offset < 0)   x_offset = 0;
-   DEBUG_YSTR   yLOG_sint    (x_offset);
+   DEBUG_YASCII   yLOG_sint    (x_offset);
    x_pos    = x_ptr + (x_offset * (x_wide + x_gap));
-   DEBUG_YSTR   yLOG_spoint  (x_pos);
+   DEBUG_YASCII   yLOG_spoint  (x_pos);
    /*---(copy letter)--------------------*/
    for (x_row = 0; x_row < x_tall ; ++x_row) {
       if (x_offx == 0)  sprintf (t, "%*.*s"  , x_wide, x_wide, x_pos);
       else              sprintf (t, "%*.*s%c", x_wide, x_wide, x_pos, s_fonts [s_curr].empty);
-      strcat (s_working [x_row], t);
+      strcat (g_working [x_row], t);
       x_pos += MAX_WIDTH;
    }
    /*---(summary)------------------------*/
-   DEBUG_YSTR   yLOG_sint    (x_wide + x_offx);
+   DEBUG_YASCII   yLOG_sint    (x_wide + x_offx);
    /*---(complete)-----------------------*/
-   DEBUG_YSTR   yLOG_sexit   (__FUNCTION__);
+   DEBUG_YASCII   yLOG_sexit   (__FUNCTION__);
    return x_wide + x_offx;
 }
 
@@ -649,39 +738,39 @@ yascii_font__addrow     (char *a_text, char a_gap, int x, int y, char a_mode)
    int         x_row       =    0;
    int         x_col       =    0;
    /*---(header)-------------------------*/
-   DEBUG_YSTR   yLOG_enter   (__FUNCTION__);
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
    /*---(get length)---------------------*/
    x_len = strlen (a_text);
-   DEBUG_YSTR   yLOG_value   ("x_len"     , x_len);
+   DEBUG_YASCII   yLOG_value   ("x_len"     , x_len);
    /*---(clear working)------------------*/
    for (x_row = 0; x_row < MAX_HEIGHT; ++x_row)  {
-      strcpy (s_working [x_row], "");
+      strcpy (g_working [x_row], "");
    }
    /*---(create working)-----------------*/
    for (x_ltr = 0; x_ltr < x_len ; ++x_ltr) {
       x_ch = a_text [x_ltr];
-      DEBUG_YSTR   yLOG_char    ("x_ch"      , x_ch);
+      DEBUG_YASCII   yLOG_char    ("x_ch"      , x_ch);
       if (x_ch == '¦')  break;
       x_wide += yascii_font__addltr (x_ch);
    }
    /*---(add gap)------------------------*/
    if (a_gap == 'y' && s_fonts [s_curr].yoff > 0) {
       for (x_col = 0; x_col < x_wide; ++x_col) {
-         s_working [s_fonts [s_curr].tall][x_col] = s_fonts [s_curr].empty;
+         g_working [s_fonts [s_curr].tall][x_col] = s_fonts [s_curr].empty;
       }
-      s_working [s_fonts [s_curr].tall][x_wide] = '\0';
+      g_working [s_fonts [s_curr].tall][x_wide] = '\0';
    }
    /*---(display)------------------------*/
-   if (s_displayer != NULL) {
-      DEBUG_YSTR   yLOG_value   ("y"         , y);
-      DEBUG_YSTR   yLOG_value   ("x"         , x);
+   if (e_displayer != NULL) {
+      DEBUG_YASCII   yLOG_value   ("y"         , y);
+      DEBUG_YASCII   yLOG_value   ("x"         , x);
       for (x_row = 0; x_row < MAX_HEIGHT; ++x_row) {
-         if (strlen (s_working [x_row]) <= 0)  break;
-         s_displayer (x, y + x_row, s_working [x_row], a_mode);
+         if (strlen (g_working [x_row]) <= 0)  break;
+         e_displayer (x, y + x_row, g_working [x_row], a_mode);
       }
    }
    /*---(complete)-----------------------*/
-   DEBUG_YSTR   yLOG_exit    (__FUNCTION__);
+   DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return x_wide;
 }
 
@@ -700,33 +789,33 @@ yASCII_display          (char a_font [LEN_LABEL], char *a_text, char a_gap, int 
    int         x_row       =    0;
    int         x_tall      =    0;
    /*---(begin)--------------------------*/
-   DEBUG_YSTR   yLOG_enter   (__FUNCTION__);
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
    /*---(defense)------------------------*/
-   DEBUG_YSTR   yLOG_point   ("a_text"    , a_text);
+   DEBUG_YASCII   yLOG_point   ("a_text"    , a_text);
    --rce;  if (a_text == NULL) {
-      DEBUG_YSTR   yLOG_exitr   (__FUNCTION__, rce);
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
    }
-   DEBUG_YSTR   yLOG_info    ("a_text"    , a_text);
+   DEBUG_YASCII   yLOG_info    ("a_text"    , a_text);
    strcpy (x_work, a_text);
    x_len = strlen (x_work);
-   DEBUG_YSTR   yLOG_value   ("x_len"     , x_len);
+   DEBUG_YASCII   yLOG_value   ("x_len"     , x_len);
    --rce;  if (x_len <= 0) {
-      DEBUG_YSTR   yLOG_exitr   (__FUNCTION__, rce);
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
    }
    /*---(find font)----------------------*/
-   DEBUG_YSTR   yLOG_note    ("find font");
+   DEBUG_YASCII   yLOG_note    ("find font");
    rc = yASCII_font (a_font, NULL, NULL);
-   DEBUG_YSTR   yLOG_value   ("rc"        , rc);
+   DEBUG_YASCII   yLOG_value   ("rc"        , rc);
    --rce;  if (rc < 0) {
-      DEBUG_YSTR   yLOG_exitr   (__FUNCTION__, rce);
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
    }
    /*---(walk through text)--------------*/
    p = strtok_r (x_work, "\n¦", &r);
    while (p != NULL) {
-      DEBUG_YSTR   yLOG_value   ("x_row"    , x_row);
+      DEBUG_YASCII   yLOG_value   ("x_row"    , x_row);
       w = yascii_font__addrow (p, a_gap, x, y + x_tall, a_mode);
       if (w > x_wide)  x_wide = w;
       p = strtok_r (NULL, "\n¦", &r);
@@ -734,19 +823,13 @@ yASCII_display          (char a_font [LEN_LABEL], char *a_text, char a_gap, int 
       ++x_row;
    }
    /*---(save values)--------------------*/
-   DEBUG_YSTR   yLOG_value   ("x_wide"   , x_wide);
-   DEBUG_YSTR   yLOG_value   ("x_tall"   , x_tall);
+   DEBUG_YASCII   yLOG_value   ("x_wide"   , x_wide);
+   DEBUG_YASCII   yLOG_value   ("x_tall"   , x_tall);
    if (a_wide != NULL)  *a_wide = x_wide;
    if (a_tall != NULL)  *a_tall = x_tall;
    /*---(complete)-----------------------*/
-   DEBUG_YSTR   yLOG_exit   (__FUNCTION__);
+   DEBUG_YASCII   yLOG_exit   (__FUNCTION__);
    return 0;
-}
-
-char         /*-> display a single line to screen --------[ whorl  [ 4----3 ]-*/
-yascii_oneline          (char *a_text, int x, int y, char a_mode)
-{
-   if (s_displayer != NULL)  s_displayer (x, y, a_text, a_mode);
 }
 
 char         /*-> display wrapped text to screen ---------[ whorl  [ 4----3 ]-*/
@@ -763,37 +846,37 @@ yASCII_wrapping         (char *a_text, int x, int y, int *a_wide, int *a_tall, c
    int         w           =    0;
    int         x_tall      =    0;
    /*---(begin)--------------------------*/
-   DEBUG_YSTR   yLOG_enter   (__FUNCTION__);
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
    /*---(defense)------------------------*/
-   DEBUG_YSTR   yLOG_point   ("a_text"    , a_text);
+   DEBUG_YASCII   yLOG_point   ("a_text"    , a_text);
    --rce;  if (a_text == NULL) {
-      DEBUG_YSTR   yLOG_exitr   (__FUNCTION__, rce);
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
    }
-   DEBUG_YSTR   yLOG_info    ("a_text"    , a_text);
+   DEBUG_YASCII   yLOG_info    ("a_text"    , a_text);
    strcpy (x_work, a_text);
    x_len = strlen (x_work);
-   DEBUG_YSTR   yLOG_value   ("x_len"     , x_len);
+   DEBUG_YASCII   yLOG_value   ("x_len"     , x_len);
    --rce;  if (x_len <= 0) {
-      DEBUG_YSTR   yLOG_exitr   (__FUNCTION__, rce);
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
    }
    /*---(walk through text)--------------*/
    p = strtok_r (x_work, "\n¦", &r);
    while (p != NULL) {
-      if (s_displayer != NULL)  s_displayer (x, y + x_tall, p, a_mode);
+      if (e_displayer != NULL)  e_displayer (x, y + x_tall, p, a_mode);
       w = strlen (p);
       if (w > x_wide)  x_wide = w;
       ++x_tall;
       p = strtok_r (NULL, "\n¦", &r);
    }
    /*---(save values)--------------------*/
-   DEBUG_YSTR   yLOG_value   ("x_wide"   , x_wide);
-   DEBUG_YSTR   yLOG_value   ("x_tall"   , x_tall);
+   DEBUG_YASCII   yLOG_value   ("x_wide"   , x_wide);
+   DEBUG_YASCII   yLOG_value   ("x_tall"   , x_tall);
    if (a_wide != NULL)  *a_wide = x_wide;
    if (a_tall != NULL)  *a_tall = x_tall;
    /*---(complete)-----------------------*/
-   DEBUG_YSTR   yLOG_exit   (__FUNCTION__);
+   DEBUG_YASCII   yLOG_exit   (__FUNCTION__);
    return 0;
 }
 
@@ -820,11 +903,10 @@ yascii__font_unit    (char *a_question, int a_num)
       }
    }
    else if (strcmp (a_question, "line"          ) == 0) {
-      if (s_curr < 0 || s_curr >= MAX_HEIGHT) {
+      if (a_num < 0 || a_num >= MAX_HEIGHT) {
          snprintf (unit_answer, LEN_RECD, "FONT line   (%2d) : out of range", a_num);
       } else {
-         sprintf (t, "[%s]", s_fonts [s_curr].name);
-         snprintf (unit_answer, LEN_RECD, "FONT line   (%2d) : å%-.45sæ", a_num, s_working [a_num]);
+         snprintf (unit_answer, LEN_RECD, "FONT line   (%2d) : å%-.45sæ", a_num, g_working [a_num]);
       }
    }
    /*---(complete)-----------------------*/

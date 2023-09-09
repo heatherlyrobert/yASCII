@@ -47,8 +47,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.0-, get up and working"
-#define     P_VERNUM    "3.0b"
-#define     P_VERTXT    "simple port and passed existing unit testing for yASCII_font.c"
+#define     P_VERNUM    "3.0c"
+#define     P_VERTXT    "updated ySTR functions to ¶ystr¶ prefix"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -70,6 +70,14 @@
 #include    <ySTR.h>              /* heatherly string processing              */
 /*---(done)------------------------------*/
 
+
+#define     MAX_WIDTH     450
+#define     MAX_HEIGHT     10
+
+extern char  (*e_displayer)  (int x, int y, char *a_text, char a_mode);
+extern char  g_working  [MAX_HEIGHT][LEN_DESC];
+
+
 extern char   unit_answer [LEN_RECD];
 
 
@@ -82,7 +90,6 @@ char        yascii__unit_end        (void);
 
 /*===[[ yASCII_font.c ]]======================================================*/
 /*··········>·······················>·········································*/
-/*---(support)--------------*/
 char        yASCII_font             (char a_font [LEN_LABEL], int *r_wide, int *r_tall);
 char        yascii_font__index      (char a_range, int a_letter);
 int         yascii_font__addltr     (char a_ltr);
@@ -93,6 +100,9 @@ char        yASCII_wrapping         (char *a_text, int x, int y, int *a_wide, in
 char*       yascii__font_unit       (char *a_question, int a_num);
 
 
+/*===[[ yASCII_font.c ]]======================================================*/
+/*··········>·······················>·········································*/
+char        yascii__getlang         (char a_iso [LEN_SHORT], char r_name [LEN_LABEL]);
 
 
 
