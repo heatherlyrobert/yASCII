@@ -29,6 +29,7 @@ typedef  unsigned char        uchar;
 #define     YASCII_TIMEOUT   'T'
 #define     YASCII_REFRESH   'R'
 #define     YASCII_CANCEL    'C'
+#define     YASCII_DATE      ':'
 
 #define     YASCII_GAPS      'y'
 #define     YASCII_NOGAPS    '-'
@@ -55,7 +56,7 @@ char        yASCII_prompt           (char a_style, char a_cluster, char a_host, 
 char        yASCII_word             (char a_which, char a_word [LEN_DESC]);
 char        yASCII_prompt_box       (char a_cluster, char a_host, char a_date [LEN_LABEL], int x, int y);
 
-
+char        yASCII_mayan            (char a_size, char *a_text, char a_gap, int x, int y, int *a_wide, int *a_tall, char a_mode);
 
 #endif
 /*============================----end-of-source---============================*/

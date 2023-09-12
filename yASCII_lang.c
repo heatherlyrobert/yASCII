@@ -78,7 +78,7 @@ static const char  yascii_clusters   [MAX_CLUSTER][LEN_LABEL] = {
 
 #define     MAX_HOST        200
 #define     CNT_HOST         68
-static const char ystr_hosts [MAX_HOST][LEN_LABEL] = {
+static const char yascii_hosts [MAX_HOST][LEN_LABEL] = {
    "deep_blue"       , "blue_gene"       , "hydra"           , "deep_crack"      , "kaissa"          ,
    "belle"           , "blitz"           , "deep_thought"    , "gideon"          , "deep_junior"     ,
    "zappa"           , "junior"          , "sjeng"           , "rondo"           , "rybka"           ,
@@ -167,8 +167,15 @@ char
 yASCII_language         (char a_iso [LEN_SHORT], char r_name [LEN_LABEL])
 {
    char        rc          =    0;
-   rc = yascii__getlang  (a_iso, r_name);
-   if (rc < 0)  rc = rand () % (CNT_LANGS - 1);
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
+   s_lang = rc = yascii__getlang  (a_iso, r_name);
+   DEBUG_YASCII   yLOG_value   ("getlang"   , rc);
+   if (rc < 0) {
+      s_lang = rc = rand () % (CNT_LANGS - 1);
+      DEBUG_YASCII   yLOG_value   ("random"    , rc);
+      if (r_name != NULL)  ystrlcpy (r_name, yascii_langs [s_lang].language, LEN_LABEL);
+   }
+   DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return rc;
 }
 
@@ -189,13 +196,17 @@ yASCII_host             (char n, char r_title [LEN_LABEL], char r_host [LEN_LABE
       return rce;
    }
    /*---(cluster)------------------------*/
-   DEBUG_YASCII   yLOG_value   ("n"         , n);
-   if (n < 0)  n = rand () % CNT_HOST;
+   DEBUG_YASCII   yLOG_sint    (n);
+   if (n < 0) {
+      DEBUG_YASCII   yLOG_snote   ("random");
+      n = rand () % CNT_HOST;
+      DEBUG_YASCII   yLOG_sint    (n);
+   }
    n %= CNT_HOST;
-   DEBUG_YASCII   yLOG_value   ("n"         , n);
+   DEBUG_YASCII   yLOG_sint    (n);
    /*---(return)-------------------------*/
    if (r_title   != NULL)  ystrlcpy (r_title  , yascii_langs [s_lang].host , LEN_LABEL);
-   if (r_host    != NULL)  ystrlcpy (r_host   , ystr_hosts [n]             , LEN_LABEL);
+   if (r_host    != NULL)  ystrlcpy (r_host   , yascii_hosts [n]           , LEN_LABEL);
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_sexitr  (__FUNCTION__, rce);
    return n;
@@ -211,6 +222,12 @@ yASCII_cluster          (char n, char r_title [LEN_LABEL], char r_cluster [LEN_L
    /*---(default)------------------------*/
    if (r_title   != NULL)   strcpy (r_title  , "");
    if (r_cluster != NULL)   strcpy (r_cluster, "");
+   /*---(defense)------------------------*/
+   DEBUG_YASCII   yLOG_sint    (s_lang);
+   --rce;  if (s_lang < 0) {
+      DEBUG_YASCII   yLOG_sexitr  (__FUNCTION__, rce);
+      return rce;
+   }
    /*---(cluster)------------------------*/
    DEBUG_YASCII   yLOG_value   ("n"         , n);
    if (n < 0)  n = rand () % CNT_CLUSTER;
@@ -271,7 +288,7 @@ yASCII_prompt           (char a_style, char a_cluster, char a_host, char r_promp
    case YASCII_NORMAL :
       sprintf (r_prompt, "%s #%02d.%s> %s #%02d.%s> [%s] %s :",
             yascii_langs [s_lang].cluster, a_cluster, yascii_clusters [a_cluster],
-            yascii_langs [s_lang].host   , a_host   , ystr_hosts    [a_host]   ,
+            yascii_langs [s_lang].host   , a_host   , yascii_hosts    [a_host]   ,
             x_rand, yascii_langs [s_lang].user);
       break;
    case YASCII_COLOR :
@@ -279,7 +296,7 @@ yASCII_prompt           (char a_style, char a_cluster, char a_host, char r_promp
             s_bloo, yascii_langs [s_lang].cluster,
             s_gold, a_cluster, yascii_clusters [a_cluster],
             s_bloo, yascii_langs [s_lang].host   ,
-            s_gold, a_host   , ystr_hosts    [a_host]   ,
+            s_gold, a_host   , yascii_hosts    [a_host]   ,
             s_bloo, x_rand,
             s_bloo, yascii_langs [s_lang].user);
       break;
@@ -289,14 +306,14 @@ yASCII_prompt           (char a_style, char a_cluster, char a_host, char r_promp
    }
    /*---(save key)-----------------------*/
    sprintf (x_num, "%02d", a_host);
-   if (r_key != NULL)   sprintf (r_key, "#%c%c%c", ystr_hosts [a_host][1], x_num [1], yascii_langs [s_lang].cluster [1]);
+   if (r_key != NULL)   sprintf (r_key, "#%c%c%c", yascii_hosts [a_host][1], x_num [1], yascii_langs [s_lang].cluster [1]);
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return 0;
 }
 
 char
-ySTR_password           (char a_style, int a_lang, char *a_prompt)
+yASCII_password         (char a_style, int a_lang, char *a_prompt)
 {
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
@@ -347,6 +364,12 @@ yASCII_word             (char a_which, char a_word [LEN_DESC])
       return rce;
    }
    strcpy (a_word, "");
+   /*---(defense)------------------------*/
+   DEBUG_YASCII   yLOG_value   ("s_lang"    , s_lang);
+   --rce;  if (s_lang < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
    /*---(defense language)---------------*/
    switch (a_which) {
    case YASCII_USERNAME  :
@@ -384,6 +407,9 @@ yASCII_word             (char a_which, char a_word [LEN_DESC])
       break;
    case YASCII_RECOVER   :
       sprintf (a_word, "%s"   , yascii_langs [s_lang].recover);
+      break;
+   case YASCII_DATE      :
+      sprintf (a_word, "%s"   , yascii_langs [s_lang].date);
       break;
    }
    /*---(complete)-----------------------*/
@@ -430,7 +456,7 @@ yASCII_prompt_box       (char a_cluster, char a_host, char a_date [LEN_LABEL], i
    sprintf (t, "%-12.12s [%02d/%02d%-15.15s]", yascii_langs [s_lang].seq     , a_cluster, a_host, "");
    ystrlcpy (g_working [++i]  , t, LEN_DESC);
    yascii_oneline (t, x, y++, YASCII_CLEAR);
-   sprintf (t, "%-12.12s [%-20.20s]"         , yascii_langs [s_lang].host    , ystr_hosts [a_host]);
+   sprintf (t, "%-12.12s [%-20.20s]"         , yascii_langs [s_lang].host    , yascii_hosts [a_host]);
    ystrlcpy (g_working [++i]  , t, LEN_DESC);
    yascii_oneline (t, x, y++, YASCII_CLEAR);
    sprintf (t, "%-12.12s [%-20.20s]"         , yascii_langs [s_lang].date    , a_date);
