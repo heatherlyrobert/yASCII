@@ -10,7 +10,7 @@ char  g_working  [MAX_HEIGHT][LEN_DESC];
 char   unit_answer [LEN_RECD];
 
 
-char yASCII_displayer   (void *a_displayer) { e_displayer = a_displayer; }
+char yASCII_displayer   (void *a_displayer) { e_displayer = a_displayer; return 0; }
 
 char         /*-> display a single line to screen --------[ whorl  [ 4----3 ]-*/
 yascii_oneline          (char *a_text, int x, int y, char a_mode)
@@ -55,8 +55,8 @@ yascii__unit_loud      (void)
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
    char        rc          =    0;
-   int         x_argc      =    2;
-   char       *x_argv [2]  = { "yASCII" , "@@yascii"};
+   int         x_argc      =    3;
+   char       *x_argv [3]  = { "yASCII_unit" , "@@kitchen", "@@yascii"};
    /*---(header)-------------------------*/
    DEBUG_YASCII  yLOG_enter   (__FUNCTION__);
    /*---(set mute)-----------------------*/
@@ -70,7 +70,7 @@ yascii__unit_loud      (void)
    }
    /*---(process urgents)----------------*/
    rc = yURG_urgs    (x_argc, x_argv);
-   DEBUG_YASCII   yLOG_value    ("logger"    , rc);
+   DEBUG_YASCII   yLOG_value    ("urgs"      , rc);
    --rce;  if (rc < 0) {
       DEBUG_YASCII   yLOG_exitr    (__FUNCTION__, rce);
       return rce;

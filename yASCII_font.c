@@ -18,7 +18,7 @@
 /*====================------------------------------------====================*/
 /*===----                        binary fonts                          ----===*/
 /*====================------------------------------------====================*/
-static void      o___BINARY__________________o (void) {;}
+static void      o___BINARY_____________o (void) {;}
 
 static const char binary   [MAX_HEIGHT][MAX_WIDTH] = {
    "-- -* -- -* -- -* -- -* *- ** *- ** *- ** *- ** ",
@@ -57,7 +57,7 @@ static const char dots_tny [MAX_HEIGHT][MAX_WIDTH] = {
 /*====================------------------------------------====================*/
 /*===----                       small sized fonts                      ----===*/
 /*====================------------------------------------====================*/
-static void      o___SMALL___________________o (void) {;}
+static void      o___SMALL______________o (void) {;}
 
 static const char tiny_ltr    [MAX_HEIGHT][MAX_WIDTH] = {
    "·a· b·· ²cc ··d eee fff ggg h·h iii ··j k·k l·· mmm nnn ooo ppp qqq rrr ·ss ttt u·u v·v w·w x·x y·y zz· ··· ·0· ·1· 222 333 4·4 555 6·· 777 ·8· 999",
@@ -226,7 +226,7 @@ static const char chess  [MAX_HEIGHT][MAX_WIDTH] = {
 /*====================------------------------------------====================*/
 /*===----                       medium sized fonts                     ----===*/
 /*====================------------------------------------====================*/
-static void      o___MEDIUM__________________o (void) {;}
+static void      o___MEDIUM_____________o (void) {;}
 
 static const char chunky [MAX_HEIGHT][MAX_WIDTH] = {
    " ______  ____    ______  ______  _____   ______  ______  ______  ______  ______ ",
