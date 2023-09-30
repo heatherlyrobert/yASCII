@@ -47,8 +47,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.0-, get up and working"
-#define     P_VERNUM    "3.0e"
-#define     P_VERTXT    "mayan is quite well advanced now"
+#define     P_VERNUM    "3.0f"
+#define     P_VERTXT    "mayan added a small, configurable line connector"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"

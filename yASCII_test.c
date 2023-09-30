@@ -40,6 +40,80 @@ yASCII_print            (int x, int y, char *a_text, char a_mode)
 }
 
 char
+yASCII_connector        (short bx, short by, char a_dir, short ex, short ey, char a_heavy, char a_label [LEN_LABEL], short lx, short ly)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        x_dir       =    0;
+   int         i           =    0;
+   char        x_2nd       =  '·';
+   char        x_horz      [LEN_SHORT] =  "€";
+   char        x_vert      [LEN_SHORT] =  "";
+   char        x_end       =  '·';
+   char        t           [LEN_SHORT] =  "·";
+   /*---(enter)--------------------------*/
+   DEBUG_YASCII   yLOG_senter  (__FUNCTION__);
+   /*---(lines)--------------------------*/
+   DEBUG_YASCII   yLOG_schar   (a_heavy);
+   if (a_heavy == '²') {
+      strcpy (x_horz, "²");
+      strcpy (x_vert, "Œ");
+   } else if (a_heavy == '·') {
+      strcpy (x_horz, "·");
+      strcpy (x_vert, "·");
+   }
+   DEBUG_YASCII   yLOG_schar   (x_horz);
+   DEBUG_YASCII   yLOG_schar   (x_vert);
+   /*---(direction)----------------------*/
+   if (bx > ex) {
+      if      (by >  ey)  {  x_dir = 1;  if (a_dir == '×') { x_2nd = 'Ô'; x_end = '‰'; }  else { a_dir = 'Ô'; x_2nd = '×'; x_end = '‡'; } }
+      else if (by == ey)  {  x_dir = 4;  a_dir = '×';  x_2nd = '´';  x_end = '‡'; }
+      else                {  x_dir = 7;  if (a_dir == '×') { x_2nd = 'Õ'; x_end = 'ˆ'; }  else { a_dir = 'Õ'; x_2nd = '×'; x_end = '‡'; } }
+   } else if (bx == ex) {
+      if      (by >  ey)  {  x_dir = 2;  a_dir = 'Ô';  x_2nd = '´';  x_end = '‰'; }
+      else if (by == ey)  {  x_dir = 5;  a_dir = '´';  x_2nd = '´'; }
+      else                {  x_dir = 8;  a_dir = 'Õ';  x_2nd = '´';  x_end = 'ˆ'; }
+   } else {
+      if      (by >  ey)  {  x_dir = 3;  if (a_dir == 'Ö') { x_2nd = 'Ô'; x_end = '‰'; }  else { a_dir = 'Ô'; x_2nd = 'Ö'; x_end = '†'; } }
+      else if (by == ey)  {  x_dir = 6;  a_dir = 'Ö';  x_2nd = '´';  x_end = '†'; }
+      else                {  x_dir = 9;  if (a_dir == 'Ö') { x_2nd = 'Õ'; x_end = 'ˆ'; }  else { a_dir = 'Õ'; x_2nd = 'Ö'; x_end = '†'; } }
+   }
+   DEBUG_YASCII   yLOG_sint    (x_dir);
+   DEBUG_YASCII   yLOG_schar   (a_dir);
+   DEBUG_YASCII   yLOG_schar   (x_2nd);
+   /*---(origination)--------------------*/
+   yASCII_print (bx, by, "Ï", YASCII_CLEAR); 
+   /*---(first segment)------------------*/
+   switch (a_dir) {
+   case 'Ö' :  for (i = bx + 1; i < ex; ++i)   yASCII_print ( i, by, x_horz, YASCII_CLEAR);    break;
+   case '×' :  for (i = bx - 1; i > ex; --i)   yASCII_print ( i, by, x_horz, YASCII_CLEAR);    break;
+   case 'Õ' :  for (i = by + 1; i < ey; ++i)   yASCII_print (bx,  i, x_vert, YASCII_CLEAR);    break;
+   case 'Ô' :  for (i = by - 1; i > ey; --i)   yASCII_print (bx,  i, x_vert, YASCII_CLEAR);    break;
+   }
+   /*---(corner)-------------------------*/
+   switch (a_dir) {
+   case 'Ö' :  if (x_dir == 3)  yASCII_print (ex, by, "…", YASCII_CLEAR);  else if (x_dir == 9)  yASCII_print (ex, by, "‚", YASCII_CLEAR);  break;
+   case '×' :  if (x_dir == 1)  yASCII_print (ex, by, "„", YASCII_CLEAR);  else if (x_dir == 7)  yASCII_print (ex, by, "ƒ", YASCII_CLEAR);  break;
+   case 'Õ' :  if (x_dir == 7)  yASCII_print (bx, ey, "…", YASCII_CLEAR);  else if (x_dir == 9)  yASCII_print (bx, ey, "„", YASCII_CLEAR);  break;
+   case 'Ô' :  if (x_dir == 1)  yASCII_print (bx, ey, "‚", YASCII_CLEAR);  else if (x_dir == 3)  yASCII_print (bx, ey, "ƒ", YASCII_CLEAR);  break;
+   }
+   /*---(second segment)-----------------*/
+   switch (x_2nd) {
+   case 'Ö' :  for (i = bx + 1; i < ex; ++i)   yASCII_print ( i, ey, x_horz, YASCII_CLEAR);    break;
+   case '×' :  for (i = bx - 1; i > ex; --i)   yASCII_print ( i, ey, x_horz, YASCII_CLEAR);    break;
+   case 'Õ' :  for (i = by + 1; i < ey; ++i)   yASCII_print (ex,  i, x_vert, YASCII_CLEAR);    break;
+   case 'Ô' :  for (i = by - 1; i > ey; --i)   yASCII_print (ex,  i, x_vert, YASCII_CLEAR);    break;
+   }
+   /*---(termination)--------------------*/
+   sprintf (t, "%c", x_end);
+   yASCII_print (ex, ey, t, YASCII_CLEAR); 
+   /*---(label)--------------------------*/
+   if (a_label != NULL)  yASCII_print (lx, ly, a_label, YASCII_CLEAR);
+   /*---(complete)-----------------------*/
+   DEBUG_YASCII   yLOG_sexit   (__FUNCTION__);
+   return 0;
+}
+
+char
 yASCII_new              (int a_horz, int a_vert)
 {
    /*---(locals)-----------+-----------+-*/
