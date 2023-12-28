@@ -39,31 +39,7 @@ typedef  unsigned char        uchar;
 #define     YASCII_FILL      'f'
 
 
-/*---(mayan sizing)-------------------*/
-/*> #define     YASCII_LARGE     '-'                                                  <* 
- *> #define     YASCII_MEDIUM    'm'                                                  <* 
- *> #define     YASCII_THIN      'h'                                                  <* 
- *> #define     YASCII_THINNER   'r'                                                  <* 
- *> #define     YASCII_SMALL     's'                                                  <* 
- *> #define     YASCII_TINY      't'                                                  <* 
- *> #define     YASCII_MICRO     'u'                                                  <*/
 
-/*---(mayan ornamentation)------------*/
-/*> #define    YASCII_NOGAP      'n'                                                  <* 
- *> #define    YASCII_NORMGAP    '-'                                                  <* 
- *> #define    YASCII_EVENGAP    'e'                                                  <*/
-
-/*---(mayan ornamentation)------------*/
-/*> #define    YASCII_BASE       '-'                                                  <* 
- *> #define    YASCII_HINTS      'y'                                                  <* 
- *> #define    YASCII_TSAE       'Y'                                                  <* 
- *> #define    YASCII_FULL       'F'                                                  <* 
- *> #define    YASCII_ENGLISH    'e'                                                  <* 
- *> #define    YASCII_ICING      '$'                                                  <* 
- *> #define    YASCII_DIAGRAM    '>'                                                  <*/
-
-
-#define    YASCII_HORZRAG    'r'
 
 
 /*··········>·······················>·········································*/
@@ -82,13 +58,6 @@ char        yASCII_cluster          (char n, char r_title [LEN_LABEL], char r_cl
 char        yASCII_prompt           (char a_style, char a_cluster, char a_host, char r_prompt [LEN_HUND], char r_key [LEN_SHORT]);
 char        yASCII_word             (char a_which, char a_word [LEN_DESC]);
 char        yASCII_prompt_box       (char a_cluster, char a_host, char a_date [LEN_LABEL], int x, int y);
-
-/*··········>·······················>·········································*/
-/*> char        yASCII_mayan_simple     (char a_text [LEN_RECD], int x, int y);       <*/
-/*> char        yASCII_mayan_full       (char a_size, char a_words [LEN_RECD], char a_meaning [LEN_RECD], char a_orient [LEN_RECD], char a_variant [LEN_RECD], int x, int y, char a_layout, char a_gapping, int *a_wide, int *a_tall, char a_ornament, char a_mode);   <*/
-/*> char        yASCII_mayan_word       (char a_word [LEN_TERSE], int x, int y, char a_ornament);   <*/
-/*> char        yASCII_updated          (short *r_nchar, short *r_nglyph, char r_request [LEN_RECD], char r_words [LEN_RECD], char r_diagram [LEN_RECD], char r_root [LEN_RECD], char r_meaning [LEN_RECD], char r_orient [LEN_RECD], char r_variant [LEN_RECD]);   <*/
-/*> char        yASCII_pretty           (char r_formal [LEN_RECD], char r_pretty [LEN_RECD], char r_glyphish [LEN_RECD]);   <*/
 
 /*··········>·······················>·········································*/
 char        yASCII_print            (int x, int y, char a_text [LEN_RECD], char a_mode);
