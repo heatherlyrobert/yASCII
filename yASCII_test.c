@@ -10,7 +10,7 @@ static   int    s_vert  =   -1;
 
 
 char
-yASCII_print            (int x, int y, char *a_text, char a_mode)
+yASCII_print            (int x, int y, char a_text [LEN_RECD], char a_mode)
 {
    /*---(locals)-----------+-----+-----+-*/
    int         x_len       =    0;
@@ -36,6 +36,98 @@ yASCII_print            (int x, int y, char *a_text, char a_mode)
    }
    DEBUG_YASCII   yLOG_sint    (n);
    DEBUG_YASCII   yLOG_sexit   (__FUNCTION__);
+   return 0;
+}
+
+char
+yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD], char a_mode)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   int         i           =    0;
+   int         l           =    0;
+   char        x_str       [LEN_RECD]  = "";
+   int         x_head      =    0;
+   int         x_break     =    0;
+   int         x_width     =    0;
+   int         x_lines     =    0;
+   int         c           =    0;
+   char        x_out       [LEN_RECD]  = "";
+   /*---(enter)--------------------------*/
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
+   /*---(defense)------------------------*/
+   DEBUG_YASCII   yLOG_point   ("a_text"    , a_text);
+   --rce;  if (a_text == NULL) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_info    ("a_text"    , a_text);
+   /*---(prepare)------------------------*/
+   ystrlcpy (x_str, a_text, LEN_RECD);
+   l = strlen (x_str);
+   DEBUG_YASCII   yLOG_value   ("l"         , l);
+   c = ystrldcnt (x_str, '¨', LEN_RECD);
+   DEBUG_YASCII   yLOG_value   ("c"         , c);
+   /*---(walk text)----------------------*/
+   --rce;  for (i = 0; i < l; i++) {
+      DEBUG_YASCII  yLOG_complex ("char"      , "%4d, %3d, %3d, %c", l, i, x_str [i], x_str [i]);
+      /*---(watch for breaks)------------*/
+      if (strchr("· ² - /", x_str[i]) != NULL) {
+         DEBUG_YASCII  yLOG_note    ("found a delimiter/space");
+         x_break = i;
+      }
+      /*---(watch for newlines)----------*/
+      if (x_str [i] == '¨') {
+         DEBUG_YASCII  yLOG_note    ("found new line");
+         x_break = i;
+      } else {
+         ++x_width;
+      }
+      DEBUG_YASCII  yLOG_complex ("width"     , "%4db, %3dw", x_break, x_width);
+      if (x_width > a_wide || x_str [i] == '¨') {
+         DEBUG_YASCII  yLOG_note    ("passed width or newline, display");
+         x_str [x_break] = '\0';
+         if (a_mode != YASCII_FILL) {
+            ystrlcpy  (x_str + x_head, x_out, LEN_RECD);
+         } else {
+            ystrlpad  (x_str + x_head, x_out, '.', '<', a_wide);
+            ystrldchg (x_out, ' ', '·', a_wide);
+         }
+         yASCII_print (x, y + x_lines, x_out, a_mode);
+         ++x_lines;
+         x_width = 0;
+         ++x_break;
+         i = x_head = x_break;
+         if (x_lines >= a_tall) {
+            DEBUG_YASCII  yLOG_note    ("more text after box filled");
+            DEBUG_YASCII  yLOG_exitr   (__FUNCTION__, rce);
+            return rce;
+         }
+      } else {
+         DEBUG_YASCII  yLOG_note    ("under width limit, get next char");
+      }
+   }
+   /*---(left-over)----------------------*/
+   DEBUG_YASCII  yLOG_complex ("leftover"  , "%3d w, %3d s, %3d l", x_width, x_head, l);
+   if (x_width > 0) {
+      DEBUG_YASCII  yLOG_note    ("print final bits");
+      if (a_mode != YASCII_FILL) {
+         ystrlcpy  (x_str + x_head, x_out, LEN_RECD);
+      } else {
+         ystrlpad  (x_str + x_head, x_out, '.', '<', a_wide);
+         ystrldchg (x_out, ' ', '·', a_wide);
+      }
+      yASCII_print (x, y + x_lines, x_out, a_mode);
+      x_lines ++;
+   } else {
+      DEBUG_YASCII  yLOG_note    ("nothing left at end to print");
+   }
+   for (i = x_lines; i < a_tall; ++i) {
+      ystrlpad  ("", x_out, '.', '<', a_wide);
+      yASCII_print (x, y + i, x_out, a_mode);
+   }
+   /*---(complete)-----------------------*/
+   DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return 0;
 }
 
@@ -131,8 +223,8 @@ yASCII_new              (int a_horz, int a_vert)
    }
    /*---(limits)-------------------------*/
    DEBUG_YASCII   yLOG_complex ("requested" , "%3dx by %3dy", a_horz, a_vert);
-   if (a_horz > LEN_RECD)  a_horz = LEN_RECD;
-   if (a_vert > LEN_RECD)  a_vert = LEN_RECD;
+   if (a_horz > 5000)  a_horz = 5000;
+   if (a_vert > 5000)  a_vert = 5000;
    DEBUG_YASCII   yLOG_complex ("using"     , "%3dx by %3dy", a_horz, a_vert);
    /*---(malloc)-------------------------*/
    while (x_new == NULL) {
@@ -215,7 +307,7 @@ yASCII_free             (void)
 }
 
 char
-yASCII_write            (void)
+yASCII_write            (char a_name [LEN_PATH])
 {
    /*---(locals)-----------+-----------+-*/
    char        rce         =  -10;
@@ -231,8 +323,14 @@ yASCII_write            (void)
       DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
    }
+   DEBUG_YASCII   yLOG_point   ("a_name"    , a_name);
+   --rce;  if (a_name == NULL) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_info    ("a_name"    , a_name);
    /*---(open)---------------------------*/
-   f = fopen (YSTR_CLIP, "wt");
+   f = fopen (a_name, "wt");
    DEBUG_YASCII   yLOG_point   ("f"         , f);
    --rce;  if (f == NULL) {
       DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);

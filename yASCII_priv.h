@@ -113,21 +113,21 @@ char        yascii__getlang         (char a_iso [LEN_SHORT], char r_name [LEN_LA
 /*===[[ yASCII_mayan.c ]]=====================================================*/
 /*··········>·······················>·········································*/
 /*---(data)---------------------------*/
-char        yascii_mayan__cdata     (char a_size, char a_char, char a_orient, char a_variant, short *r_left, short *r_topp, char *r_wide, char *r_tall);
-char        yascii_mayan__vdata     (char a_size, char a_char, char a_part, char a_orient, char a_variant, short *r_left, short *r_topp, char *r_wide, char *r_tall, char *r_xoff, char *r_yoff);
+/*> char        yascii_mayan__cdata     (char a_size, char a_char, char a_orient, char a_variant, short *r_left, short *r_topp, char *r_wide, char *r_tall);                                            <* 
+ *> char        yascii_mayan__vdata     (char a_size, char a_char, char a_part, char a_orient, char a_variant, short *r_left, short *r_topp, char *r_wide, char *r_tall, char *r_xoff, char *r_yoff);   <*/
 /*---(glyphs)-------------------------*/
-char        yascii_mayan__display   (short x, short y, char a_type, short a_left, short a_topp, char a_wide, char a_tall, char a_mode);
-char        yascii_mayan__normal    (char a_orient, char a_cons, char a_cvariant, char a_vowel, char a_vvariant, int x, int y, char a_mode);
-char        yascii_mayan__prefix    (char a_orient, char a_prefix, char a_pvariant, char a_cons, char a_cvariant, char a_vowel, char a_vvariant, int x, int y, char a_mode);
-char        yascii_mayan__suffix    (char a_orient, char a_cons, char a_cvariant, char a_vowel, char a_vvariant, char a_suffix, char a_svariant, int x, int y, char a_mode);
-char        yascii_mayan__conjuct   (int a_len, char a_vowel, int x, int y, char a_mode);
-char        yascii_mayan__glyph     (char a_part, char a_full [LEN_TERSE], char a_text [LEN_TERSE], char a_diagram [LEN_TERSE], char a_orient [LEN_TERSE], char a_variant [LEN_TERSE], int x, int y, char a_ornament, char a_mode);
+/*> char        yascii_mayan__display   (short x, short y, char a_type, short a_left, short a_topp, char a_wide, char a_tall, char a_mode);                                                                                               <* 
+ *> char        yascii_mayan__normal    (char a_orient, char a_cons, char a_cvariant, char a_vowel, char a_vvariant, int x, int y, char a_mode);                                                                                          <* 
+ *> char        yascii_mayan__prefix    (char a_orient, char a_prefix, char a_pvariant, char a_cons, char a_cvariant, char a_vowel, char a_vvariant, int x, int y, char a_mode);                                                          <* 
+ *> char        yascii_mayan__suffix    (char a_orient, char a_cons, char a_cvariant, char a_vowel, char a_vvariant, char a_suffix, char a_svariant, int x, int y, char a_mode);                                                          <* 
+ *> char        yascii_mayan__conjuct   (int a_len, char a_vowel, int x, int y, char a_mode);                                                                                                                                             <* 
+ *> char        yascii_mayan__glyph     (char a_part, char a_full [LEN_TERSE], char a_text [LEN_TERSE], char a_diagram [LEN_TERSE], char a_orient [LEN_TERSE], char a_variant [LEN_TERSE], int x, int y, char a_ornament, char a_mode);   <*/
 /*---(words)--------------------------*/
-char        yascii_mayan__diagram   (char b_text [LEN_TERSE], char r_diagram [LEN_TERSE], char b_orient [LEN_TERSE], char b_variant [LEN_TERSE], char *r_break);
-char        yascii_mayan__word      (char a_word [LEN_TERSE], char a_meaning [LEN_LABEL], char a_orient [LEN_TERSE], char a_variant [LEN_TERSE], int *x, int *y, char a_ornament, char a_mode);
+/*> char        yascii_mayan__diagram   (char b_text [LEN_TERSE], char r_diagram [LEN_TERSE], char b_orient [LEN_TERSE], char b_variant [LEN_TERSE], char *r_break);                                  <* 
+ *> char        yascii_mayan__word      (char a_word [LEN_TERSE], char a_meaning [LEN_LABEL], char a_orient [LEN_TERSE], char a_variant [LEN_TERSE], int *x, int *y, char a_ornament, char a_mode);   <*/
 /*---(drivers)------------------------*/
-char        yascii_mayan__sizer     (char a_size, char a_gapping, char a_ornament, char *r_wide, char *r_tall, char *r_left, char *r_topp);
-char        yascii_mayan_driver     (char a_size, char b_words [LEN_RECD], char b_meaning [LEN_RECD], char b_orient [LEN_RECD], char b_variant [LEN_RECD], int x, int y, char a_layout, char a_gapping, int *a_wide, int *a_tall, char a_ornament, char a_mode);
+/*> char        yascii_mayan__sizer     (char a_size, char a_gapping, char a_ornament, char *r_wide, char *r_tall, char *r_left, char *r_topp);                                                                                                                        <* 
+ *> char        yascii_mayan_driver     (char a_size, char b_words [LEN_RECD], char b_meaning [LEN_RECD], char b_orient [LEN_RECD], char b_variant [LEN_RECD], int x, int y, char a_layout, char a_gapping, int *a_wide, int *a_tall, char a_ornament, char a_mode);   <*/
 /*---(done)---------------------------*/
 
 
