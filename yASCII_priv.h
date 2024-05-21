@@ -47,8 +47,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.0-, get up and working"
-#define     P_VERNUM    "3.0g"
-#define     P_VERTXT    "cleared back to basics"
+#define     P_VERNUM    "3.0h"
+#define     P_VERTXT    "added start of grid-based capability from ouroboros"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -84,6 +84,26 @@ extern char  g_working  [MAX_HEIGHT][LEN_DESC];
 
 extern char   unit_answer [LEN_RECD];
 
+
+/*===[[ TEST STRUCTURE ]]=====================================================*/
+typedef struct cASCII tASCII;
+struct cASCII {
+   char        d_style;
+   /*---(horz/x)------------*/
+   int         x_left;
+   char        x_wide;
+   char        x_side;
+   char        x_gap;
+   int         x_max;
+   /*---(vert/y)------------*/
+   int         y_topp;
+   char        y_tall;
+   char        y_side;
+   char        y_gap;
+   int         y_max;
+   /*---(done)--------------*/
+};
+extern tASCII   myASCII;
 
 /*===[[ yASCII_base.c ]]======================================================*/
 /*··········>·······················>·········································*/

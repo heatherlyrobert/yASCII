@@ -3,6 +3,7 @@
 #include    "yASCII_priv.h"
 
 
+tASCII   myASCII;
 
 char  (*e_displayer)  (int x, int y, char *a_text, char a_mode) = NULL;
 char  g_working  [MAX_HEIGHT][LEN_DESC];

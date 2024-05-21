@@ -36,6 +36,8 @@ typedef  unsigned char        uchar;
 
 #define     YASCII_CLEAR     'c'
 #define     YASCII_MERGE     'm'
+#define     YASCII_JOIN      'j'
+#define     YASCII_LAYER     'l'
 #define     YASCII_FILL      'f'
 
 
@@ -59,14 +61,37 @@ char        yASCII_prompt           (char a_style, char a_cluster, char a_host, 
 char        yASCII_word             (char a_which, char a_word [LEN_DESC]);
 char        yASCII_prompt_box       (char a_cluster, char a_host, char a_date [LEN_LABEL], int x, int y);
 
-/*··········>·······················>·········································*/
-char        yASCII_print            (int x, int y, char a_text [LEN_RECD], char a_mode);
-char        yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD], char a_mode);
-char        yASCII_connector        (short bx, short by, char a_dir, short ex, short ey, char a_heavy, char a_label [LEN_LABEL], short lx, short ly);
+/*===[[ ouroboros_incl.c ]]===================================================*/
+/*········· ´······················ ´·········································*/
+/*---(exist)----------------*/
 char        yASCII_new              (int a_horz, int a_vert);
 char        yASCII_clear            (void);
 char        yASCII_free             (void);
+/*---(config)---------------*/
+char        yASCII_grid             (char a_style, short x_off, short y_off);
+char        yASCII_style            (char a_style);
+char        yASCII_grid_new         (char a_style, short a_col, short a_row);
+/*---(exim)-----------------*/
 char        yASCII_write            (char a_name [LEN_PATH]);
+/*---(chars)----------------*/
+char        yASCII_get              (int x, int y);
+char        yASCII_single           (int x, int y, char a_new);
+char        yASCII_print            (int x, int y, char a_text [LEN_RECD], char a_mode);
+char        yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD], char a_mode);
+/*---(boxes)----------------*/
+char        yASCII_box_full         (short x, short y, short w, short t, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_npred, char a_nsucc);
+char        yASCII_box              (char a_col, char a_row, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_npred, char a_nsucc);
+char        yASCII_simple           (char a_col, char a_row, char a_name [LEN_TITLE]);
+char        yASCII_empty            (char a_col, char a_row);
+char        yASCII_node             (short x, short y, char a);
+/*---(connect)--------------*/
+char        yASCII_connect_full     (short bx, short by, short ex, short ey, char a_tall, char a_blane, char a_vlane, char a_elane);
+char        yASCII_connector        (short bx, short by, char a_dir, short ex, short ey, char a_heavy, char a_label [LEN_LABEL], short lx, short ly);
+char        yASCII_uconnect         (short bx, short by, char a_dir, short ex, short ey);
+/*---(unittest)-------------*/
+char*       DRAW__unit              (char *a_question, int n);
+/*---(done)-----------------*/
+
 
 
 #endif
