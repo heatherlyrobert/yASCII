@@ -6,7 +6,7 @@
 # basename of executable, header, and all code files
 NAME_BASE  = yASCII
 # additional standard and outside libraries
-LIB_STD    = 
+LIB_STD    = -lm
 # all heatherly libraries used, debug versions whenever available
 LIB_MINE   = -lySTR_debug
 # all heatherly libraries used only in unit tests

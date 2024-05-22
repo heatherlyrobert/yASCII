@@ -163,11 +163,11 @@ yASCII_grid             (char a_style, short x_left, short y_topp)
       myASCII.y_tall =  3; myASCII.y_side =  3; myASCII.y_gap =  0;
       break;
    case YASCII_LARGE   :
-      myASCII.x_wide = 23; myASCII.x_side = 17; myASCII.x_gap =  6;
+      myASCII.x_wide = 22; myASCII.x_side = 17; myASCII.x_gap =  5;
       myASCII.y_tall =  6; myASCII.y_side =  4; myASCII.y_gap =  2;
       break;
    case YASCII_HUGE    :
-      myASCII.x_wide = 30; myASCII.x_side = 18; myASCII.x_gap = 12;
+      myASCII.x_wide = 29; myASCII.x_side = 22; myASCII.x_gap =  7;
       myASCII.y_tall =  8; myASCII.y_side =  5; myASCII.y_gap =  3;
       break;
    case YASCII_DEFAULT : default   :
@@ -182,7 +182,7 @@ yASCII_grid             (char a_style, short x_left, short y_topp)
 char yASCII_style (char a_style) { return yASCII_grid (a_style, 0, 0); }
 
 char
-yASCII_grid_new         (char a_style, short a_col, short a_row)
+yASCII_new_grid         (char a_style, short a_col, short a_row)
 {
    yASCII_grid (a_style, 0, 0);
    myASCII.x_max = myASCII.x_wide * a_col - myASCII.x_gap;
@@ -577,7 +577,7 @@ yASCII_box_full         (short x, short y, short w, short t, char a_name [LEN_TI
 }
 
 char
-yASCII_grid_box         (char a_col, char a_row, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_npred, char a_nsucc)
+yASCII_box_grid         (char a_col, char a_row, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_npred, char a_nsucc)
 {
    /*---(locals)-----------+-----+-----+-*/
    short       x, y;
@@ -588,8 +588,7 @@ yASCII_grid_box         (char a_col, char a_row, char a_name [LEN_TITLE], char a
    return yASCII_box_full (x, y, myASCII.x_side, myASCII.y_side, a_name, a_note, a_npred, a_nsucc);
 }
 
-char yASCII_grid_simple (char a_col, char a_row, char a_title [LEN_TITLE]) { return yASCII_grid_box (a_col, a_row, a_title, "", 0, 0); }
-char yASCII_grid_empty  (char a_col, char a_row) { return yASCII_grid_box (a_col, a_row, "", "", 0, 0); }
+char yASCII_box_simple  (char a_col, char a_row, char a_title [LEN_TITLE]) { return yASCII_box_grid (a_col, a_row, a_title, "", 0, 0); }
 
 char
 yASCII_node             (short x, short y, char a)
@@ -617,8 +616,30 @@ yASCII_node             (short x, short y, char a)
 /*====================------------------------------------====================*/
 static void  o___CONNECT_________o () { return; }
 
+/*
+ *    ƒ²²²†   ‡²²²‚        ƒ²²‰€€€‰²²‚
+ *    Œƒ²²†   ‡²²‚Œ        Œƒ²†   ‡²‚Œ
+ *  ‡²…Œƒ²†   ‡²‚Œ„²†   €€‰…Œƒˆ€€€ˆ‚Œ„‰€€
+ *  ‡²²…Œ       Œ„²²†     ‡²…Œ     Œ„²†
+ *  ‡²²²…       „²²²†   €€ˆ²²…     „²²ˆ€€   
+ *
+ *  ‡²²²‚       ƒ²²²†   €€‰²²‚     ƒ²²‰€€
+ *  ‡²²‚Œ       Œƒ²²†     ‡²‚Œ     Œƒ²†
+ *  ‡²‚Œ„²†   ‡²…Œƒ²†   €€ˆ‚Œ„‰€€€‰…Œƒˆ€€
+ *    Œ„²²†   ‡²²…Œ        Œ„²†   ‡²…Œ 
+ *    „²²²†   ‡²²²…        „²²ˆ€€€ˆ²²…
+ */
+
+/*
+ *     ‡‰‰‰†
+ *
+ *     ‡²‰‰‰²†
+ *
+ *     ‡²‰²‰²‰²†
+ *
+ */
 char
-yASCII_connect_full     (short bx, short by, short ex, short ey, char a_tall, char a_blane, char a_vlane, char a_elane)
+yASCII_tie_full         (short bx, short by, short ex, short ey, char a_tall, char a_blane, char a_vlane, char a_elane)
 {
    /*---(locals)-----------+-----+-----+-*/
    char        x_dir       =    0;
@@ -626,19 +647,38 @@ yASCII_connect_full     (short bx, short by, short ex, short ey, char a_tall, ch
    /*---(enter)--------------------------*/
    DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
    DEBUG_YASCII   yLOG_complex ("a_args"    , "%3dbx, %3dby, %3dex, %3dey, %1dbl, %1dvl, %1del", bx, by, ex, ey, a_tall, a_blane, a_vlane, a_elane);
+   /*---(interpret lanes)----------------*/
+   switch (a_blane) {
+   case 't' :  a_blane = 0;                                   break;
+   case 'm' :  a_blane = trunc ((myASCII.y_side - 1) / 2.0);  break;
+   case 'b' :  a_blane = myASCII.y_side - 1;                  break;
+   }
+   DEBUG_YASCII   yLOG_value   ("a_blane"   , a_blane);
+   switch (a_vlane) {
+   case 'l' :  if (myASCII.x_gap == 3)  a_vlane = 1;  else a_vlane = 2; break;
+   case 'c' :  a_vlane = trunc ((myASCII.x_gap  - 1) / 2.0);  break;
+   case 'r' :  if (myASCII.x_gap == 3)  a_vlane = 3;  else a_vlane = myASCII.x_gap - 2; break;
+   }
+   DEBUG_YASCII   yLOG_value   ("a_vlane"   , a_vlane);
+   switch (a_elane) {
+   case 't' :  a_elane = 0;                                   break;
+   case 'm' :  a_elane = trunc ((myASCII.y_side - 1) / 2.0);  break;
+   case 'b' :  a_elane = myASCII.y_side - 1;                  break;
+   }
+   DEBUG_YASCII   yLOG_value   ("a_elane"   , a_elane);
    /*---(direction)----------------------*/
    if      (by + a_blane == ey + a_elane)   x_dir = 'Ö';
    else if (by + a_blane <  ey + a_elane)   x_dir = 'Õ';
    else                                     x_dir = 'Ô';
    DEBUG_YASCII   yLOG_char    ("x_dir"     , x_dir);
    /*---(start)--------------------------*/
-   if      (a_blane == 0)        yASCII_print (bx, by          , "‰", YASCII_CLEAR); 
-   else if (a_blane == a_tall)   yASCII_print (bx, by + a_tall , "ˆ", YASCII_CLEAR); 
-   else                          yASCII_print (bx, by + a_blane, "‡", YASCII_CLEAR); 
+   if      (a_blane == 0)            yASCII_print (bx, by          , "‰", YASCII_CLEAR); 
+   else if (a_blane == a_tall - 1)   yASCII_print (bx, by + a_tall , "ˆ", YASCII_CLEAR); 
+   else                              yASCII_print (bx, by + a_blane, "‡", YASCII_CLEAR); 
    /*---(finish)-------------------------*/
-   if      (a_elane == 0)        yASCII_print (ex, ey          , "‰", YASCII_CLEAR); 
-   else if (a_elane == a_tall)   yASCII_print (ex, ey + a_tall , "ˆ", YASCII_CLEAR); 
-   else                          yASCII_print (ex, ey + a_elane, "†", YASCII_CLEAR); 
+   if      (a_elane == 0)            yASCII_print (ex, ey          , "‰", YASCII_CLEAR); 
+   else if (a_elane == a_tall - 1)   yASCII_print (ex, ey + a_tall , "ˆ", YASCII_CLEAR); 
+   else                              yASCII_print (ex, ey + a_elane, "†", YASCII_CLEAR); 
    /*---(connect)------------------------*/
    switch (x_dir) {
    case 'Ö' : 
@@ -648,15 +688,16 @@ yASCII_connect_full     (short bx, short by, short ex, short ey, char a_tall, ch
    case 'Ô' : 
       DEBUG_YASCII   yLOG_note    ("ascending/upward line");
       for (i = bx + 1; i < ex - a_vlane; ++i)  yASCII_single (i, by + a_blane, '²');
-      yASCII_single (ex - 2, by + a_blane, '…');
+      yASCII_single (ex - a_vlane, by + a_blane, '…');
       for (i = by + a_blane - 1; i >= ey + a_elane + 1; --i)  yASCII_single (ex - a_vlane, i, 'Œ');
-      yASCII_single (ex - 2, ey + a_elane, 'ƒ');
+      yASCII_single (ex - a_vlane, ey + a_elane, 'ƒ');
       break;
    case 'Õ' :
       DEBUG_YASCII   yLOG_note    ("descending/downward line");
+      for (i = bx + 1; i < bx + a_vlane; ++i)  yASCII_single (i, by + a_blane, '²');
       yASCII_single (bx + a_vlane, by + a_blane, '‚');
       for (i = by + a_blane + 1; i <= ey + a_elane - 1; ++i)  yASCII_single (bx + a_vlane, i, 'Œ');
-      yASCII_single (bx + 2, ey + a_elane, '„');
+      yASCII_single (bx + a_vlane, ey + a_elane, '„');
       for (i = bx + a_vlane + 1; i <= ex - 1; ++i)  yASCII_single (i, ey + a_elane, '²');
       break;
    }
@@ -666,7 +707,7 @@ yASCII_connect_full     (short bx, short by, short ex, short ey, char a_tall, ch
 }
 
 char
-yASCII_grid_connect     (char a_bcol, char a_brow, char a_ecol, char a_erow)
+yASCII_tie_grid         (char a_bcol, char a_brow, char a_ecol, char a_erow)
 {
    /*---(locals)-----------+-----+-----+-*/
    short       bx, by, ex, ey;
@@ -679,7 +720,24 @@ yASCII_grid_connect     (char a_bcol, char a_brow, char a_ecol, char a_erow)
    else                 ex = myASCII.x_left + (a_ecol * myASCII.x_wide);
    ey = myASCII.y_topp + (a_erow * myASCII.y_tall);
    /*---(complete)-----------------------*/
-   return yASCII_connect_full (bx, by, ex, ey, myASCII.y_tall - myASCII.y_gap, 1, 2, 1);
+   return yASCII_tie_full (bx, by, ex, ey, myASCII.y_tall - myASCII.y_gap, 1, 2, 1);
+}
+
+char
+yASCII_tie_exact        (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_blane, char a_vlane, char a_elane)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   short       bx, by, ex, ey;
+   /*---(beginning)----------------------*/
+   if (a_bcol == -1)    bx = myASCII.x_left - 4;
+   else                 bx = myASCII.x_left + (a_bcol * myASCII.x_wide) + myASCII.x_wide - myASCII.x_gap - 1;
+   by = myASCII.y_topp + (a_brow * myASCII.y_tall);
+   /*---(ending)-------------------------*/
+   if (a_ecol == 66)    ex = myASCII.x_max + 3;
+   else                 ex = myASCII.x_left + (a_ecol * myASCII.x_wide);
+   ey = myASCII.y_topp + (a_erow * myASCII.y_tall);
+   /*---(complete)-----------------------*/
+   return yASCII_tie_full (bx, by, ex, ey, myASCII.y_tall - myASCII.y_gap, a_blane, a_vlane, a_elane);
 }
 
 

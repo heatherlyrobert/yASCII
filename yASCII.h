@@ -74,7 +74,7 @@ char        yASCII_free             (void);
 /*---(config)---------------*/
 char        yASCII_grid             (char a_style, short x_off, short y_off);
 char        yASCII_style            (char a_style);
-char        yASCII_grid_new         (char a_style, short a_col, short a_row);
+char        yASCII_new_grid         (char a_style, short a_col, short a_row);
 /*---(exim)-----------------*/
 char        yASCII_write            (char a_name [LEN_PATH]);
 /*---(chars)----------------*/
@@ -84,13 +84,13 @@ char        yASCII_print            (int x, int y, char a_text [LEN_RECD], char 
 char        yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD], char a_mode);
 /*---(boxes)----------------*/
 char        yASCII_box_full         (short x, short y, short w, short t, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_npred, char a_nsucc);
-char        yASCII_grid_box         (char a_col, char a_row, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_npred, char a_nsucc);
-char        yASCII_grid_simple      (char a_col, char a_row, char a_name [LEN_TITLE]);
-char        yASCII_grid_empty       (char a_col, char a_row);
+char        yASCII_box_grid         (char a_col, char a_row, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_npred, char a_nsucc);
+char        yASCII_box_simple       (char a_col, char a_row, char a_name [LEN_TITLE]);
 char        yASCII_node             (short x, short y, char a);
 /*---(connect)--------------*/
-char        yASCII_connect_full     (short bx, short by, short ex, short ey, char a_tall, char a_blane, char a_vlane, char a_elane);
-char        yASCII_grid_connect     (char a_bcol, char a_brow, char a_ecol, char a_erow);
+char        yASCII_tie_full         (short bx, short by, short ex, short ey, char a_tall, char a_blane, char a_vlane, char a_elane);
+char        yASCII_tie_grid         (char a_bcol, char a_brow, char a_ecol, char a_erow);
+char        yASCII_tie_exact        (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_blane, char a_vlane, char a_elane);
 
 char        yASCII_connector        (short bx, short by, char a_dir, short ex, short ey, char a_heavy, char a_label [LEN_LABEL], short lx, short ly);
 char        yASCII_uconnect         (short bx, short by, char a_dir, short ex, short ey);
