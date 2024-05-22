@@ -41,6 +41,10 @@ typedef  unsigned char        uchar;
 #define     YASCII_FILL      'f'
 
 
+#define     YASCII_MICRO     'u'
+#define     YASCII_DEFAULT   '-'
+#define     YASCII_LARGE     'l'
+#define     YASCII_HUGE      'H'
 
 
 
@@ -80,12 +84,14 @@ char        yASCII_print            (int x, int y, char a_text [LEN_RECD], char 
 char        yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD], char a_mode);
 /*---(boxes)----------------*/
 char        yASCII_box_full         (short x, short y, short w, short t, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_npred, char a_nsucc);
-char        yASCII_box              (char a_col, char a_row, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_npred, char a_nsucc);
-char        yASCII_simple           (char a_col, char a_row, char a_name [LEN_TITLE]);
-char        yASCII_empty            (char a_col, char a_row);
+char        yASCII_grid_box         (char a_col, char a_row, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_npred, char a_nsucc);
+char        yASCII_grid_simple      (char a_col, char a_row, char a_name [LEN_TITLE]);
+char        yASCII_grid_empty       (char a_col, char a_row);
 char        yASCII_node             (short x, short y, char a);
 /*---(connect)--------------*/
 char        yASCII_connect_full     (short bx, short by, short ex, short ey, char a_tall, char a_blane, char a_vlane, char a_elane);
+char        yASCII_grid_connect     (char a_bcol, char a_brow, char a_ecol, char a_erow);
+
 char        yASCII_connector        (short bx, short by, char a_dir, short ex, short ey, char a_heavy, char a_label [LEN_LABEL], short lx, short ly);
 char        yASCII_uconnect         (short bx, short by, char a_dir, short ex, short ey);
 /*---(unittest)-------------*/

@@ -158,19 +158,19 @@ yASCII_grid             (char a_style, short x_left, short y_topp)
    myASCII.y_topp      = y_topp;
    /*---(grid sizing)--------------------*/
    switch (a_style) {
-   case 'u'  :
+   case YASCII_MICRO   :
       myASCII.x_wide =  7; myASCII.x_side =  4; myASCII.x_gap =  3;
       myASCII.y_tall =  3; myASCII.y_side =  3; myASCII.y_gap =  0;
       break;
-   case 'l'  :
+   case YASCII_LARGE   :
       myASCII.x_wide = 23; myASCII.x_side = 17; myASCII.x_gap =  6;
       myASCII.y_tall =  6; myASCII.y_side =  4; myASCII.y_gap =  2;
       break;
-   case 'H'  :
+   case YASCII_HUGE    :
       myASCII.x_wide = 30; myASCII.x_side = 18; myASCII.x_gap = 12;
       myASCII.y_tall =  8; myASCII.y_side =  5; myASCII.y_gap =  3;
       break;
-   default   :
+   case YASCII_DEFAULT : default   :
       myASCII.x_wide = 15; myASCII.x_side = 12; myASCII.x_gap =  3;
       myASCII.y_tall =  5; myASCII.y_side =  3; myASCII.y_gap =  2;
       break;
@@ -577,7 +577,7 @@ yASCII_box_full         (short x, short y, short w, short t, char a_name [LEN_TI
 }
 
 char
-yASCII_box              (char a_col, char a_row, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_npred, char a_nsucc)
+yASCII_grid_box         (char a_col, char a_row, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_npred, char a_nsucc)
 {
    /*---(locals)-----------+-----+-----+-*/
    short       x, y;
@@ -588,8 +588,8 @@ yASCII_box              (char a_col, char a_row, char a_name [LEN_TITLE], char a
    return yASCII_box_full (x, y, myASCII.x_side, myASCII.y_side, a_name, a_note, a_npred, a_nsucc);
 }
 
-char yASCII_simple (char a_col, char a_row, char a_title [LEN_TITLE]) { return yASCII_box (a_col, a_row, a_title, "", 0, 0); }
-char yASCII_empty  (char a_col, char a_row) { return yASCII_box (a_col, a_row, "", "", 0, 0); }
+char yASCII_grid_simple (char a_col, char a_row, char a_title [LEN_TITLE]) { return yASCII_grid_box (a_col, a_row, a_title, "", 0, 0); }
+char yASCII_grid_empty  (char a_col, char a_row) { return yASCII_grid_box (a_col, a_row, "", "", 0, 0); }
 
 char
 yASCII_node             (short x, short y, char a)
@@ -612,9 +612,13 @@ yASCII_node             (short x, short y, char a)
 
 
 
+/*====================------------------------------------====================*/
+/*===----                         unit testing                         ----===*/
+/*====================------------------------------------====================*/
+static void  o___CONNECT_________o () { return; }
 
 char
-yASCII_xconnect         (short bx, short by, short ex, short ey, char a_tall, char a_blane, char a_vlane, char a_elane)
+yASCII_connect_full     (short bx, short by, short ex, short ey, char a_tall, char a_blane, char a_vlane, char a_elane)
 {
    /*---(locals)-----------+-----+-----+-*/
    char        x_dir       =    0;
@@ -659,6 +663,23 @@ yASCII_xconnect         (short bx, short by, short ex, short ey, char a_tall, ch
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return 0;
+}
+
+char
+yASCII_grid_connect     (char a_bcol, char a_brow, char a_ecol, char a_erow)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   short       bx, by, ex, ey;
+   /*---(beginning)----------------------*/
+   if (a_bcol == -1)    bx = myASCII.x_left - 4;
+   else                 bx = myASCII.x_left + (a_bcol * myASCII.x_wide) + myASCII.x_wide - myASCII.x_gap - 1;
+   by = myASCII.y_topp + (a_brow * myASCII.y_tall);
+   /*---(ending)-------------------------*/
+   if (a_ecol == 66)    ex = myASCII.x_max + 3;
+   else                 ex = myASCII.x_left + (a_ecol * myASCII.x_wide);
+   ey = myASCII.y_topp + (a_erow * myASCII.y_tall);
+   /*---(complete)-----------------------*/
+   return yASCII_connect_full (bx, by, ex, ey, myASCII.y_tall - myASCII.y_gap, 1, 2, 1);
 }
 
 
