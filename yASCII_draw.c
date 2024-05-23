@@ -644,6 +644,8 @@ yASCII_tie_full         (short bx, short by, short ex, short ey, char a_tall, ch
    /*---(locals)-----------+-----+-----+-*/
    char        x_dir       =    0;
    int         i           =    0;
+   int         x_beg, x_vrt, x_end;
+   int         y_bot, y_top;
    /*---(enter)--------------------------*/
    DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
    DEBUG_YASCII   yLOG_complex ("a_args"    , "%3dbx, %3dby, %3dex, %3dey, %1dbl, %1dvl, %1del", bx, by, ex, ey, a_tall, a_blane, a_vlane, a_elane);
@@ -656,8 +658,8 @@ yASCII_tie_full         (short bx, short by, short ex, short ey, char a_tall, ch
    DEBUG_YASCII   yLOG_value   ("a_blane"   , a_blane);
    switch (a_vlane) {
    case 'l' :  if (myASCII.x_gap == 3)  a_vlane = 1;  else a_vlane = 2; break;
-   case 'c' :  a_vlane = trunc ((myASCII.x_gap  - 1) / 2.0);  break;
-   case 'r' :  if (myASCII.x_gap == 3)  a_vlane = 3;  else a_vlane = myASCII.x_gap - 2; break;
+   case 'c' :  a_vlane = trunc ((myASCII.x_gap  - 1) / 2.0) + 1;  break;
+   case 'r' :  if (myASCII.x_gap == 3)  a_vlane = 3;  else a_vlane = myASCII.x_gap - 1; break;
    }
    DEBUG_YASCII   yLOG_value   ("a_vlane"   , a_vlane);
    switch (a_elane) {
@@ -672,13 +674,13 @@ yASCII_tie_full         (short bx, short by, short ex, short ey, char a_tall, ch
    else                                     x_dir = 'Ô';
    DEBUG_YASCII   yLOG_char    ("x_dir"     , x_dir);
    /*---(start)--------------------------*/
-   if      (a_blane == 0)            yASCII_print (bx, by          , "‰", YASCII_CLEAR); 
-   else if (a_blane == a_tall - 1)   yASCII_print (bx, by + a_tall , "ˆ", YASCII_CLEAR); 
-   else                              yASCII_print (bx, by + a_blane, "‡", YASCII_CLEAR); 
+   if      (a_blane == 0)            yASCII_print (bx, by             , "‰", YASCII_CLEAR); 
+   else if (a_blane == a_tall - 1)   yASCII_print (bx, by + a_tall - 1, "ˆ", YASCII_CLEAR); 
+   else                              yASCII_print (bx, by + a_blane   , "‡", YASCII_CLEAR); 
    /*---(finish)-------------------------*/
-   if      (a_elane == 0)            yASCII_print (ex, ey          , "‰", YASCII_CLEAR); 
-   else if (a_elane == a_tall - 1)   yASCII_print (ex, ey + a_tall , "ˆ", YASCII_CLEAR); 
-   else                              yASCII_print (ex, ey + a_elane, "†", YASCII_CLEAR); 
+   if      (a_elane == 0)            yASCII_print (ex, ey             , "‰", YASCII_CLEAR); 
+   else if (a_elane == a_tall - 1)   yASCII_print (ex, ey + a_tall - 1, "ˆ", YASCII_CLEAR); 
+   else                              yASCII_print (ex, ey + a_elane   , "†", YASCII_CLEAR); 
    /*---(connect)------------------------*/
    switch (x_dir) {
    case 'Ö' : 
@@ -687,10 +689,17 @@ yASCII_tie_full         (short bx, short by, short ex, short ey, char a_tall, ch
       break;
    case 'Ô' : 
       DEBUG_YASCII   yLOG_note    ("ascending/upward line");
-      for (i = bx + 1; i < ex - a_vlane; ++i)  yASCII_single (i, by + a_blane, '²');
-      yASCII_single (ex - a_vlane, by + a_blane, '…');
-      for (i = by + a_blane - 1; i >= ey + a_elane + 1; --i)  yASCII_single (ex - a_vlane, i, 'Œ');
-      yASCII_single (ex - a_vlane, ey + a_elane, 'ƒ');
+      x_beg  = bx + 1;
+      x_vrt  = ex - (myASCII.x_gap + 1) + a_vlane;
+      x_end  = ex - 1;
+      y_bot  = by + a_blane;
+      y_top  = ey + a_elane;
+      DEBUG_YASCII   yLOG_complex ("pos"       , "H %3db, %3dv, %3de  V %3db, %3dt", x_beg, x_vrt, x_end, y_bot, y_top);
+      for (i = x_beg; i < x_vrt; ++i)           yASCII_single (i, y_bot, '²');
+      yASCII_single (x_vrt, y_bot, '…');
+      for (i = y_bot - 1; i >= y_top + 1; --i)  yASCII_single (x_vrt, i, 'Œ');
+      yASCII_single (x_vrt, y_top, 'ƒ');
+      for (i = x_vrt + 1; i <= x_end; ++i)      yASCII_single (i, y_top, '²');
       break;
    case 'Õ' :
       DEBUG_YASCII   yLOG_note    ("descending/downward line");
@@ -720,7 +729,7 @@ yASCII_tie_grid         (char a_bcol, char a_brow, char a_ecol, char a_erow)
    else                 ex = myASCII.x_left + (a_ecol * myASCII.x_wide);
    ey = myASCII.y_topp + (a_erow * myASCII.y_tall);
    /*---(complete)-----------------------*/
-   return yASCII_tie_full (bx, by, ex, ey, myASCII.y_tall - myASCII.y_gap, 1, 2, 1);
+   return yASCII_tie_full (bx, by, ex, ey, myASCII.y_tall - myASCII.y_gap, 'm', 'c', 'm');
 }
 
 char
