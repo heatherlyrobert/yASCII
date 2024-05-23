@@ -564,11 +564,13 @@ yASCII_box_full         (short x, short y, short w, short t, char a_name [LEN_TI
    }
    /*---(stats)--------------------------*/
    if (a_npred > 0) {
-      sprintf (x_line, "%-3d", a_npred);
+      if (a_npred == 1)  strcpy  (x_line, " ");
+      else               sprintf (x_line, "%-3d", a_npred);
       yASCII_print (x + 1, y + t, x_line, YASCII_CLEAR);
    }
    if (a_nsucc > 0) {
-      sprintf (x_line, "%3d" , a_nsucc);
+      if (a_nsucc == 1)  strcpy  (x_line, "   ");
+      else               sprintf (x_line, "%3d" , a_nsucc);
       yASCII_print (x + w - 4, y + t, x_line, YASCII_CLEAR);
    }
    /*---(complete)-----------------------*/
@@ -748,6 +750,120 @@ yASCII_tie_exact        (char a_bcol, char a_brow, char a_ecol, char a_erow, cha
    /*---(complete)-----------------------*/
    return yASCII_tie_full (bx, by, ex, ey, myASCII.y_tall - myASCII.y_gap, a_blane, a_vlane, a_elane);
 }
+
+char
+yASCII_vert             (short x, short a_top, short a_bot)
+{
+   int         i           =    0;
+   yASCII_single (x,  a_top, '‰');
+   for (i = a_top + 1; i <= a_bot - 1; ++i) yASCII_single (x,  i, '');
+   /*> yASCII_single (x,  4, 'Š');                                                      <*/
+   yASCII_single (x,  a_bot, 'ˆ');
+   return 0;
+}
+
+
+
+/*====================------------------------------------====================*/
+/*===----                        specialty stuff                       ----===*/
+/*====================------------------------------------====================*/
+static void  o___SPECIALTY_______o () { return; }
+
+char
+yASCII_vertical         (short x, short yt, short yh, short yb)
+{
+   int         i           =    0;
+   yASCII_single (x, yt, '‰');
+   for (i = yt + 1; i <= yb - 1; ++i) yASCII_single (x,  i, '');
+   yASCII_single (x, yh, 'Š');
+   yASCII_single (x, yb, 'ˆ');
+   return 0;
+}
+
+char
+yASCII_frame_full       (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_title [LEN_TITLE], char a_1col, char a_1head [LEN_TITLE], char a_2col, char a_2head [LEN_TITLE], char a_3col, char a_3head [LEN_TITLE], char a_4col, char a_4head [LEN_TITLE])
+{
+   /*---(locals)-----------+-----+-----+-*/
+   int         l           =    0;
+   char        s           [LEN_RECD]  = "";
+   int         xb, yb, xe, ye, yt, yh;
+   int         y_topp, x_left;
+   int         i           =    0;
+   int         x;
+   /*---(prepare)---------------------*/
+   xb = myASCII.x_left + (a_bcol * myASCII.x_wide);
+   yb = myASCII.y_topp + (a_brow * myASCII.y_tall);
+   xe = myASCII.x_left + (a_ecol * myASCII.x_wide) + myASCII.x_side;
+   ye = myASCII.y_topp + (a_erow * myASCII.y_tall) + myASCII.y_side;
+   y_topp = yb;
+   x_left = xb;
+   /*---(adjust to style)-------------*/
+   switch (myASCII.d_style) {
+   case YASCII_MICRO   :
+      break;
+   case YASCII_LARGE   :
+      break;
+   case YASCII_HUGE    :
+      break;
+   case YASCII_DEFAULT : default :
+      xb -= 2; xe += 2; yb -= 6; ye += 3; yt = yb + 1; yh = yb + 4;
+      break;
+   }
+   /*---(top)-------------------------*/
+   l = xe - xb - 2;
+   sprintf (s, "ƒ%*.*s‚", l, l, YSTR_HORZ);
+   yASCII_print (xb, yt, s, YASCII_CLEAR);
+   /*---(middle)----------------------*/
+   sprintf (s, "%*.*s", l, l, YSTR_EMPTY);
+   for (i = yt + 1; i <= ye - 1; ++i)  yASCII_print (xb, i, s, YASCII_MERGE);
+   /*---(bottom)----------------------*/
+   sprintf (s, "„%*.*s…", l, l, YSTR_HORZ);
+   yASCII_print (xb, ye - 1, s, YASCII_CLEAR);
+   /*---(header line)-----------------*/
+   sprintf (s, "‡%*.*s†", l, l, YSTR_EDOTS);
+   yASCII_print (xb, yh, s, YASCII_CLEAR);
+   /*---(column numbers)--------------*/
+   for (i = a_bcol; i <= a_ecol; ++i) {
+      sprintf (s, "%02d", i);
+      yASCII_print (x_left + (myASCII.x_wide * i) + trunc (myASCII.x_side / 2.0) - 1, ye - 1, s, YASCII_CLEAR);
+   }
+   /*---(title)-----------------------*/
+   if (a_title != NULL && strcmp (a_title, "") != 0) {
+      l = strlen (a_title);
+      sprintf (s, "ƒ%*.*s‚", l + 2, l + 2, YSTR_HORZ);
+      yASCII_print (x_left, yb    , s, YASCII_CLEAR);
+      sprintf (s, "† %s ‡", a_title);
+      yASCII_print (x_left, yb + 1, s, YASCII_CLEAR);
+      sprintf (s, "„%*.*s…", l + 2, l + 2, YSTR_HORZ);
+      yASCII_print (x_left, yb + 2, s, YASCII_CLEAR);
+      /*> yASCII_print (my.x_min + 30, 0, "absolutely everything relies (or should rely) on this block", YASCII_CLEAR);   <*/
+   }
+   /*---(verticals)-------------------*/
+   x = x_left;
+   if (a_1head != NULL)  yASCII_print (x, yh, a_1head, YASCII_CLEAR);
+   if (a_2col > 0) {
+      x = x_left + (a_2col * myASCII.x_wide) + myASCII.x_side - 1;
+      yASCII_vertical (x, yt, yh, ye - 1);
+      x += myASCII.x_gap + 1;
+      if (a_2head != NULL)  yASCII_print (x, yh, a_2head, YASCII_CLEAR);
+   }
+   if (a_3col > 0) {
+      x = x_left + (a_3col * myASCII.x_wide) + myASCII.x_side - 1;
+      yASCII_vertical (x, yt, yh, ye - 1);
+      x += myASCII.x_gap + 1;
+      if (a_3head != NULL)  yASCII_print (x, yh, a_3head, YASCII_CLEAR);
+   }
+   if (a_4col > 0) {
+      x = x_left + (a_4col * myASCII.x_wide) + myASCII.x_side - 1;
+      yASCII_vertical (x, yt, yh, ye - 1);
+      x += myASCII.x_gap + 1;
+      if (a_4head != NULL)  yASCII_print (x, yh, a_4head, YASCII_CLEAR);
+   }
+   /*---(complete)--------------------*/
+   return 0;
+}
+
+char yASCII_frame  (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_title [LEN_TITLE]) { return yASCII_frame_full (a_bcol, a_brow, a_ecol, a_erow, a_title, -1, "", -1, "", -1, "", -1, ""); }
 
 
 

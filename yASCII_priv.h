@@ -47,8 +47,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.0-, get up and working"
-#define     P_VERNUM    "3.0k"
-#define     P_VERTXT    "grid ties on exact placement is unit tested"
+#define     P_VERNUM    "3.0l"
+#define     P_VERTXT    "frame drawing full exported and working in ouroboros (but not unit tested yet)"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
