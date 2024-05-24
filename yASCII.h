@@ -46,6 +46,7 @@ typedef  unsigned char        uchar;
 #define     YASCII_LARGE     'l'
 #define     YASCII_HUGE      'H'
 
+#define     YASCII_NODE      15
 
 
 /*··········>·······················>·········································*/
@@ -65,7 +66,9 @@ char        yASCII_prompt           (char a_style, char a_cluster, char a_host, 
 char        yASCII_word             (char a_which, char a_word [LEN_DESC]);
 char        yASCII_prompt_box       (char a_cluster, char a_host, char a_date [LEN_LABEL], int x, int y);
 
-/*===[[ ouroboros_incl.c ]]===================================================*/
+
+
+/*===[[ yASCII_draw.c ]]======================================================*/
 /*········· ´······················ ´·········································*/
 /*---(exist)----------------*/
 char        yASCII_new              (int a_horz, int a_vert);
@@ -87,16 +90,15 @@ char        yASCII_box_full         (short x, short y, short w, short t, char a_
 char        yASCII_box_grid         (char a_col, char a_row, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_npred, char a_nsucc);
 char        yASCII_box_simple       (char a_col, char a_row, char a_name [LEN_TITLE]);
 char        yASCII_node             (short x, short y, char a);
+char        yASCII_node_grid        (char a_col, char a_row, char a);
 /*---(connect)--------------*/
 char        yASCII_tie_full         (short bx, short by, short ex, short ey, char a_tall, char a_blane, char a_vlane, char a_elane);
 char        yASCII_tie_grid         (char a_bcol, char a_brow, char a_ecol, char a_erow);
 char        yASCII_tie_exact        (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_blane, char a_vlane, char a_elane);
 /*---(specialty)------------*/
-char        yASCII_vertical         (short x, short yt, short yh, short yb);
-char        yASCII_frame            (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_title [LEN_LABEL]);
 char        yASCII_frame_full       (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_title [LEN_TITLE], char a_1col, char a_1head [LEN_TITLE], char a_2col, char a_2head [LEN_TITLE], char a_3col, char a_3head [LEN_TITLE], char a_4col, char a_4head [LEN_TITLE]);
-char        yASCII_connector        (short bx, short by, char a_dir, short ex, short ey, char a_heavy, char a_label [LEN_LABEL], short lx, short ly);
-char        yASCII_uconnect         (short bx, short by, char a_dir, short ex, short ey);
+char        yASCII_frame            (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_title [LEN_TITLE]);
+char        yASCII_bound            (char a_type, char a_bcol, char a_brow, char a_ecol, char a_erow);
 /*---(unittest)-------------*/
 char*       DRAW__unit              (char *a_question, int n);
 /*---(done)-----------------*/

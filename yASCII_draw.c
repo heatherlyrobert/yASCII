@@ -7,23 +7,28 @@
 static   char  *s_image = NULL;
 
 
-static char s_joining [LEN_LABEL][LEN_TITLE] = {
+static char s_joining [LEN_TITLE][LEN_DESC] = {
    /*            ------------- old ------------ */
-   /*            123456789-123456789-123456789- */
-   /* new */  { "  ² Œ €  ƒ … „ ‚ † ‡ ‰ ˆ Š · " },
-   /*  ²  */  { "² ² Š € Š ‰ ˆ ˆ ‰ Š Š ‰ ˆ Š ² " },
-   /*  Œ  */  { "Œ Š Œ Š  ‡ † ‡ † † ‡ Š Š Š Œ " },
-   /*  €  */  { "€ ² Š € Š ‰ ˆ ˆ ‰ Š Š ‰ ˆ Š € " },
-   /*    */  { " Š  Š  ‡ † ‡ † † ‡ Š Š Š  " },
-   /*  ƒ  */  { "ƒ ‰ ‡ ‰ ‡ ƒ Š ‡ Š † ‡ ‰ Š Š ƒ " },
-   /*  …  */  { "… ˆ † ˆ † Š … Š † † Š Š ˆ Š … " },
-   /*  „  */  { "„ ˆ ‡ ˆ ‡ ‡ Š „ Š Š ‡ Š ˆ Š „ " },
-   /*  ‚  */  { "‚ ‰ † ‰ † Š † Š † † Š ‰ Š Š ‚ " },
-   /*  †  */  { "† Š † Š † Š † Š † † Š Š Š Š † " },
-   /*  ‡  */  { "‡ Š ‡ Š ‡ ‡ Š ‡ Š Š ‡ Š Š Š ‡ " },
-   /*  ‰  */  { "‰ ‰ Š ‰ Š ‰ Š Š ‰ Š Š ‰ Š Š ‰ " },
-   /*  ˆ  */  { "ˆ ˆ Š ˆ Š Š ˆ ˆ Š Š Š Š ˆ Š ˆ " },
-   /*  Š  */  { "Š Š Š Š Š Š Š Š Š Š Š Š Š Š Š " },
+   /*            123456789-123456789-123456789-123456789-123456789- */
+   /* new */  { "  ² Œ €  ƒ … „ ‚ † ‡ ‰ ˆ Š ·  œ ž Ÿ            " },
+   /*  ²  */  { "² ² Š € Š ‰ ˆ ˆ ‰ Š Š ‰ ˆ Š ² ² ² ² ²            " },
+   /*  Œ  */  { "Œ Š Œ Š  ‡ † ‡ † † ‡ Š Š Š Œ Œ Œ Œ Œ            " },
+   /*  €  */  { "€ € Š € Š ‰ ˆ ˆ ‰ Š Š ‰ ˆ Š € € € € €            " },
+   /*    */  { " Š  Š  ‡ † ‡ † † ‡ Š Š Š                 " },
+   /*  ƒ  */  { "ƒ ‰ ‡ ‰ ‡ ƒ Š ‡ Š † ‡ ‰ Š Š ƒ ƒ ƒ ƒ ƒ            " },
+   /*  …  */  { "… ˆ † ˆ † Š … Š † † Š Š ˆ Š … … … … …            " },
+   /*  „  */  { "„ ˆ ‡ ˆ ‡ ‡ Š „ Š Š ‡ Š ˆ Š „ „ „ „ „            " },
+   /*  ‚  */  { "‚ ‰ † ‰ † Š † Š ‚ † Š ‰ Š Š ‚ ‚ ‚ ‚ ‚            " },
+   /*  †  */  { "† Š † Š † Š † Š † † Š Š Š Š † † † † †            " },
+   /*  ‡  */  { "‡ Š ‡ Š ‡ ‡ Š ‡ Š Š ‡ Š Š Š ‡ ‡ ‡ ‡ ‡            " },
+   /*  ‰  */  { "‰ ‰ Š ‰ Š ‰ Š Š ‰ Š Š ‰ Š Š ‰ ‰ ‰ ‰ ‰            " },
+   /*  ˆ  */  { "ˆ ˆ Š ˆ Š Š ˆ ˆ Š Š Š Š ˆ Š ˆ ˆ ˆ ˆ ˆ            " },
+   /*  Š  */  { "Š Š Š Š Š Š Š Š Š Š Š Š Š Š Š Š Š Š Š            " },
+   /*  ·  */  { "· ² Œ €  ƒ … „ ‚ † ‡ ‰ ˆ Š ·  œ ž Ÿ            " },
+   /*    */  { "  Š  Š ‰ ˆ ˆ ‰ Š Š ‰ ˆ Š   œ ž Ÿ            " },
+   /*  œ  */  { "œ œ Š œ Š ‰ ˆ ˆ ‰ Š Š ‰ ˆ Š œ  œ ž Ÿ            " },
+   /*  ž  */  { "ž Š ž Š ž ‡ † ‡ † † ‡ Š Š Š ž  œ ž Ÿ            " },
+   /*  Ÿ  */  { "Ÿ Š Ÿ Š Ÿ ‡ † ‡ † † ‡ Š Š Š Ÿ  œ ž Ÿ            " },
 };
 
 
@@ -265,7 +270,7 @@ yASCII_single           (int x, int y, char a_new)
    /*---(locals)-----------+-----+-----+-*/
    char        c           =  '-';
    char       *p           = NULL;
-   char        x_valid     [LEN_TITLE] = "";
+   char        x_valid     [LEN_DESC] = "";
    char        x_old       =   -1;
    char        x_new       =   -1;
    char        t           [LEN_SHORT] = "";
@@ -274,7 +279,7 @@ yASCII_single           (int x, int y, char a_new)
    /*---(get old)------------------------*/
    c = yASCII_get (x, y);
    DEBUG_YASCII   yLOG_complex ("c"         , "%3d/%c", c, ychrvisible (c));
-   ystrlcpy (x_valid, s_joining [0], LEN_TITLE);
+   ystrlcpy (x_valid, s_joining [0], LEN_DESC);
    DEBUG_YASCII   yLOG_info    ("x_valid"   , x_valid);
    p = strchr (x_valid, c);
    DEBUG_YASCII   yLOG_point   ("p"         , p);
@@ -286,6 +291,7 @@ yASCII_single           (int x, int y, char a_new)
    x_old = p - x_valid;
    DEBUG_YASCII   yLOG_value   ("x_old"     , x_old);
    /*---(get new)------------------------*/
+   DEBUG_YASCII   yLOG_complex ("a_new"     , "%3d/%c", a_new, ychrvisible (a_new));
    p = strchr (x_valid, a_new);
    DEBUG_YASCII   yLOG_point   ("p"         , p);
    if (p == NULL) {
@@ -296,7 +302,7 @@ yASCII_single           (int x, int y, char a_new)
    x_new = (p - x_valid) / 2;
    DEBUG_YASCII   yLOG_value   ("x_new"     , x_new);
    /*---(identify replacement)-----------*/
-   ystrlcpy (x_valid, s_joining [x_new], LEN_TITLE);
+   ystrlcpy (x_valid, s_joining [x_new], LEN_DESC);
    DEBUG_YASCII   yLOG_info    ("x_valid"   , x_valid);
    c = x_valid [x_old];
    DEBUG_YASCII   yLOG_complex ("c"         , "%3d/%c", c, ychrvisible (c));
@@ -558,20 +564,24 @@ yASCII_box_full         (short x, short y, short w, short t, char a_name [LEN_TI
    l = strlen (x_line);
    yASCII_print (x + 1, y + 1, x_line, YASCII_CLEAR);
    /*---(note)---------------------------*/
-   if (strcmp (a_note, "")  != 0) {
-      l = strlen (a_note);
-      yASCII_print (x + w - l - 1, y + t - 1, a_note, YASCII_CLEAR);
+   if (myASCII.d_style != 'u') {
+      if (strcmp (a_note, "")  != 0) {
+         l = strlen (a_note);
+         yASCII_print (x + w - l - 1, y + t - 1, a_note, YASCII_CLEAR);
+      }
    }
    /*---(stats)--------------------------*/
-   if (a_npred > 0) {
-      if (a_npred == 1)  strcpy  (x_line, " ");
-      else               sprintf (x_line, "%-3d", a_npred);
-      yASCII_print (x + 1, y + t, x_line, YASCII_CLEAR);
-   }
-   if (a_nsucc > 0) {
-      if (a_nsucc == 1)  strcpy  (x_line, "   ");
-      else               sprintf (x_line, "%3d" , a_nsucc);
-      yASCII_print (x + w - 4, y + t, x_line, YASCII_CLEAR);
+   if (myASCII.d_style != 'u') {
+      if (a_npred > 0) {
+         if (a_npred == 1)  strcpy  (x_line, " ");
+         else               sprintf (x_line, "%-3d", a_npred);
+         yASCII_print (x + 1, y + t, x_line, YASCII_CLEAR);
+      }
+      if (a_nsucc > 0) {
+         if (a_nsucc == 1)  strcpy  (x_line, "   ");
+         else               sprintf (x_line, "%3d" , a_nsucc);
+         yASCII_print (x + w - 4, y + t, x_line, YASCII_CLEAR);
+      }
    }
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
@@ -609,6 +619,19 @@ yASCII_node             (short x, short y, char a)
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return 0;
+}
+
+char
+yASCII_node_grid         (char a_col, char a_row, char a)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   short       x, y;
+   /*---(prepare)------------------------*/
+   if (a_col < 0)  x = myASCII.x_left - 8;
+   else            x = myASCII.x_left + (a_col * myASCII.x_wide);
+   y = myASCII.y_topp + (a_row * myASCII.y_tall);
+   /*---(complete)-----------------------*/
+   return yASCII_node (x, y, a);
 }
 
 
@@ -751,17 +774,6 @@ yASCII_tie_exact        (char a_bcol, char a_brow, char a_ecol, char a_erow, cha
    return yASCII_tie_full (bx, by, ex, ey, myASCII.y_tall - myASCII.y_gap, a_blane, a_vlane, a_elane);
 }
 
-char
-yASCII_vert             (short x, short a_top, short a_bot)
-{
-   int         i           =    0;
-   yASCII_single (x,  a_top, '‰');
-   for (i = a_top + 1; i <= a_bot - 1; ++i) yASCII_single (x,  i, '');
-   /*> yASCII_single (x,  4, 'Š');                                                      <*/
-   yASCII_single (x,  a_bot, 'ˆ');
-   return 0;
-}
-
 
 
 /*====================------------------------------------====================*/
@@ -770,7 +782,7 @@ yASCII_vert             (short x, short a_top, short a_bot)
 static void  o___SPECIALTY_______o () { return; }
 
 char
-yASCII_vertical         (short x, short yt, short yh, short yb)
+yascii_vertical         (short x, short yt, short yh, short yb)
 {
    int         i           =    0;
    yASCII_single (x, yt, '‰');
@@ -800,10 +812,13 @@ yASCII_frame_full       (char a_bcol, char a_brow, char a_ecol, char a_erow, cha
    /*---(adjust to style)-------------*/
    switch (myASCII.d_style) {
    case YASCII_MICRO   :
+      xb -= 2; xe += 2; yb -= 6; ye += 3; yt = yb + 1; yh = yb + 4;
       break;
    case YASCII_LARGE   :
+      xb -= 3; xe += 3; yb -= 6; ye += 3; yt = yb + 1; yh = yb + 4;
       break;
    case YASCII_HUGE    :
+      xb -= 4; xe += 4; yb -= 6; ye += 3; yt = yb + 1; yh = yb + 4;
       break;
    case YASCII_DEFAULT : default :
       xb -= 2; xe += 2; yb -= 6; ye += 3; yt = yb + 1; yh = yb + 4;
@@ -843,19 +858,19 @@ yASCII_frame_full       (char a_bcol, char a_brow, char a_ecol, char a_erow, cha
    if (a_1head != NULL)  yASCII_print (x, yh, a_1head, YASCII_CLEAR);
    if (a_2col > 0) {
       x = x_left + (a_2col * myASCII.x_wide) + myASCII.x_side - 1;
-      yASCII_vertical (x, yt, yh, ye - 1);
+      yascii_vertical (x, yt, yh, ye - 1);
       x += myASCII.x_gap + 1;
       if (a_2head != NULL)  yASCII_print (x, yh, a_2head, YASCII_CLEAR);
    }
    if (a_3col > 0) {
       x = x_left + (a_3col * myASCII.x_wide) + myASCII.x_side - 1;
-      yASCII_vertical (x, yt, yh, ye - 1);
+      yascii_vertical (x, yt, yh, ye - 1);
       x += myASCII.x_gap + 1;
       if (a_3head != NULL)  yASCII_print (x, yh, a_3head, YASCII_CLEAR);
    }
    if (a_4col > 0) {
       x = x_left + (a_4col * myASCII.x_wide) + myASCII.x_side - 1;
-      yASCII_vertical (x, yt, yh, ye - 1);
+      yascii_vertical (x, yt, yh, ye - 1);
       x += myASCII.x_gap + 1;
       if (a_4head != NULL)  yASCII_print (x, yh, a_4head, YASCII_CLEAR);
    }
@@ -864,6 +879,58 @@ yASCII_frame_full       (char a_bcol, char a_brow, char a_ecol, char a_erow, cha
 }
 
 char yASCII_frame  (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_title [LEN_TITLE]) { return yASCII_frame_full (a_bcol, a_brow, a_ecol, a_erow, a_title, -1, "", -1, "", -1, "", -1, ""); }
+
+char
+yASCII_bound       (char a_type, char a_bcol, char a_brow, char a_ecol, char a_erow)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        s           [LEN_RECD]  = "";
+   int         xb, yb, xe, ye;
+   int         i           =    0;
+   char        x_left      =  ' ';
+   char        x_righ      =  ' ';
+   char        x_topp      =  ' ';
+   char        x_bott      =  ' ';
+   /*---(prepare)---------------------*/
+   xb = myASCII.x_left + (a_bcol * myASCII.x_wide);
+   yb = myASCII.y_topp + (a_brow * myASCII.y_tall);
+   xe = myASCII.x_left + (a_ecol * myASCII.x_wide) + myASCII.x_side - 1;
+   ye = myASCII.y_topp + (a_erow * myASCII.y_tall) + myASCII.y_side - 1;
+   /*---(adjust)----------------------*/
+   if (a_type == 'm') {
+      x_left = 'Ÿ';
+      x_righ = 'ž';
+      x_topp = 'œ';
+      x_bott = '';
+   } else if (a_type == toupper (a_type)) {
+      x_left = x_righ =  '';
+      x_topp = x_bott =  '€';
+   } else {
+      x_left = x_righ =  'Œ';
+      x_topp = x_bott =  '²';
+   }
+   /*> switch (a_type) {                                                              <* 
+    *> case 'B' :                                                                     <* 
+    *>    xb -= 2;  xe += 2                                                           <* 
+    *>    break;                                                                      <* 
+    *> case 'b' :  default :                                                          <* 
+    *> }                                                                              <*/
+   /*---(top)-------------------------*/
+   yASCII_single (xb, yb, 'ƒ');
+   for (i = xb + 1; i < xe; ++i)  yASCII_single (i, yb, x_topp);
+   yASCII_single (xe, yb, '‚');
+   /*---(middle)----------------------*/
+   for (i = yb + 1; i < ye; ++i) {
+      yASCII_single (xb, i, x_left);
+      yASCII_single (xe, i, x_righ);
+   }
+   /*---(bottom)----------------------*/
+   yASCII_single (xb, ye, '„');
+   for (i = xb + 1; i < xe; ++i)  yASCII_single (i, ye, x_bott);
+   yASCII_single (xe, ye, '…');
+   /*---(complete)--------------------*/
+   return 0;
+}
 
 
 
