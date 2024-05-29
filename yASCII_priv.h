@@ -47,8 +47,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.0-, get up and working"
-#define     P_VERNUM    "3.0n"
-#define     P_VERTXT    "unit testing on draw is good, repairing calls in ouroboros"
+#define     P_VERNUM    "3.0o"
+#define     P_VERTXT    "added line heaviness setting to ties, align with bounds"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"

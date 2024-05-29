@@ -47,6 +47,7 @@ typedef  unsigned char        uchar;
 #define     YASCII_LARGE     'l'
 #define     YASCII_HUGE      'H'
 
+
 /*---(decor settings)-------*/
 #define     YASCII_NONE      '-'
 #define     YASCII_NAMES     't'
@@ -55,6 +56,14 @@ typedef  unsigned char        uchar;
 #define     YASCII_MAX       'A'
 #define     YASCII_UNIT      'u'
 
+
+/*---(line weights)---------*/
+#define     YASCII_SOLID     's'
+#define     YASCII_DOTTED    'd'
+#define     YASCII_LIGHT     'l'
+#define     YASCII_WAVY      'w'
+#define     YASCII_INSIDE    'i'
+#define     YASCII_OUTSIDE   'o'
 
 
 /*··········>·······················>·········································*/
@@ -102,13 +111,13 @@ char        yASCII_box_simple       (char a_col, char a_row, char a_name [LEN_TI
 char        yASCII_node             (short x, short y, char a);
 char        yASCII_node_grid        (char a_col, char a_row, char a);
 /*---(connect)--------------*/
-char        yASCII_tie_full         (short bx, short by, short ex, short ey, char a_tall, char a_blane, char a_vlane, char a_elane);
+char        yASCII_tie_full         (char a_heavy, short bx, short by, short ex, short ey, char a_tall, char a_blane, char a_vlane, char a_elane);
 char        yASCII_tie_grid         (char a_bcol, char a_brow, char a_ecol, char a_erow);
 char        yASCII_tie_exact        (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_blane, char a_vlane, char a_elane);
 /*---(specialty)------------*/
 char        yASCII_frame_full       (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_title [LEN_TITLE], char a_1col, char a_1head [LEN_TITLE], char a_2col, char a_2head [LEN_TITLE], char a_3col, char a_3head [LEN_TITLE], char a_4col, char a_4head [LEN_TITLE]);
 char        yASCII_frame            (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_title [LEN_TITLE]);
-char        yASCII_bound            (char a_type, char a_line, char a_bcol, char a_brow, char a_ecol, char a_erow);
+char        yASCII_bound            (char a_type, char a_heavy, char a_bcol, char a_brow, char a_ecol, char a_erow);
 /*---(unittest)-------------*/
 char*       DRAW__unit              (char *a_question, int n);
 /*---(done)-----------------*/
