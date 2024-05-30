@@ -47,8 +47,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.0-, get up and working"
-#define     P_VERNUM    "3.0o"
-#define     P_VERTXT    "added line heaviness setting to ties, align with bounds"
+#define     P_VERNUM    "3.0p"
+#define     P_VERTXT    "centralized line heaviness and added to boxes as well (unit tested)"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -94,6 +94,10 @@ struct cASCII {
    char        d_notes;
    char        d_blocks;
    char        d_counts;
+   /*---(heavy)-------------*/
+   char        d_box;
+   char        d_tie;
+   char        d_bound;
    /*---(horz/x)------------*/
    int         x_left;
    char        x_wide;
@@ -134,6 +138,7 @@ char*       yascii__font_unit       (char *a_question, int a_num);
 char        yascii__getlang         (char a_iso [LEN_SHORT], char r_name [LEN_LABEL]);
 
 
+char        yascii__heaviness       (char a_heavy, char *r_left, char *r_topp, char *r_righ, char *r_bott);
 
 
 #endif

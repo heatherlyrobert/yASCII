@@ -64,6 +64,7 @@ typedef  unsigned char        uchar;
 #define     YASCII_WAVY      'w'
 #define     YASCII_INSIDE    'i'
 #define     YASCII_OUTSIDE   'o'
+#define     YASCII_ANCIENT   'a'
 
 
 /*··········>·······················>·········································*/
@@ -105,15 +106,18 @@ char        yASCII_single           (int x, int y, char a_new);
 char        yASCII_print            (int x, int y, char a_text [LEN_RECD], char a_mode);
 char        yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD], char a_mode);
 /*---(boxes)----------------*/
-char        yASCII_box_full         (short x, short y, short w, short t, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
+char        yASCII_box_full         (char a_heavy, short x, short y, short w, short t, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
 char        yASCII_box_grid         (char a_col, char a_row, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
 char        yASCII_box_simple       (char a_col, char a_row, char a_name [LEN_TITLE]);
 char        yASCII_node             (short x, short y, char a);
 char        yASCII_node_grid        (char a_col, char a_row, char a);
 /*---(connect)--------------*/
+char        yASCII_tie_heavy        (char a_heavy);
 char        yASCII_tie_full         (char a_heavy, short bx, short by, short ex, short ey, char a_tall, char a_blane, char a_vlane, char a_elane);
 char        yASCII_tie_grid         (char a_bcol, char a_brow, char a_ecol, char a_erow);
+char        yASCII_tie_grid_heavy   (char a_heavy, char a_bcol, char a_brow, char a_ecol, char a_erow);
 char        yASCII_tie_exact        (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_blane, char a_vlane, char a_elane);
+char        yASCII_tie_exact_heavy  (char a_heavy, char a_bcol, char a_brow, char a_ecol, char a_erow, char a_blane, char a_vlane, char a_elane);
 /*---(specialty)------------*/
 char        yASCII_frame_full       (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_title [LEN_TITLE], char a_1col, char a_1head [LEN_TITLE], char a_2col, char a_2head [LEN_TITLE], char a_3col, char a_3head [LEN_TITLE], char a_4col, char a_4head [LEN_TITLE]);
 char        yASCII_frame            (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_title [LEN_TITLE]);
