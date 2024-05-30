@@ -393,6 +393,15 @@ yASCII_single           (int x, int y, char a_new)
    char        t           [LEN_SHORT] = "";
    /*---(enter)--------------------------*/
    DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
+   /*---(quick-out)----------------------*/
+   if (x < 0 || x >= myASCII.x_max) {
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   if (y < 0 || y >= myASCII.y_max) {
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
    /*---(get old)------------------------*/
    c = yASCII_get (x, y);
    DEBUG_YASCII   yLOG_complex ("c"         , "%3d/%c", c, ychrvisible (c));
@@ -656,6 +665,69 @@ char yASCII_uconnect  (short bx, short by, char a_dir, short ex, short ey) { ret
 static void      o___BOXES______________o (void) {;}
 
 char
+yascii__outline         (char a_heavy, short x, short y, short w, short t, char a_mode)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   char        rc          =    0;
+   short       i           =    0;
+   char        c           =  ' ';
+   char        x_line      [LEN_HUND]  = "";
+   char        x_left, x_topp, x_righ, x_bott;
+   /*---(header)-------------------------*/
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
+   DEBUG_YASCII   yLOG_complex ("a_args"    , "%c, %3dx, %3dy, %3dw, %3dt, %c", a_heavy, x, y, w, t, a_mode);
+   /*---(defense)------------------------*/
+   --rce;  if (a_mode != YASCII_CLEAR && a_mode != YASCII_MERGE) {
+      DEBUG_YASCII   yLOG_note    ("illegal mode (CLEAR or MERGE only)");
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   /*---(lines)--------------------------*/
+   rc = yascii__heaviness (a_heavy, &x_left, &x_topp, &x_righ, &x_bott);
+   DEBUG_YASCII   yLOG_value   ("heavy"     , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_complex ("lines"     , "%c  %c  %c  %c", x_left, x_topp, x_righ, x_bott);
+   /*---(top)----------------------------*/
+   yASCII_single (x        , y, 'ƒ');
+   for (i = x + 1; i < x + w - 1; ++i) {
+      yASCII_single (i, y, x_topp);
+      c = yASCII_get (i, y);
+      if (a_mode == YASCII_CLEAR && c == 'Š') yASCII_print  (i, y, "ˆ", YASCII_CLEAR);
+   }
+   yASCII_single (x + w - 1, y, '‚');
+   /*---(middle)-------------------------*/
+   sprintf (x_line, "%*.*s", w - 2, w - 2, YSTR_EMPTY);
+   for (i = 1; i < t - 1; ++i) {
+      /*---(left)-----------*/
+      yASCII_single (x, y + i, x_left);
+      c = yASCII_get (x, y + i);
+      if (a_mode == YASCII_CLEAR && c == 'Š') yASCII_print  (x, y + i, "†", YASCII_CLEAR);
+      /*---(center)---------*/
+      if (a_mode == YASCII_CLEAR)             yASCII_print  (x + 1, y + i, x_line, YASCII_CLEAR);
+      /*---(right)----------*/
+      yASCII_single (x + w - 1, y + i, x_righ);
+      c = yASCII_get (x + w - 1, y + i);
+      if (a_mode == YASCII_CLEAR && c == 'Š') yASCII_print  (x + w - 1, y + i, "‡", YASCII_CLEAR);
+      /*---(done)-----------*/
+   }
+   /*---(bottom)-------------------------*/
+   yASCII_single (x        , y + t - 1, '„');
+   for (i = x + 1; i < x + w - 1; ++i) {
+      yASCII_single (i, y + t - 1, x_bott);
+      c = yASCII_get (i, y + t - 1);
+      if (a_mode == YASCII_CLEAR && c == 'Š') yASCII_print  (i, y + t - 1, "‰", YASCII_CLEAR);
+   }
+   yASCII_single (x + w - 1, y + t - 1, '…');
+   /*---(complete)-----------------------*/
+   DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+   return 0;
+}
+
+char
 yASCII_box_full         (char a_heavy, short x, short y, short w, short t, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc)
 {
    /*---(locals)-----------+-----+-----+-*/
@@ -669,36 +741,8 @@ yASCII_box_full         (char a_heavy, short x, short y, short w, short t, char 
    DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
    DEBUG_YASCII   yLOG_complex ("a_args"    , "%3dx, %3dy, %3dw, %3dt", x, y, w, t);
    /*---(lines)--------------------------*/
-   rc = yascii__heaviness (a_heavy, &x_left, &x_topp, &x_righ, &x_bott);
-   DEBUG_YASCII   yLOG_value   ("heavy"     , rc);
-   --rce;  if (rc < 0) {
-      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
-      return rce;
-   }
-   DEBUG_YASCII   yLOG_complex ("lines"     , "%c  %c  %c  %c", x_left, x_topp, x_righ, x_bott);
-   /*---(top)----------------------------*/
-   yASCII_single (x        , y, 'ƒ');
-   for (i = x + 1; i < x + w - 1; ++i) {
-      yASCII_single (i, y, x_topp);
-      if (yASCII_get (i, y) == 'Š')  yASCII_print  (i, y, "ˆ", YASCII_CLEAR);
-   }
-   yASCII_single (x + w - 1, y, '‚');
-   /*---(middle)-------------------------*/
-   sprintf (x_line, "%*.*s", w - 2, w - 2, YSTR_EMPTY);
-   for (i = 1; i < t - 1; ++i) {
-      yASCII_single (x        , y + i, x_left);
-      if (yASCII_get (x, y + i) == 'Š')  yASCII_print  (x, y + i, "†", YASCII_CLEAR);
-      yASCII_print  (x + 1    , y + i, x_line, YASCII_CLEAR);
-      yASCII_single (x + w - 1, y + i, x_righ);
-      if (yASCII_get (x + w - 1, y + i) == 'Š')  yASCII_print  (x + w - 1, y + i, "‡", YASCII_CLEAR);
-   }
-   /*---(bottom)-------------------------*/
-   yASCII_single (x        , y + t - 1, '„');
-   for (i = x + 1; i < x + w - 1; ++i) {
-      yASCII_single (i, y + t - 1, x_bott);
-      if (yASCII_get (i, y + t - 1) == 'Š')  yASCII_print  (i, y + t - 1, "‰", YASCII_CLEAR);
-   }
-   yASCII_single (x + w - 1, y + t - 1, '…');
+   rc = yascii__outline (a_heavy, x, y, w, t, YASCII_CLEAR);
+   DEBUG_YASCII   yLOG_value   ("outline"   , rc);
    /*---(title)--------------------------*/
    if (myASCII.d_names == 'y') {
       ystrlcpy (x_line, a_name, w - 1);

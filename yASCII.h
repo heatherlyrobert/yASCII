@@ -36,8 +36,6 @@ typedef  unsigned char        uchar;
 
 #define     YASCII_CLEAR     'c'
 #define     YASCII_MERGE     'm'
-#define     YASCII_JOIN      'j'
-#define     YASCII_LAYER     'l'
 #define     YASCII_FILL      'f'
 
 
