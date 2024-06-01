@@ -63,6 +63,7 @@ typedef  unsigned char        uchar;
 #define     YASCII_INSIDE    'i'
 #define     YASCII_OUTSIDE   'o'
 #define     YASCII_ANCIENT   'a'
+#define     YASCII_DOUBLE    '2'
 
 
 /*··········>·······················>·········································*/
