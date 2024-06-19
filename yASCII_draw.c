@@ -113,6 +113,7 @@ yASCII_new              (int a_horz, int a_vert)
    myASCII.d_box   = YASCII_SOLID;
    myASCII.d_tie   = YASCII_DOTTED;
    myASCII.d_bound = YASCII_SOLID;
+   DEBUG_YASCII   yLOG_complex ("config"    , "%cb, %ct, %cb", ychrvisible (myASCII.d_box), ychrvisible (myASCII.d_tie), ychrvisible (myASCII.d_bound));
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return 0;
@@ -306,7 +307,7 @@ yASCII_grid_new_full    (char a_size, char a_decor, char a_col, char a_row, char
    myASCII.x_max = myASCII.x_wide * a_col - myASCII.x_gap + a_left + a_righ;
    myASCII.y_max = myASCII.y_tall * a_row - myASCII.y_gap + a_topp + a_bott;
    yASCII_new  (myASCII.x_max, myASCII.y_max);
-   yASCII_grid_set_full (a_size, a_decor, a_left, a_topp);
+   return yASCII_grid_set_full (a_size, a_decor, a_left, a_topp);
 }
 
 char
@@ -316,7 +317,7 @@ yASCII_grid_new         (char a_size, char a_decor, char a_col, char a_row)
    myASCII.x_max = myASCII.x_wide * a_col - myASCII.x_gap;
    myASCII.y_max = myASCII.y_tall * a_row - myASCII.y_gap;
    yASCII_new  (myASCII.x_max, myASCII.y_max);
-   yASCII_grid_set_full (a_size, a_decor, 0, 0);
+   return yASCII_grid_set_full (a_size, a_decor, 0, 0);
 }
 
 
@@ -759,7 +760,8 @@ yASCII_box_full         (char a_heavy, short x, short y, short w, short t, char 
    char        x_left, x_topp, x_righ, x_bott;
    /*---(header)-------------------------*/
    DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
-   DEBUG_YASCII   yLOG_complex ("a_args"    , "%3dx, %3dy, %3dw, %3dt", x, y, w, t);
+   DEBUG_YASCII   yLOG_complex ("a_args"    , "%c, %3dx, %3dy, %3dw, %3dt", ychrvisible (a_heavy), x, y, w, t);
+   DEBUG_YASCII   yLOG_complex ("config"    , "%cb, %ct, %cb", ychrvisible (myASCII.d_box), ychrvisible (myASCII.d_tie), ychrvisible (myASCII.d_bound));
    /*---(lines)--------------------------*/
    rc = yascii__outline (a_heavy, x, y, w, t, YASCII_CLEAR);
    DEBUG_YASCII   yLOG_value   ("outline"   , rc);
