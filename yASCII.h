@@ -92,6 +92,7 @@ char        yASCII_new              (int a_horz, int a_vert);
 char        yASCII_clear            (void);
 char        yASCII_free             (void);
 /*---(config)---------------*/
+char        yASCII_grid_new_custom  (char a_size, char a_decor, char a_col, char a_row, char a_left, char a_righ, char a_topp, char a_bott, int a_wide, int a_tall);
 char        yASCII_grid_set_full    (char a_size, char a_decor, short x_off, short y_off);
 char        yASCII_grid_set         (char a_size, char a_decor, char a_col, char a_row);
 char        yASCII_style            (char a_size, char a_decor);

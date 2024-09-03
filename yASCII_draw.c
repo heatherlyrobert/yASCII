@@ -301,6 +301,16 @@ yASCII_grid_set         (char a_size, char a_decor, char a_col, char a_row)
 char yASCII_style (char a_size, char a_decor) { return yASCII_grid_set_full (a_size, a_decor, 0, 0); }
 
 char
+yASCII_grid_new_custom  (char a_size, char a_decor, char a_col, char a_row, char a_left, char a_righ, char a_topp, char a_bott, int a_wide, int a_tall)
+{
+   yASCII_grid_set_full (a_size, a_decor, 0, 0);
+   myASCII.x_max = myASCII.x_wide * a_col - myASCII.x_gap + a_left + a_righ;
+   myASCII.y_max = myASCII.y_tall * a_row - myASCII.y_gap + a_topp + a_bott;
+   yASCII_new  (a_wide, a_tall);
+   return yASCII_grid_set_full (a_size, a_decor, a_left, a_topp);
+}
+
+char
 yASCII_grid_new_full    (char a_size, char a_decor, char a_col, char a_row, char a_left, char a_righ, char a_topp, char a_bott)
 {
    yASCII_grid_set_full (a_size, a_decor, 0, 0);

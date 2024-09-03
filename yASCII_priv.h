@@ -47,8 +47,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.1-, stable for ouroboros"
-#define     P_VERNUM    "3.1c"
-#define     P_VERTXT    "more debugging in draw"
+#define     P_VERNUM    "3.1d"
+#define     P_VERTXT    "added grid_new_custom to support ouroboros headers/footers"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
