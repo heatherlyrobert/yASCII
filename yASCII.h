@@ -66,6 +66,13 @@ typedef  unsigned char        uchar;
 #define     YASCII_DOUBLE    '2'
 
 
+/*---(line arrangement)-----*/
+#define     YASCII_STD       's'
+#define     YASCII_BIG       'b'
+#define     YASCII_TECH      't'
+
+
+
 /*··········>·······················>·········································*/
 char*       yASCII_version          (void);
 char        yASCII_displayer        (void *a_displayer);
@@ -106,9 +113,9 @@ char        yASCII_single           (int x, int y, char a_new);
 char        yASCII_print            (int x, int y, char a_text [LEN_RECD], char a_mode);
 char        yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD], char a_mode);
 /*---(boxes)----------------*/
-char        yASCII_box_full         (char a_heavy, short x, short y, short w, short t, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
-char        yASCII_box_grid         (char a_col, char a_row, char a_name [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
-char        yASCII_box_simple       (char a_col, char a_row, char a_name [LEN_TITLE]);
+char        yASCII_box_full         (char a_heavy, char a_arrange, short x, short y, short w, short t, char a_title [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
+char        yASCII_box_grid         (char a_col, char a_row, char a_title [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
+char        yASCII_box_simple       (char a_col, char a_row, char a_title [LEN_TITLE]);
 char        yASCII_node             (short x, short y, char a);
 char        yASCII_node_grid        (char a_col, char a_row, char a);
 /*---(connect)--------------*/
