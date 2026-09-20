@@ -2,6 +2,39 @@
 #ifndef yASCII
 #define yASCII yes
 
+
+
+/*===[[ GNU GENERAL PUBLIC LICENSE (GPL) ]]===================================*/
+/*´´·········1·········2·········3·········4·········5·········6·········7·········8  */
+
+#define  P_COPYRIGHT   \
+   "copyright (c) 2020 robert.s.heatherly at balsashrike at gmail dot com"
+
+#define  P_LICENSE     \
+   "the only place you could have gotten this code is my github, my website,¦"   \
+   "or illegal sharing. given that, you should be aware that this is GPL licensed."
+
+#define  P_COPYLEFT    \
+   "the GPL COPYLEFT REQUIREMENT means any modifications or derivative works¦"   \
+   "must be released under the same GPL license, i.e, must be free and open."
+
+#define  P_INCLUDE     \
+   "the GPL DOCUMENTATION REQUIREMENT means that you must include the original¦" \
+   "copyright notice and the full licence text with any resulting anything."
+
+#define  P_AS_IS       \
+   "the GPL NO WARRANTY CLAUSE means the software is provided without any¦"      \
+   "warranty and the author cannot be held liable for damages."
+
+#define  P_THEFT    \
+   "if you knowingly violate the spirit of these ideas, i suspect you might¦"    \
+   "find any number of freedom-minded hackers may take it quite personally ;)"
+
+/*´´·········1·········2·········3·········4·········5·········6·········7·········8  */
+/*===[[ GNU GENERAL PUBLIC LICENSE (GPL) ]]===================================*/
+
+
+
 #include   <ySTR_solo.h>
 
 typedef  unsigned char        uchar;
@@ -56,7 +89,7 @@ typedef  unsigned char        uchar;
 
 
 /*---(line weights)---------*/
-#define     YASCII_SOLID     's'
+#define     YASCII_SOLID     '-'
 #define     YASCII_DOTTED    'd'
 #define     YASCII_LIGHT     'l'
 #define     YASCII_WAVY      'w'
@@ -67,10 +100,28 @@ typedef  unsigned char        uchar;
 
 
 /*---(line arrangement)-----*/
+#define     YASCII_BASE      '-'
 #define     YASCII_STD       's'
 #define     YASCII_BIG       'b'
 #define     YASCII_TECH      't'
 
+
+#define     YASCII_VTOP   't'
+#define     YASCII_VUPR   'k'
+#define     YASCII_VMID   'm'
+#define     YASCII_VLOW   'j'
+#define     YASCII_VBOT   'b'
+
+#define     YASCII_HSTR   's'
+#define     YASCII_HLEF   'h'
+#define     YASCII_HCEN   'c'
+#define     YASCII_HRIG   'l'
+#define     YASCII_HEND   'e'
+
+#define     YASCII_BOUND  'r'
+#define     YASCII_BBOUND 'b'
+#define     YASCII_FRAME  'f'
+#define     YASCII_BFRAME 'F'
 
 
 /*··········>·······················>·········································*/
@@ -118,6 +169,9 @@ char        yASCII_box_grid         (char a_col, char a_row, char a_title [LEN_T
 char        yASCII_box_simple       (char a_col, char a_row, char a_title [LEN_TITLE]);
 char        yASCII_node             (short x, short y, char a);
 char        yASCII_node_grid        (char a_col, char a_row, char a);
+/*---(reporting)------------*/
+char        yascii_box_find         (char a_title [LEN_TITLE]);
+char*       yascii_box_entry        (char a_dir);
 /*---(connect)--------------*/
 char        yASCII_tie_heavy        (char a_heavy);
 char        yASCII_tie_full         (char a_heavy, short bx, short by, short ex, short ey, char a_tall, char a_blane, char a_vlane, char a_elane);

@@ -2,8 +2,85 @@
 #include    "yASCII.h"
 #include    "yASCII_priv.h"
 
+
+
+/*===[[ GNU GENERAL PUBLIC LICENSE (GPL) ]]===================================*/
+/*¥¥∑∑∑∑∑∑∑∑∑1∑∑∑∑∑∑∑∑∑2∑∑∑∑∑∑∑∑∑3∑∑∑∑∑∑∑∑∑4∑∑∑∑∑∑∑∑∑5∑∑∑∑∑∑∑∑∑6∑∑∑∑∑∑∑∑∑7∑∑∑∑∑∑∑∑∑8  */
+
+#define  P_COPYRIGHT   \
+   "copyright (c) 2020 robert.s.heatherly at balsashrike at gmail dot com"
+
+#define  P_LICENSE     \
+   "the only place you could have gotten this code is my github, my website,¶"   \
+   "or illegal sharing. given that, you should be aware that this is GPL licensed."
+
+#define  P_COPYLEFT    \
+   "the GPL COPYLEFT REQUIREMENT means any modifications or derivative works¶"   \
+   "must be released under the same GPL license, i.e, must be free and open."
+
+#define  P_INCLUDE     \
+   "the GPL DOCUMENTATION REQUIREMENT means that you must include the original¶" \
+   "copyright notice and the full licence text with any resulting anything."
+
+#define  P_AS_IS       \
+   "the GPL NO WARRANTY CLAUSE means the software is provided without any¶"      \
+   "warranty and the author cannot be held liable for damages."
+
+#define  P_THEFT    \
+   "if you knowingly violate the spirit of these ideas, i suspect you might¶"    \
+   "find any number of freedom-minded hackers may take it quite personally ;)"
+
+/*¥¥∑∑∑∑∑∑∑∑∑1∑∑∑∑∑∑∑∑∑2∑∑∑∑∑∑∑∑∑3∑∑∑∑∑∑∑∑∑4∑∑∑∑∑∑∑∑∑5∑∑∑∑∑∑∑∑∑6∑∑∑∑∑∑∑∑∑7∑∑∑∑∑∑∑∑∑8  */
+/*===[[ GNU GENERAL PUBLIC LICENSE (GPL) ]]===================================*/
+
+struct {
+   char        l_name      [LEN_SHORT];
+   char        l_cnt;
+   char        l_beg;
+   char        l_1st;
+   char        l_2nd;
+   char        l_end;
+} S_lines [LEN_DESC] = {
+   /*---(up/north)------------------*/
+   { "NW"  ,  2  , 'à' , 'Ç' , ' ' , 'á' },
+   { "NWN" ,  3  , 'à' , 'Ç' , 'Ñ' , 'â' },
+   { "N"   ,  1  , 'à' , ' ' , ' ' , 'â' },
+   { "NEN" ,  3  , 'à' , 'É' , 'Ö' , 'â' },
+   { "NE"  ,  2  , 'à' , 'É' , ' ' , 'Ü' },
+   { "NES" ,  3  , 'à' , 'É' , 'Ç' , 'à' },
+   { "NWS" ,  3  , 'à' , 'Ç' , 'É' , 'à' },
+   /*---(right/east)----------------*/
+   { "EN"  ,  2  , 'á' , 'Ö' , ' ' , 'â' },
+   { "ENE" ,  3  , 'á' , 'Ö' , 'É' , 'Ü' },
+   { "E"   ,  1  , 'á' , ' ' , ' ' , 'Ü' },
+   { "ESE" ,  3  , 'á' , 'É' , 'Ñ' , 'Ü' },
+   { "ES"  ,  2  , 'á' , 'É' , ' ' , 'à' },
+   { "ESW" ,  3  , 'á' , 'Ç' , 'Ö' , 'á' },
+   { "ENW" ,  3  , 'á' , 'Ö' , 'Ç' , 'á' },
+   /*---(down/south)----------------*/
+   { "SE"  ,  2  , 'â' , 'Ñ' , ' ' , 'Ü' },
+   { "SES" ,  3  , 'â' , 'Ñ' , 'Ç' , 'à' },
+   { "S"   ,  1  , 'â' , ' ' , ' ' , 'à' },
+   { "SWS" ,  3  , 'â' , 'Ö' , 'É' , 'à' },
+   { "SW"  ,  2  , 'â' , 'Ö' , ' ' , 'á' },
+   { "SEN" ,  3  , 'â' , 'Ñ' , 'Ö' , 'â' },
+   { "SWN" ,  3  , 'â' , 'Ö' , 'Ñ' , 'â' },
+   /*---(left/west)-----------------*/
+   { "WS"  ,  2  , 'Ü' , 'É' , ' ' , 'à' },
+   { "WSW" ,  3  , 'Ü' , 'É' , 'Ö' , 'á' },
+   { "W"   ,  1  , 'Ü' , ' ' , ' ' , 'á' },
+   { "WNW" ,  3  , 'Ü' , 'Ñ' , 'Ç' , 'á' },
+   { "WN"  ,  2  , 'Ü' , 'Ñ' , ' ' , 'â' },
+   { "WSE" ,  3  , 'Ü' , 'É' , 'Ñ' , 'Ü' },
+   { "WNE" ,  3  , 'Ü' , 'Ñ' , 'É' , 'Ü' },
+   /*---(DONE)----------------------*/
+   { "end" ,  0  , ' ' , ' ' , ' ' , ' ' },
+};
+
+
+
 /*
- *           BASE          YASCII_STD       YASCII_BIG      YASCII_TECH    
+ *        YASCII_BASE      YASCII_STD       YASCII_BIG      YASCII_TECH    
  *
  *       ÉÄÄÄÄÄÄÄÄÄÄÄÄÇ   ÉÄÄÄÄÄÄÄÄÄÄÄÄÇ   ÉÄÄtestingÄÄÄÇ   ÉÄÄtestingÄÄÄÇ
  *       Å            Å   Ütesting     á   Ü            á   Ü√          ¬á
@@ -11,6 +88,94 @@
  *                         3          2     3          2                 
  */
 
+
+/*
+ *           
+ *             TS TL   TC   TR TE
+ *            MS áÄMLÄÄMCÄÄMRÄÜ ME
+ *             BS BL   BC   BR BE
+ *
+ *
+ */
+
+/*                   NWS      NWN  N  NEN      NES
+ *        WNE   ÉÄÄÄÄÄÄÄÄÄÄÄÇ â    â    â ÉÄÄÄÄÄÄÄÄÄÄÄÇ   ENW
+ *       ÉÄÄÄÜ  Å           Å Å    Å    Å Å           Å  áÄÄÄÇ
+ *       Å      à  áÄÄÄÄÄÄÇ Å Å    Å    Å Å ÉÄÄÄÄÄÄÜ  à      Å
+ *       Å      â   NW    Å Å ÑÄÄÇ Å ÉÄÄÖ Å Å    NE   â      Å
+ *       Å   WN Å         Å Å    Å Å Å    Å Å         Å EN   Å
+ *       Å      Å         Å Å    Å Å Å    Å Å         Å      Å
+ *       Å      Å     ÉÄÄÄàÄàÄÄÄÄàÄàÄàÄÄÄÄàÄàÄÄÄÇ     Å      Å
+ *       Å      ÑÄÄÄÄÄÜœ  œ œ    œ œ œ    œ œ  œáÄÄÄÄÄÖ      Å
+ *       ÑÄÄÄÄÄÄÄÄÄÄÄÄÜœ                       œáÄÄÄÄÄÄÄÄÄÄÄÄÖ 
+ *          áÄÄÄÄÇ    Å                         Å    ÉÄÄÄÄÜ 
+ *       WNW     Å    Å                         Å    Å     ENE
+ *               ÑÄÄÄÄÜœ     twenty-eight      œáÄÄÄÄÖ
+ *        W áÄÄÄÄÄÄÄÄÄÜœ                       œáÄÄÄÄÄÄÄÄÄÜ E
+ *               ÉÄÄÄÄÜœ      connectors       œáÄÄÄÄÇ
+ *       WSW     Å    Å                         Å    Å     ESE
+ *          áÄÄÄÄÖ    Å                         Å    ÑÄÄÄÄÜ 
+ *       ÉÄÄÄÄÄÄÄÄÄÄÄÄÜœ                        áÄÄÄÄÄÄÄÄÄÄÄÄÇ
+ *       Å      ÉÄÄÄÄÄÜœ  œ œ    œ œ œ    œ œ  œáÄÄÄÄÄÇ      Å
+ *       Å      Å     ÑÄÄÄâÄâÄÄÄÄâÄâÄâÄÄÄÄâÄâÄÄÄÖ     Å      Å
+ *       Å      Å         Å Å    Å Å Å    Å Å         Å      Å
+ *       Å   SE Å         Å Å    Å Å Å    Å Å         Å ES   Å
+ *       Å      à   SW    Å Å ÉÄÄÖ Å ÑÄÄÇ Å Å    SE   à      Å
+ *       Å      â  áÄÄÄÄÄÄÖ Å Å    Å    Å Å ÑÄÄÄÄÄÄÜ  â      Å
+ *       ÑÄÄÄÜ  Å           Å Å    Å    Å Å           Å  áÄÄÄÖ
+ *        WSE   ÑÄÄÄÄÄÄÄÄÄÄÄÖ à    à    à ÑÄÄÄÄÄÄÄÄÄÄÄÖ   ESW
+ *                   SWN      SWS  S  SES      SEN
+ */
+
+/*                        NNW   NN-   NNE
+ *                          œ    œ    œ 
+ *              NW-         Å    Å    Å         NE-
+ *                 œÄÄÄÄÄÄÇ Å    Å    Å ÉÄÄÄÄÄÄœ
+ *          WN- œ         Å ÑÄÄÇ Å ÉÄÄÖ Å         œ EN-
+ *              Å         Å    Å Å Å    Å         Å
+ *              Å         Å    Å Å Å    Å         Å
+ *              Å     ÉÄÄÄàÄÄÄÄàÄàÄàÄÄÄÄàÄÄÄÇ     Å
+ *              ÑÄÄÄÄÄÜ                     áÄÄÄÄÄÖ
+ *      WNW œÄÄÄÄÇ    Å                     Å    ÉÄÄÄÄœ EEN
+ *               Å    Å                     Å    Å
+ *               ÑÄÄÄÄÜ       twenty        áÄÄÄÄÖ
+ *      WW- œÄÄÄÄÄÄÄÄÄÜ                     áÄÄÄÄÄÄÄÄÄœ EE-
+ *               ÉÄÄÄÄÜ     connectors      áÄÄÄÄÇ
+ *               Å    Å                     Å    Å
+ *      WSW œÄÄÄÄÖ    Å                     Å    ÑÄÄÄÄœ EES
+ *              ÉÄÄÄÄÄÜ                     áÄÄÄÄÄÇ
+ *              Å     ÑÄÄÄâÄÄÄÄâÄâÄâÄÄÄÄâÄÄÄÖ     Å
+ *              Å         Å    Å Å Å    Å         Å
+ *              Å         Å    Å Å Å    Å         Å
+ *          ES- œ         Å ÉÄÄÖ Å ÑÄÄÇ Å         œ ES-
+ *                 œÄÄÄÄÄÄÖ Å    Å    Å ÑÄÄÄÄÄÄœ
+ *              SW-         Å    Å    Å         SE-
+ *                          œ    œ    œ 
+ *                        SSW   SS-   SSE
+ */
+/*
+ *    ¥         É≤≤≤≤≤≤≤≤Ç NES                         
+ *              å        å                             
+ *         ÉÄÄÄÄàÄÇ    ÉÄàÄÄÄÄÇ    ÉÄÄÄÄÄÄÇ    ÉÄÄÄÄÄÄÇ
+ *         Å      Å    Å      Å    Å      Å    Å      Å     
+ *         Å      Å    Å      Å    Å      Å    Å      Å
+ *         ÑÄÄÄÄÄÄÖ    ÑÄÄÄÄÄÄÖ    ÑÄÄÄÄâÄÖ    ÑÄâÄÄÄÄÖ
+ *                                      å        å
+ *                                  SEN Ñ≤≤≤≤≤≤≤≤Ö
+ *
+ *
+ *    ¥    ÉÄÄÄÄÄÄÇ          ÉÄÄÄÄÄÄÇ   
+ *         Å      Å ESW      Å      Å   
+ *         Å      á≤≤Ç    É≤≤Ü      Å
+ *         ÑÄÄÄÄÄÄÖ  å    å  ÑÄÄÄÄÄÄÖ
+ *                   å    å          
+ *         ÉÄÄÄÄÄÄÇ  å    å  ÉÄÄÄÄÄÄÇ
+ *         Å      á≤≤Ö    Ñ≤≤Ü      Å
+ *         Å      Å     WSE  Å      Å   
+ *         ÑÄÄÄÄÄÄÖ          ÑÄÄÄÄÄÄÖ   
+ *
+ *
+ */
 
 static   char  *s_image = NULL;
 
@@ -61,6 +226,18 @@ struct {
    {  YASCII_HUGE     , 29, 22,  7,  8,  5,  3, 'y', -4,  4, -6,  3 },
    {  '\0'            ,  0,  0,  0,  0,  0,  0,  0 ,  0,  0,  0,  0 },
 };
+
+/*  ∑∑-  ¥∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑  -  -  ∑∑- ∑∑- ∑∑- ∑∑-  ¥∑∑∑∑  -  ∑- ∑-  œ */
+
+struct {
+   char        b_heavy, b_arrange;
+   char        b_title     [LEN_TITLE];
+   uchar       b_x, b_y, b_w, b_t;
+   char        b_note      [LEN_SHORT];
+   char        b_block, b_npred, b_nsucc;
+} static S_boxes [LEN_HUND];
+static char S_nbox   = 0;
+static char S_cbox   = 0;
 
 
 
@@ -122,6 +299,8 @@ yASCII_new              (int a_horz, int a_vert)
    myASCII.d_tie   = YASCII_DOTTED;
    myASCII.d_bound = YASCII_SOLID;
    DEBUG_YASCII   yLOG_complex ("config"    , "%cb, %ct, %cb", ychrvisible (myASCII.d_box), ychrvisible (myASCII.d_tie), ychrvisible (myASCII.d_bound));
+   /*---(clear boxes)--------------------*/
+   yascii_box__clear ();
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return 0;
@@ -689,6 +868,117 @@ yASCII_connector        (short bx, short by, char a_dir, short ex, short ey, cha
 
 char yASCII_uconnect  (short bx, short by, char a_dir, short ex, short ey) { return yASCII_connector (bx, by, a_dir, ex, ey, '≤', NULL, 0, 0); }
 
+char
+yascii__line            (char a_dir, char a_beg, short a_bx, short a_by, char a_line, short a_ex, short a_ey, char a_end)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   int         i           =    0;
+   /*---(quick-out)----------------------*/
+   if (a_dir == '-')  return 0;
+   /*---(defense)------------------------*/
+   --rce;  if (a_dir  == 0 || strchr ("EWSN"          , a_dir) == NULL)  return rce;
+   --rce;  if (a_beg  == 0 || strchr ("âàáÜÉÇÑÖœ¥≥†∑ ", a_beg) == NULL)  return rce;
+   --rce;  if (a_line == 0)                                              return rce;
+   --rce;  if (a_end  == 0 || strchr ("âàáÜÉÇÑÖœ¥≥†∑ ", a_end) == NULL)  return rce;
+   /*---(begin)--------------------------*/
+   if (a_beg != ' ')  yASCII_single (a_bx, a_by, a_beg);
+   /*---(line)---------------------------*/
+   switch (a_dir) {
+   case 'E' :  for (i = a_bx + 1; i < a_ex; ++i)   yASCII_single ( i, a_by, a_line);    break;
+   case 'W' :  for (i = a_bx - 1; i > a_ex; --i)   yASCII_single ( i, a_by, a_line);    break;
+   case 'S' :  for (i = a_by + 1; i < a_ey; ++i)   yASCII_single (a_bx,  i, a_line);    break;
+   case 'N' :  for (i = a_by - 1; i > a_ey; --i)   yASCII_single (a_bx,  i, a_line);    break;
+   }
+   /*---(end)----------------------------*/
+   if (a_end != ' ')  yASCII_single (a_ex, a_ey, a_end);
+   /*---(complete)-----------------------*/
+   return 1;
+}
+
+char
+yascii__label           (short a_bx, short a_by, short a_ex, short a_ey, char a_align [LEN_SHORT], char a_label [LEN_LABEL])
+{
+   /*---(design notes)-------------------*/
+   /* 
+    *                                           TL C TR
+    *                                              â
+    *                                           UL U UR
+    *                                              C  
+    *             US UL   UC   UR UE               Å
+    *            MS áÄMLÄÄMCÄÄMRÄÜ ME           ML M MR
+    *             DS DL   DC   DR DE               Å
+    *                                              M
+    *                                           DL C DR
+    *                                              à
+    *                                           BL B BR
+    */
+   /*> short       x_min, x_max, x_len, x_off;                                        <* 
+    *> short       y_min, y_max, y_len, y_off;                                        <*/
+}
+
+char
+yascii__path            (char a_path [LEN_SHORT])
+{
+}
+
+char
+yASCII_line             (char a_path [LEN_SHORT], char a_heavy, char a_bef, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_aft, char a_seg, char a_align [LEN_SHORT], char a_label [LEN_LABEL])
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   char        rc          =  -10;
+   char        x_dir       =  '-';
+   char        l           =    0;
+   char        x_vert, x_horz;
+   int         i           =    0;
+   char        n           =   -1;
+   char        x_beg, x_1st, x_2nd, x_end;
+   /*---(defense)------------------------*/
+   --rce;  if (a_path == NULL || a_path [0] == '\0')                     return rce;
+   --rce;  if (a_bef  == 0 || strchr ("+-œ¥≥†∑ "      , a_bef) == NULL)  return rce;
+   --rce;  if (a_aft  == 0 || strchr ("+-œ¥≥†∑ "      , a_bef) == NULL)  return rce;
+   /*---(before)-------------------------*/
+   /*> switch (x_dir) {                                                               <* 
+    *> case 'E' :  yASCII_single (a_bx - 1, a_by    , a_bef);    break;               <* 
+    *> case 'W' :  yASCII_single (a_bx + 1, a_by    , a_bef);    break;               <* 
+    *> case 'S' :  yASCII_single (a_bx    , a_by - 1, a_bef);    break;               <* 
+    *> case 'N' :  yASCII_single (a_bx    , a_by + 1, a_bef);    break;               <* 
+    *> }                                                                              <*/
+   /*---(find pattern)-------------------*/
+   rc = yascii__heaviness (a_heavy, &x_vert, &x_horz, NULL, NULL);
+   l = strlen (a_path);
+   for (i = 0; i < LEN_DESC; ++i) {
+      if (strcmp (S_lines [i].l_name, "end")  == 0)  break;
+      if (strcmp (S_lines [i].l_name, a_path) != 0)  continue;
+      n = i;
+   }
+   --rce;  if (n < 0)  return rce;
+   x_beg = S_lines [n].l_beg;
+   x_1st = S_lines [n].l_1st;
+   x_2nd = S_lines [n].l_2nd;
+   x_end = S_lines [n].l_end;
+   /*---(handle straights)---------------*/
+   if (l == 1) {
+      switch (a_path [0]) {
+      case 'N' : case 'S' :
+         yascii__line (a_path [0], x_beg, a_bx, a_by, x_vert, a_ex, a_ey, x_end);
+         break;
+      case 'E' : case 'W' :
+         yascii__line (a_path [0], x_beg, a_bx, a_by, x_horz, a_ex, a_ey, x_end);
+         break;
+      }
+   }
+   /*---(after)--------------------------*/
+   /*> switch (x_dir) {                                                               <* 
+    *> case 'E' :  yASCII_single (a_bx + 1, a_by    , a_aft);    break;               <* 
+    *> case 'W' :  yASCII_single (a_bx - 1, a_by    , a_aft);    break;               <* 
+    *> case 'S' :  yASCII_single (a_bx    , a_by + 1, a_aft);    break;               <* 
+    *> case 'N' :  yASCII_single (a_bx    , a_by - 1, a_aft);    break;               <* 
+    *> }                                                                              <*/
+   /*---(complete)-----------------------*/
+   return 1;
+}
 
 
 
@@ -772,79 +1062,130 @@ yASCII_box_full         (char a_heavy, char a_arrange, short x, short y, short w
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
    char        rc          =    0;
-   short       i           =    0;
+   char        x_title     [LEN_TITLE] = "";
+   short       n           =    0;
    char        x_line      [LEN_HUND]  = "";
    short       l           =    0;
-   char        x_left, x_topp, x_righ, x_bott;
    /*---(header)-------------------------*/
    DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
    DEBUG_YASCII   yLOG_complex ("a_args"    , "%c, %c, %3dx, %3dy, %3dw, %3dt", ychrvisible (a_heavy), ychrvisible (a_arrange), x, y, w, t);
    DEBUG_YASCII   yLOG_complex ("config"    , "%cb, %ct, %cb", ychrvisible (myASCII.d_box), ychrvisible (myASCII.d_tie), ychrvisible (myASCII.d_bound));
+   /*---(defenses)-----------------------*/
+   if (a_arrange == 0 || strchr ("-sbt", a_arrange) == NULL) {
+      a_arrange = YASCII_BASE;
+      DEBUG_YASCII   yLOG_char    ("a_arrange" , a_arrange);
+   }
+   DEBUG_YASCII   yLOG_value   ("S_nbox"    , S_nbox);
+   --rce;  if (S_nbox >= LEN_HUND) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_point   ("a_title"   , a_title);
+   --rce;  if (a_title == NULL) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   if (strcmp (a_title, "") == 0)  sprintf (x_title, "∑%2d", S_nbox);
+   else                            strlcpy (x_title, a_title, LEN_TITLE);
+   DEBUG_YASCII   yLOG_info    ("x_title"   , x_title);
+   n = yascii_box_find (x_title);
+   DEBUG_YASCII   yLOG_value   ("dup?"      , n);
+   --rce;  if (n >= 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_point   ("a_note"    , a_note);
+   --rce;  if (a_note  == NULL) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_info    ("a_note"    , a_note);
    /*---(lines)--------------------------*/
    rc = yascii__outline (a_heavy, x, y, w, t, YASCII_CLEAR);
    DEBUG_YASCII   yLOG_value   ("outline"   , rc);
    /*---(title)--------------------------*/
-   if (myASCII.d_titles == 'y') {
-      ystrlcpy (x_line, a_title, w - 1);
-      l = strlen (x_line);
-      switch (a_arrange) {
-      case YASCII_BIG  : case YASCII_TECH :
-         yASCII_print (x + (w - l) / 2, y    , x_line, YASCII_CLEAR);
-         break;
-      case YASCII_STD  : default          :
-         yASCII_print (x + 1          , y + 1, x_line, YASCII_CLEAR);
-         break;
+   if (a_arrange != YASCII_BASE) {
+      if (myASCII.d_titles == 'y' && x_title [0] != '∑') {
+         ystrlcpy (x_line, x_title, w - 1);
+         l = strlen (x_line);
+         switch (a_arrange) {
+         case YASCII_BIG  : case YASCII_TECH :
+            yASCII_print (x + (w - l) / 2, y    , x_line, YASCII_CLEAR);
+            break;
+         case YASCII_STD  : default          :
+            yASCII_print (x + 1          , y + 1, x_line, YASCII_CLEAR);
+            break;
+         }
       }
    }
    /*---(note)---------------------------*/
-   if (myASCII.d_notes == 'y' && myASCII.d_size != 'u') {
-      if (strcmp (a_note, "")  != 0) {
-         sprintf (x_line, "(%.5s)", a_note);
-         l = strlen (x_line);
-         yASCII_print (x + w - l - 1, y + t - 1, x_line, YASCII_CLEAR);
+   if (a_arrange != YASCII_BASE) {
+      if (myASCII.d_notes == 'y' && myASCII.d_size != 'u') {
+         if (strcmp (a_note, "")  != 0) {
+            sprintf (x_line, "(%.5s)", a_note);
+            l = strlen (x_line);
+            yASCII_print (x + w - l - 1, y + t - 1, x_line, YASCII_CLEAR);
+         }
       }
    }
    /*---(block)--------------------------*/
-   if (myASCII.d_blocks == 'y') {
-      if (a_block != '-') {
-         sprintf (x_line, "<%c>", a_block);
-         yASCII_print (x + 1, y + t - 1, x_line, YASCII_CLEAR);
+   if (a_arrange != YASCII_BASE) {
+      if (myASCII.d_blocks == 'y') {
+         if (a_block != '-') {
+            sprintf (x_line, "<%c>", a_block);
+            yASCII_print (x + 1, y + t - 1, x_line, YASCII_CLEAR);
+         }
       }
    }
    /*---(stats)--------------------------*/
-   if (myASCII.d_counts == 'y' && myASCII.d_size != 'u') {
-      if (a_arrange == YASCII_TECH) {
-         switch (a_npred) {
-         case 0  : strcpy (x_line, "" );  break;
-         case 1  : strcpy (x_line, "¡");  break;
-         case 2  : strcpy (x_line, "¬");  break;
-         case 3  : strcpy (x_line, "√");  break;
-         case 4  : strcpy (x_line, "ƒ");  break;
-         default : strcpy (x_line, "≈");  break;
-         }
-         yASCII_print (x + 1, y + t - 2, x_line, YASCII_CLEAR);
-         switch (a_nsucc) {
-         case 0  : strcpy (x_line, "" );  break;
-         case 1  : strcpy (x_line, "¡");  break;
-         case 2  : strcpy (x_line, "¬");  break;
-         case 3  : strcpy (x_line, "√");  break;
-         case 4  : strcpy (x_line, "ƒ");  break;
-         default : strcpy (x_line, "≈");  break;
-         }
-         yASCII_print (x + w - 2, y + t - 2, x_line, YASCII_CLEAR);
-      } else {
-         if (a_npred > 0) {
-            if (a_npred == 1)  strcpy  (x_line, "†");
-            else               sprintf (x_line, "%-3d", a_npred);
-            yASCII_print (x + 1, y + t, x_line, YASCII_CLEAR);
-         }
-         if (a_nsucc > 0) {
-            if (a_nsucc == 1)  strcpy  (x_line, "  †");
-            else               sprintf (x_line, "%3d" , a_nsucc);
-            yASCII_print (x + w - 4, y + t, x_line, YASCII_CLEAR);
+   if (a_arrange != YASCII_BASE) {
+      if (myASCII.d_counts == 'y' && myASCII.d_size != 'u') {
+         if (a_arrange == YASCII_TECH) {
+            switch (a_npred) {
+            case 0  : strcpy (x_line, "" );  break;
+            case 1  : strcpy (x_line, "¡");  break;
+            case 2  : strcpy (x_line, "¬");  break;
+            case 3  : strcpy (x_line, "√");  break;
+            case 4  : strcpy (x_line, "ƒ");  break;
+            default : strcpy (x_line, "≈");  break;
+            }
+            yASCII_print (x + 1, y + t - 2, x_line, YASCII_CLEAR);
+            switch (a_nsucc) {
+            case 0  : strcpy (x_line, "" );  break;
+            case 1  : strcpy (x_line, "¡");  break;
+            case 2  : strcpy (x_line, "¬");  break;
+            case 3  : strcpy (x_line, "√");  break;
+            case 4  : strcpy (x_line, "ƒ");  break;
+            default : strcpy (x_line, "≈");  break;
+            }
+            yASCII_print (x + w - 2, y + t - 2, x_line, YASCII_CLEAR);
+         } else {
+            if (a_npred > 0) {
+               if (a_npred == 1)  strcpy  (x_line, "†");
+               else               sprintf (x_line, "%-3d", a_npred);
+               yASCII_print (x + 1, y + t, x_line, YASCII_CLEAR);
+            }
+            if (a_nsucc > 0) {
+               if (a_nsucc == 1)  strcpy  (x_line, "  †");
+               else               sprintf (x_line, "%3d" , a_nsucc);
+               yASCII_print (x + w - 4, y + t, x_line, YASCII_CLEAR);
+            }
          }
       }
    }
+   /*---(add box)------------------------*/
+   S_boxes [S_nbox].b_heavy   = a_heavy;
+   S_boxes [S_nbox].b_arrange = a_arrange;
+   strncpy (S_boxes [S_nbox].b_title, x_title, LEN_TITLE);
+   S_boxes [S_nbox].b_x = x;
+   S_boxes [S_nbox].b_y = y;
+   S_boxes [S_nbox].b_w = w;
+   S_boxes [S_nbox].b_t = t;
+   strncpy (S_boxes [S_nbox].b_note , a_note , LEN_SHORT);
+   S_boxes [S_nbox].b_block   = a_block;
+   S_boxes [S_nbox].b_npred   = a_npred;
+   S_boxes [S_nbox].b_nsucc   = a_nsucc;
+   ++S_nbox;
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return 0;
@@ -896,6 +1237,109 @@ yASCII_node_grid         (char a_col, char a_row, char a)
    y = myASCII.y_topp + (a_row * myASCII.y_tall);
    /*---(complete)-----------------------*/
    return yASCII_node (x, y, a);
+}
+
+
+
+/*====================------------------------------------====================*/
+/*===----                       box data keeping                       ----===*/
+/*====================------------------------------------====================*/
+static void  o___DATA____________o () { return; }
+
+char
+yascii_box__clear       (void)
+{
+   int         i           =    0;
+   for (i = 0; i < LEN_HUND; ++i) {
+      S_boxes [i].b_heavy = S_boxes [i].b_arrange = '-';
+      strcpy (S_boxes [i].b_title, "");
+      S_boxes [i].b_x = S_boxes [i].b_y = S_boxes [i].b_w = S_boxes [i].b_t = 0;
+      strcpy (S_boxes [i].b_note , "");
+      S_boxes [i].b_block = '-';
+      S_boxes [i].b_npred = S_boxes [i].b_nsucc = 0;
+   }
+   S_nbox = 0;
+   S_cbox = 0;
+   return 0;
+}
+
+char
+yascii_box_find         (char a_title [LEN_TITLE])
+{
+   char        rce         =  -10;
+   int         i           =    0;
+   --rce;  if (a_title == NULL || a_title [0] == '\0')  return rce;
+   for (i = 0; i < LEN_HUND; ++i) {
+      if (i >= S_nbox)  break;
+      if (strcmp (S_boxes [i].b_title, a_title) != 0)  continue;
+      return i;
+   }
+   return --rce;
+}
+
+char*
+yascii_box_entry        (char a_dir)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   char        rc          =    1;
+   char        x_curr      =    0;
+   char        x_title     [LEN_TITLE] = "";
+   char        x_note      [LEN_SHORT] = "";
+   /*---(header)-------------------------*/
+   DEBUG_YDLST  yLOG_senter  (__FUNCTION__);
+   /*---(quick-out)----------------------*/
+   if (a_dir == 'T') {
+      strcpy (unit_answer, "seq  ---title---------------------  H  A  --x --y --w --t  note  B  pr sc  œ");
+      DEBUG_YDLST   yLOG_sexit   (__FUNCTION__);
+      return unit_answer;
+   }
+   /*---(defaults)-----------------------*/
+   strcpy (unit_answer, "∑∑-  ¥∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑  -  -  ∑∑- ∑∑- ∑∑- ∑∑-  ¥∑∑∑  -  ∑- ∑-  œ");
+   x_curr = S_cbox;
+   /*---(switch)-------------------------*/
+   DEBUG_YDLST  yLOG_schar   (a_dir);
+   --rce;  switch (a_dir) {
+   case YDLST_HEAD : case YDLST_DHEAD :
+      x_curr = 0;
+      break;
+   case YDLST_PREV : case YDLST_DPREV :
+      --x_curr;
+      break;
+   case YDLST_CURR : case YDLST_DCURR :
+      x_curr = x_curr;
+      break;
+   case YDLST_NEXT : case YDLST_DNEXT :
+      ++x_curr;
+      break;
+   case YDLST_TAIL : case YDLST_DTAIL :
+      x_curr = S_nbox - 1;
+      break;
+   default         :
+      DEBUG_YDLST  yLOG_sexitr  (__FUNCTION__, rce);
+      return unit_answer;
+   }
+   DEBUG_YDLST  yLOG_sint    (x_curr);
+   /*---(check end)----------------------*/
+   --rce;  if (x_curr < 0 || x_curr >= S_nbox) {
+      DEBUG_YDLST   yLOG_sexitr  (__FUNCTION__, rce);
+      return unit_answer;
+   }
+   /*---(output)-------------------------*/
+   if (x_curr >= 0 && x_curr < S_nbox) {
+      snprintf (x_title, LEN_TITLE, "%s∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑∑", S_boxes [x_curr].b_title);
+      if (strcmp (S_boxes [x_curr].b_note, "") == 0)  strlcpy  (x_note, "¥∑∑∑∑", LEN_SHORT);
+      else                                            snprintf (x_note, LEN_SHORT, "%s∑∑∑∑", S_boxes [x_curr].b_note);
+      sprintf (unit_answer, "%3d  %-29.29s  %c  %c  %3d %3d %3d %3d  %-4.4s  %c  %2d %2d  œ", x_curr,
+            x_title, S_boxes [x_curr].b_heavy, S_boxes [x_curr].b_arrange,
+            S_boxes [x_curr].b_x, S_boxes [x_curr].b_y, S_boxes [x_curr].b_w, S_boxes [x_curr].b_t,
+            x_note, S_boxes [x_curr].b_block, S_boxes [x_curr].b_npred, S_boxes [x_curr].b_nsucc);
+   }
+   /*---(save-back)----------------------*/
+   S_cbox = x_curr;
+   /*---(complete)-----------------------*/
+   DEBUG_YDLST  yLOG_sexit   (__FUNCTION__);
+   return unit_answer;
 }
 
 
@@ -957,21 +1401,21 @@ yASCII_tie_full         (char a_heavy, short bx, short by, short ex, short ey, c
    DEBUG_YASCII   yLOG_complex ("lines"     , "%c  %c  %c", x_vert, x_horz, x_halt);
    /*---(interpret lanes)----------------*/
    switch (a_blane) {
-   case 't' :  a_blane = 0;                                   break;
-   case 'm' :  a_blane = trunc ((myASCII.y_side - 1) / 2.0);  break;
-   case 'b' :  a_blane = myASCII.y_side - 1;                  break;
+   case YASCII_VTOP :  a_blane = 0;                                   break;
+   case YASCII_VMID :  a_blane = trunc ((myASCII.y_side - 1) / 2.0);  break;
+   case YASCII_VBOT :  a_blane = myASCII.y_side - 1;                  break;
    }
    DEBUG_YASCII   yLOG_value   ("a_blane"   , a_blane);
    switch (a_vlane) {
-   case 'l' :  if (myASCII.x_gap == 3)  a_vlane = 1;  else a_vlane = 2; break;
-   case 'c' :  a_vlane = trunc ((myASCII.x_gap  - 1) / 2.0) + 1;  break;
-   case 'r' :  if (myASCII.x_gap == 3)  a_vlane = 3;  else a_vlane = myASCII.x_gap - 1; break;
+   case YASCII_HLEF :  if (myASCII.x_gap == 3)  a_vlane = 1;  else a_vlane = 2; break;
+   case YASCII_HCEN :  a_vlane = trunc ((myASCII.x_gap  - 1) / 2.0) + 1;  break;
+   case YASCII_HRIG :  if (myASCII.x_gap == 3)  a_vlane = 3;  else a_vlane = myASCII.x_gap - 1; break;
    }
    DEBUG_YASCII   yLOG_value   ("a_vlane"   , a_vlane);
    switch (a_elane) {
-   case 't' :  a_elane = 0;                                   break;
-   case 'm' :  a_elane = trunc ((myASCII.y_side - 1) / 2.0);  break;
-   case 'b' :  a_elane = myASCII.y_side - 1;                  break;
+   case YASCII_VTOP :  a_elane = 0;                                   break;
+   case YASCII_VMID :  a_elane = trunc ((myASCII.y_side - 1) / 2.0);  break;
+   case YASCII_VBOT :  a_elane = myASCII.y_side - 1;                  break;
    }
    DEBUG_YASCII   yLOG_value   ("a_elane"   , a_elane);
    /*---(direction)----------------------*/
@@ -1035,7 +1479,7 @@ yASCII_tie_grid_heavy   (char a_heavy, char a_bcol, char a_brow, char a_ecol, ch
    else                 ex = myASCII.x_left + (a_ecol * myASCII.x_wide);
    ey = myASCII.y_topp + (a_erow * myASCII.y_tall);
    /*---(complete)-----------------------*/
-   return yASCII_tie_full (a_heavy, bx, by, ex, ey, myASCII.y_tall - myASCII.y_gap, 'm', 'c', 'm');
+   return yASCII_tie_full (a_heavy, bx, by, ex, ey, myASCII.y_tall - myASCII.y_gap, YASCII_VMID, YASCII_HCEN, YASCII_VMID);
 }
 
 char yASCII_tie_grid         (char a_bcol, char a_brow, char a_ecol, char a_erow) { return yASCII_tie_grid_heavy (myASCII.d_tie, a_bcol, a_brow, a_ecol, a_erow); }
@@ -1058,6 +1502,353 @@ yASCII_tie_exact_heavy  (char a_heavy, char a_bcol, char a_brow, char a_ecol, ch
 }
 
 char yASCII_tie_exact        (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_blane, char a_vlane, char a_elane) { return yASCII_tie_exact_heavy (myASCII.d_tie, a_bcol, a_brow, a_ecol, a_erow, a_blane, a_vlane, a_elane); }
+
+
+
+/*====================------------------------------------====================*/
+/*===----                          box linking                         ----===*/
+/*====================------------------------------------====================*/
+static void  o___LINK____________o () { return; }
+
+/*> char                                                                                                                                                                <* 
+ *> yASCII_link_full        (char a_heavy, short bx, short by, short ex, short ey, char a_tall, char a_blane, char a_vlane, char a_elane)                               <* 
+ *> {                                                                                                                                                                   <* 
+ *>    /+---(locals)-----------+-----+-----+-+/                                                                                                                         <* 
+ *>    char        rce         =  -10;                                                                                                                                  <* 
+ *>    char        rc          =    0;                                                                                                                                  <* 
+ *>    char        x_dir       =    0;                                                                                                                                  <* 
+ *>    int         i           =    0;                                                                                                                                  <* 
+ *>    int         x_beg, x_vrt, x_end;                                                                                                                                 <* 
+ *>    int         y_bot, y_top;                                                                                                                                        <* 
+ *>    char        x_vert, x_horz, x_halt;                                                                                                                              <* 
+ *>    char        x_cnt       =    0;                                                                                                                                  <* 
+ *>    /+---(enter)--------------------------+/                                                                                                                         <* 
+ *>    DEBUG_YASCII   yLOG_enter   (__FUNCTION__);                                                                                                                      <* 
+ *>    DEBUG_YASCII   yLOG_complex ("a_args"    , "%c  %3dbx, %3dby, %3dex, %3dey, %1dbl, %1dvl, %1del", a_heavy, bx, by, ex, ey, a_tall, a_blane, a_vlane, a_elane);   <* 
+ *>    /+---(lines)--------------------------+/                                                                                                                         <* 
+ *>    rc = yascii__heaviness (a_heavy, &x_vert, &x_horz, NULL, NULL);                                                                                                  <* 
+ *>    --rce;  if (rc < 0) {                                                                                                                                            <* 
+ *>       DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);                                                                                                              <* 
+ *>       return rce;                                                                                                                                                   <* 
+ *>    }                                                                                                                                                                <* 
+ *>    if (x_horz == 'ç')  x_halt = 'Ä';                                                                                                                                <* 
+ *>    else                x_halt = x_horz;                                                                                                                             <* 
+ *>    DEBUG_YASCII   yLOG_complex ("lines"     , "%c  %c  %c", x_vert, x_horz, x_halt);                                                                                <* 
+ *>    /+---(interpret lanes)----------------+/                                                                                                                         <* 
+ *>    switch (a_blane) {                                                                                                                                               <* 
+ *>    case 't' :  a_blane = 0;                                   break;                                                                                                <* 
+ *>    case 'm' :  a_blane = trunc ((myASCII.y_side - 1) / 2.0);  break;                                                                                                <* 
+ *>    case 'b' :  a_blane = myASCII.y_side - 1;                  break;                                                                                                <* 
+ *>    }                                                                                                                                                                <* 
+ *>    DEBUG_YASCII   yLOG_value   ("a_blane"   , a_blane);                                                                                                             <* 
+ *>    switch (a_vlane) {                                                                                                                                               <* 
+ *>    case 'l' :  if (myASCII.x_gap == 3)  a_vlane = 1;  else a_vlane = 2; break;                                                                                      <* 
+ *>    case 'c' :  a_vlane = trunc ((myASCII.x_gap  - 1) / 2.0) + 1;  break;                                                                                            <* 
+ *>    case 'r' :  if (myASCII.x_gap == 3)  a_vlane = 3;  else a_vlane = myASCII.x_gap - 1; break;                                                                      <* 
+ *>    }                                                                                                                                                                <* 
+ *>    DEBUG_YASCII   yLOG_value   ("a_vlane"   , a_vlane);                                                                                                             <* 
+ *>    switch (a_elane) {                                                                                                                                               <* 
+ *>    case 't' :  a_elane = 0;                                   break;                                                                                                <* 
+ *>    case 'm' :  a_elane = trunc ((myASCII.y_side - 1) / 2.0);  break;                                                                                                <* 
+ *>    case 'b' :  a_elane = myASCII.y_side - 1;                  break;                                                                                                <* 
+ *>    }                                                                                                                                                                <* 
+ *>    DEBUG_YASCII   yLOG_value   ("a_elane"   , a_elane);                                                                                                             <* 
+ *>    /+---(direction)----------------------+/                                                                                                                         <* 
+ *>    if      (by + a_blane == ey + a_elane)   x_dir = '÷';                                                                                                            <* 
+ *>    else if (by + a_blane <  ey + a_elane)   x_dir = '’';                                                                                                            <* 
+ *>    else                                     x_dir = '‘';                                                                                                            <* 
+ *>    DEBUG_YASCII   yLOG_char    ("x_dir"     , x_dir);                                                                                                               <* 
+ *>    /+---(start)--------------------------+/                                                                                                                         <* 
+ *>    if      (a_blane == 0)            yASCII_print (bx, by             , "â", YASCII_CLEAR);                                                                         <* 
+ *>    else if (a_blane == a_tall - 1)   yASCII_print (bx, by + a_tall - 1, "à", YASCII_CLEAR);                                                                         <* 
+ *>    else                              yASCII_print (bx, by + a_blane   , "á", YASCII_CLEAR);                                                                         <* 
+ *>    /+---(finish)-------------------------+/                                                                                                                         <* 
+ *>    if      (a_elane == 0)            yASCII_print (ex, ey             , "â", YASCII_CLEAR);                                                                         <* 
+ *>    else if (a_elane == a_tall - 1)   yASCII_print (ex, ey + a_tall - 1, "à", YASCII_CLEAR);                                                                         <* 
+ *>    else                              yASCII_print (ex, ey + a_elane   , "Ü", YASCII_CLEAR);                                                                         <* 
+ *>    /+---(connect)------------------------+/                                                                                                                         <* 
+ *>    switch (x_dir) {                                                                                                                                                 <* 
+ *>    case '÷' :                                                                                                                                                       <* 
+ *>       DEBUG_YASCII   yLOG_note    ("horizontal");                                                                                                                   <* 
+ *>       for (x_cnt = 0, i = bx + 1; i <= ex - 1; ++i)    yASCII_single_dos (x_cnt++, i, by + a_blane, x_horz, x_halt);                                                <* 
+ *>       break;                                                                                                                                                        <* 
+ *>    case '‘' :                                                                                                                                                       <* 
+ *>       DEBUG_YASCII   yLOG_note    ("ascending/upward line");                                                                                                        <* 
+ *>       x_beg  = bx + 1;                                                                                                                                              <* 
+ *>       x_vrt  = ex - (myASCII.x_gap + 1) + a_vlane;                                                                                                                  <* 
+ *>       x_end  = ex - 1;                                                                                                                                              <* 
+ *>       y_bot  = by + a_blane;                                                                                                                                        <* 
+ *>       y_top  = ey + a_elane;                                                                                                                                        <* 
+ *>       DEBUG_YASCII   yLOG_complex ("pos"       , "H %3db, %3dv, %3de  V %3db, %3dt", x_beg, x_vrt, x_end, y_bot, y_top);                                            <* 
+ *>       for (x_cnt = 0, i = x_beg; i < x_vrt; ++i)              yASCII_single_dos (x_cnt++, i, y_bot, x_horz, x_halt);                                                <* 
+*>       yASCII_single (x_vrt, y_bot, 'Ö');                                                                                                                            <* 
+*>       for (i = y_bot - 1; i >= y_top + 1; --i)                yASCII_single (x_vrt, i, x_vert);                                                                     <* 
+*>       yASCII_single (x_vrt, y_top, 'É');                                                                                                                            <* 
+*>       for (x_cnt = 0, i = x_vrt + 1; i <= x_end; ++i)         yASCII_single_dos (x_cnt++, i, y_top, x_horz, x_halt);                                                <* 
+*>       break;                                                                                                                                                        <* 
+*>    case '’' :                                                                                                                                                       <* 
+*>       DEBUG_YASCII   yLOG_note    ("descending/downward line");                                                                                                     <* 
+*>       for (x_cnt = 0, i = bx + 1; i < bx + a_vlane; ++i)      yASCII_single_dos (x_cnt++, i, by + a_blane, x_horz, x_halt);                                         <* 
+*>       yASCII_single (bx + a_vlane, by + a_blane, 'Ç');                                                                                                              <* 
+*>       for (i = by + a_blane + 1; i <= ey + a_elane - 1; ++i)  yASCII_single (bx + a_vlane, i, x_vert);                                                              <* 
+*>       yASCII_single (bx + a_vlane, ey + a_elane, 'Ñ');                                                                                                              <* 
+*>       for (x_cnt = 0, i = bx + a_vlane + 1; i <= ex - 1; ++i) yASCII_single_dos (x_cnt++, i, ey + a_elane, x_horz, x_halt);                                         <* 
+*>       break;                                                                                                                                                        <* 
+*>    }                                                                                                                                                                <* 
+*>    /+---(complete)-----------------------+/                                                                                                                         <* 
+*>    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);                                                                                                                      <* 
+*>    return 0;                                                                                                                                                        <* 
+*> }                                                                                                                                                                   <*/
+
+char
+yascii_link__defense    (short a_bx, short a_by, char a_bbase, short a_vx, short a_ex, short a_ey, char a_ebase)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   /*---(enter)--------------------------*/
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
+   /*---(defense)------------------------*/
+   DEBUG_YASCII   yLOG_value   ("a_bx"      , a_bx);
+   --rce;  if (a_bx < 0 || a_bx >= 1000) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_value   ("a_by"      , a_by);
+   --rce;  if (a_by < 0 || a_by >= 1000) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_char    ("a_bbase"   , a_bbase);
+   --rce;  if (a_bbase == 0 || strchr ("ÇÅÖ", a_bbase) == NULL) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_value   ("a_vx"      , a_vx);
+   --rce;  if (a_vx < 0 || a_vx >= 1000) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_value   ("a_ex"      , a_ex);
+   --rce;  if (a_ex < 0 || a_ex >= 1000) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_value   ("a_ey"      , a_ey);
+   --rce;  if (a_ey < 0 || a_ey >= 1000) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_char    ("a_ebase"   , a_ebase);
+   --rce;  if (a_ebase == 0 || strchr ("ÉÅÑ", a_ebase) == NULL) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   /*---(complete)-----------------------*/
+   DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+   return 1;
+}
+
+char
+yascii_link__ranges     (char a_end, char a_lane, char a_max, char *r_base)
+{
+   /*---(design notes)-------------------*/
+   /*
+    *   lanes are...
+    *      numbers 0-20 (absolute top-bottom or left-right positions)
+    *      t topmost      s start
+    *      k up           h left
+    *      m middle       c center
+    *      j down         l right
+    *      b bottom       e end
+    *
+    */
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   char        n, x_max, x_qtr, x_hlf, x_thr;
+   /*---(default)------------------------*/
+   if (r_base != NULL)  *r_base = 'œ';
+   /*---(defenses)-----------------------*/
+   --rce;  if (a_max  <  1)      return rce;
+   --rce;  if (a_lane <  0)      return rce;
+   /*---(prepare)------------------------*/
+   x_max = a_max - 1;
+   x_qtr = x_max / 4.0;
+   x_hlf = x_max / 2.0;
+   x_thr = x_max - x_qtr;
+   /*---(absolute)-----------------------*/
+   --rce;  if (a_lane < 32) {
+      if (a_lane > x_max)   return rce;
+      n = a_lane;
+   }
+   /*---(relatives)----------------------*/
+   else {
+      --rce;  switch (a_lane) {
+      case YASCII_VTOP : case YASCII_HSTR :  n = 0;       break;
+      case YASCII_VUPR : case YASCII_HLEF :  n = x_qtr;   break;
+      case YASCII_VMID : case YASCII_HCEN :  n = x_hlf;   break;
+      case YASCII_VLOW : case YASCII_HRIG :  n = x_thr;   break;
+      case YASCII_VBOT : case YASCII_HEND :  n = x_max;   break;
+      default  :                             return rce;  break;
+      }
+   }
+   /*---(save-back)----------------------*/
+   --rce;  if (r_base != NULL) {
+      switch (a_end) {
+      case 'b'  : if (n == 0)  *r_base = 'â';  else if (n == x_max)  *r_base = 'à';  else *r_base = 'á';  break;
+      case 'e'  : if (n == 0)  *r_base = 'â';  else if (n == x_max)  *r_base = 'à';  else *r_base = 'Ü';  break;
+      case '-'  : break;
+      default   : return rce;  break;
+      }
+   }
+   /*---(complete)-----------------------*/
+   return n;
+}
+
+char
+yascii_link__detail     (char a_heavy, short a_bx, short a_by, char a_bbase [LEN_SHORT], short a_vx, short a_ex, short a_ey, char a_ebase [LEN_SHORT])
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   char        rc          =    0;
+   char        x_dir       =    0;
+   int         i           =    0;
+   int         x_beg, x_vrt, x_end;
+   int         y_bot, y_top;
+   char        x_vert, x_horz, x_halt;
+   char        x_cnt       =    0;
+   /*---(enter)--------------------------*/
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
+   /*---(defense)------------------------*/
+   rc = yascii_link__defense (a_bx, a_by, a_bbase [0], a_vx, a_ex, a_ey, a_ebase [0]);
+   DEBUG_YASCII   yLOG_value   ("defense"   , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   /*---(lines)--------------------------*/
+   rc = yascii__heaviness (a_heavy, &x_vert, &x_horz, NULL, NULL);
+   DEBUG_YASCII   yLOG_value   ("heavy"     , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   if (x_horz == 'ç')  x_halt = 'Ä';
+   else                x_halt = x_horz;
+   DEBUG_YASCII   yLOG_complex ("lines"     , "%c  %c  %c", x_vert, x_horz, x_halt);
+   /*---(direction)----------------------*/
+   if      (a_by == a_ey)   x_dir = '÷';
+   else if (a_by <  a_ey)   x_dir = '’';
+   else                     x_dir = '‘';
+   DEBUG_YASCII   yLOG_char    ("x_dir"     , x_dir);
+   /*---(display endpionts)--------------*/
+   yASCII_print (a_bx, a_by, a_bbase, YASCII_CLEAR); 
+   yASCII_print (a_ex, a_ey, a_ebase, YASCII_CLEAR); 
+   /*---(horizontal)---------------------*/
+   if (x_dir == '÷') {
+      DEBUG_YASCII   yLOG_note    ("horizontal");
+      for (x_cnt = 0, i = a_bx + 1; i < a_ex; ++i)   yASCII_single_dos (x_cnt++, i, a_by, x_horz, x_halt);
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 1;
+   }
+   /*---(ascending/upward)---------------*/
+   if (x_dir == '‘') {
+      DEBUG_YASCII   yLOG_note    ("ascending/upward line");
+      for (x_cnt = 0, i = a_bx + 1; i < a_vx; ++i)   yASCII_single_dos (x_cnt++, i, a_by, x_horz, x_halt);
+      yASCII_single (a_vx, a_by, 'Ö');
+      for (i = a_by - 1; i >= a_ey + 1; --i)         yASCII_single (a_vx, i, a_vx);
+      yASCII_single (a_vx, a_ey, 'É');
+      for (x_cnt = 0, i = a_vx + 1; i < a_ex; ++i)   yASCII_single_dos (x_cnt++, i, a_ey, x_horz, x_halt);
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 2;
+   }
+   /*---(decending/downward)-------------*/
+   if (x_dir == '’') {
+      DEBUG_YASCII   yLOG_note    ("descending/downward line");
+      for (x_cnt = 0, i = a_bx + 1; i < a_vx; ++i)   yASCII_single_dos (x_cnt++, i, a_by, x_horz, x_halt);
+      yASCII_single (a_vx, a_by, 'Ç');
+      for (i = a_by + 1; i <= a_ey - 1; ++i)         yASCII_single (a_bx, i, a_vx);
+      yASCII_single (a_vx, a_ey, 'Ñ');
+      for (x_cnt = 0, i = a_vx + 1; i < a_ex; ++i)   yASCII_single_dos (x_cnt++, i, a_ey, x_horz, x_halt);
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 3;
+   }
+   /*---(complete)-----------------------*/
+   DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, --rce);
+   return rce;
+}
+
+char
+yASCII_link_full        (char a_pred [LEN_TITLE], char a_succ [LEN_TITLE], char a_heavy, char a_hgap, char a_blane, char a_vlane, char a_elane)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   char        rc          =    0;
+   char        x_pred      =    0;
+   char        x_succ      =    0;
+   short       bx, ex;
+   short       by, ey;
+   short       bt, et;
+   short       bo, vo, eo;
+   char        x_bbase     [LEN_SHORT] = "?";
+   char        x_ebase     [LEN_SHORT] = "?";
+   /*---(enter)--------------------------*/
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
+   /*---(defense)------------------------*/
+   x_pred = yascii_box_find (a_pred);
+   DEBUG_YASCII   yLOG_value   ("x_pred"    , x_pred);
+   --rce;  if (x_pred < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   x_succ = yascii_box_find (a_succ);
+   DEBUG_YASCII   yLOG_value   ("x_succ"    , x_succ);
+   --rce;  if (x_succ < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_complex ("a_args"    , "%-20.20s to %-20.20s, %c, %1dbl, %1dvl, %1del", a_pred, a_succ, a_heavy, a_blane, a_vlane, a_elane);
+   /*---(specifics)----------------------*/
+   bx = S_boxes [x_pred].b_x + S_boxes [x_pred].b_w - 1;
+   ex = S_boxes [x_succ].b_x;
+   by = S_boxes [x_pred].b_y;
+   ey = S_boxes [x_succ].b_y;
+   bt = S_boxes [x_pred].b_t;
+   et = S_boxes [x_succ].b_t;
+   DEBUG_YASCII   yLOG_complex ("refs"      , "beg %3dx, %3dy, %3dt to end %3dx, %3dy, %3dt", bx, by, bt, ex, ey, et);
+   /*---(offsets)------------------------*/
+   bo  = yascii_link__ranges ('b', a_blane, bt    , x_bbase);
+   DEBUG_YASCII   yLOG_value   ("bo"        , bo);
+   --rce;  if (bo < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   bo += by;
+   vo  = yascii_link__ranges ('-', a_vlane, a_hgap, NULL);
+   DEBUG_YASCII   yLOG_value   ("vo"        , vo);
+   --rce;  if (vo < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   vo += bx + 1;
+   eo  = yascii_link__ranges ('e', a_elane, et    , x_ebase);
+   DEBUG_YASCII   yLOG_value   ("eo"        , eo);
+   --rce;  if (eo < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   eo += ey;
+   DEBUG_YASCII   yLOG_complex ("offs"      , "beg (%c) %3d  vert (%c) %3d/%3d  end (%c) %3d", a_blane, bo, a_vlane, vo, a_hgap, a_elane, eo);
+   /*---(draw)---------------------------*/
+   rc = yascii_link__detail (a_heavy, bx, bo, x_bbase, vo, ex, eo, x_ebase);
+   DEBUG_YASCII   yLOG_value   ("draw"      , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   /*---(complete)-----------------------*/
+   DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+   return 0;
+}
 
 
 
@@ -1188,12 +1979,12 @@ yASCII_bound            (char a_type, char a_heavy, char a_bcol, char a_brow, ch
    --rce;  if (rc < 0)  return rce;
    /*---(set margins)-----------------*/
    --rce;  switch (a_type) {
-   case 'r' :
+   case YASCII_BOUND   :
       break;
-   case 'b' :
+   case YASCII_BBOUND  :
       xb -= 1;  xe += 1;  yb -= 1;  ye -= 1;
       break;
-   case 'f' :
+   case YASCII_FRAME   :
       for (i = 0; i < LEN_TERSE; ++i) {
          if (myASCII.d_size == '£')                   break;
          if (myASCII.d_size != zASCII_bound [i].abbr)  continue;
@@ -1204,7 +1995,7 @@ yASCII_bound            (char a_type, char a_heavy, char a_bcol, char a_brow, ch
          break;
       }
       break;
-   case 'F' :
+   case YASCII_BFRAME  :
       for (i = 0; i < LEN_TERSE; ++i) {
          if (myASCII.d_size == '£')                   break;
          if (myASCII.d_size != zASCII_bound [i].abbr)  continue;

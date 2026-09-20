@@ -3,6 +3,38 @@
 #define yASCII_priv yes
 
 
+
+/*===[[ GNU GENERAL PUBLIC LICENSE (GPL) ]]===================================*/
+/*´´·········1·········2·········3·········4·········5·········6·········7·········8  */
+
+#define  P_COPYRIGHT   \
+   "copyright (c) 2020 robert.s.heatherly at balsashrike at gmail dot com"
+
+#define  P_LICENSE     \
+   "the only place you could have gotten this code is my github, my website,¦"   \
+   "or illegal sharing. given that, you should be aware that this is GPL licensed."
+
+#define  P_COPYLEFT    \
+   "the GPL COPYLEFT REQUIREMENT means any modifications or derivative works¦"   \
+   "must be released under the same GPL license, i.e, must be free and open."
+
+#define  P_INCLUDE     \
+   "the GPL DOCUMENTATION REQUIREMENT means that you must include the original¦" \
+   "copyright notice and the full licence text with any resulting anything."
+
+#define  P_AS_IS       \
+   "the GPL NO WARRANTY CLAUSE means the software is provided without any¦"      \
+   "warranty and the author cannot be held liable for damages."
+
+#define  P_THEFT    \
+   "if you knowingly violate the spirit of these ideas, i suspect you might¦"    \
+   "find any number of freedom-minded hackers may take it quite personally ;)"
+
+/*´´·········1·········2·········3·········4·········5·········6·········7·········8  */
+/*===[[ GNU GENERAL PUBLIC LICENSE (GPL) ]]===================================*/
+
+
+
 /*===[[ HEADER BEG ]]=========================================================*/
 /*                      ´·········1·········2·········3·········4·········5·········6·········7*/
 /*--------- 12345678901 ´123456789-123456789-123456789-123456789-123456789-123456789-123456789-*/
@@ -47,8 +79,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.1-, stable for ouroboros"
-#define     P_VERNUM    "3.1e"
-#define     P_VERTXT    "added box formating options for eos and ydlst"
+#define     P_VERNUM    "3.1f"
+#define     P_VERTXT    "yascii__line unit_tested"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -64,10 +96,12 @@
 #include    <stdio.h>             /* clibc  standard input/output             */
 #include    <stdlib.h>            /* clibc  standard general purpose          */
 #include    <string.h>            /* clibc  standard string handling          */
+#include    <math.h>              /* clibc  standard math handling            */
 /*---(custom core)-----------------------*/
 #include    <yURG.h>              /* heatherly urgent processing              */
 #include    <yLOG.h>              /* heatherly program logging                */
 #include    <ySTR.h>              /* heatherly string processing              */
+#include    <yDLST_solo.h>        /* heatherly dlist constants                */
 /*---(done)------------------------------*/
 
 #define    YASCII_SHOW_HINT  "yYFe$>"
@@ -114,11 +148,68 @@ struct cASCII {
 };
 extern tASCII   myASCII;
 
-/*===[[ yASCII_base.c ]]======================================================*/
-/*··········>·······················>·········································*/
 char        yascii__unit_quiet      (void);
 char        yascii__unit_loud       (void);
 char        yascii__unit_end        (void);
+
+
+
+/*===[[ yASCII_draw.c ]]======================================================*/
+/*········´ ´···············exist·´ ´·········································*/
+char        yASCII_new              (int a_horz, int a_vert);
+char        yASCII_clear            (void);
+char        yASCII_free             (void);
+/*········´ ´··············config·´ ´·········································*/
+char        yascii__heaviness       (char a_heavy, char *r_left, char *r_topp, char *r_righ, char *r_bott);
+char        yASCII_grid_set_full    (char a_size, char a_decor, short x_left, short y_topp);
+char        yASCII_grid_set         (char a_size, char a_decor, char a_col, char a_row);
+char        yASCII_style            (char a_size, char a_decor);
+char        yASCII_grid_new_custom  (char a_size, char a_decor, char a_col, char a_row, char a_left, char a_righ, char a_topp, char a_bott, int a_wide, int a_tall);
+char        yASCII_grid_new_full    (char a_size, char a_decor, char a_col, char a_row, char a_left, char a_righ, char a_topp, char a_bott);
+char        yASCII_grid_new         (char a_size, char a_decor, char a_col, char a_row);
+/*········´ ´················exim·´ ´·········································*/
+char        yASCII_write            (char a_name [LEN_PATH]);
+/*········´ ´···············chars·´ ´·········································*/
+char        yASCII_get              (int x, int y);
+char        yASCII_single           (int x, int y, char a_new);
+char        yASCII_single_dos       (int c, int x, int y, char a_new, char a_alt);
+char        yASCII_print            (int x, int y, char a_text [LEN_RECD], char a_mode);
+char        yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD], char a_mode);
+char        yASCII_connector        (short bx, short by, char a_dir, short ex, short ey, char a_heavy, char a_label [LEN_LABEL], short lx, short ly);
+char        yASCII_uconnect         (short bx, short by, char a_dir, short ex, short ey);
+char        yascii__line            (char a_dir, char a_beg, short a_bx, short a_by, char a_line, short a_ex, short a_ey, char a_end);
+char        yASCII_line             (char a_path [LEN_SHORT], char a_heavy, char a_bef, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_aft, char a_seg, char a_align [LEN_SHORT], char a_label [LEN_LABEL]);
+/*········´ ´···············boxes·´ ´·········································*/
+char        yascii__outline         (char a_heavy, short x, short y, short w, short t, char a_mode);
+char        yASCII_box_full         (char a_heavy, char a_arrange, short x, short y, short w, short t, char a_title [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
+char        yASCII_box_simple       (char a_col, char a_row, char a_title [LEN_TITLE]);
+char        yASCII_node             (short x, short y, char a);
+char        yASCII_node_grid         (char a_col, char a_row, char a);
+/*········´ ´················data·´ ´·········································*/
+char        yascii_box__clear       (void);
+char        yascii_box_find         (char a_title [LEN_TITLE]);
+char*       yascii_box_entry        (char a_dir);
+/*········´ ´·············connect·´ ´·········································*/
+char        yASCII_tie_heavy        (char a_heavy);
+char        yASCII_tie_full         (char a_heavy, short bx, short by, short ex, short ey, char a_tall, char a_blane, char a_vlane, char a_elane);
+char        yASCII_tie_grid_heavy   (char a_heavy, char a_bcol, char a_brow, char a_ecol, char a_erow);
+char        yASCII_tie_grid         (char a_bcol, char a_brow, char a_ecol, char a_erow);
+char        yASCII_tie_exact_heavy  (char a_heavy, char a_bcol, char a_brow, char a_ecol, char a_erow, char a_blane, char a_vlane, char a_elane);
+char        yASCII_tie_exact        (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_blane, char a_vlane, char a_elane);
+/*········´ ´················link·´ ´·········································*/
+char        yascii_link__defense    (short a_bx, short a_by, char a_btype, short a_vx, short a_ex, short a_ey, char a_etype);
+char        yascii_link__detail     (char a_heavy, short a_bx, short a_by, char a_bbase [LEN_SHORT], short a_vx, short a_ex, short a_ey, char a_ebase [LEN_SHORT]);
+char        yascii_link__ranges     (char a_end, char a_lane, char a_max, char *r_base);
+char        yASCII_link_full        (char a_pred [LEN_TITLE], char a_succ [LEN_TITLE], char a_heavy, char a_hgap, char a_blane, char a_vlane, char a_elane);
+/*········´ ´···········specialty·´ ´·········································*/
+char        yascii_vertical         (short x, short yt, short yh, short yb);
+char        yASCII_frame_full       (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_title [LEN_TITLE], char a_1col, char a_1head [LEN_TITLE], char a_2col, char a_2head [LEN_TITLE], char a_3col, char a_3head [LEN_TITLE], char a_4col, char a_4head [LEN_TITLE]);
+char        yASCII_frame            (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_title [LEN_TITLE]);
+char        yASCII_bound            (char a_type, char a_heavy, char a_bcol, char a_brow, char a_ecol, char a_erow);
+/*········´ ´············unittest·´ ´·········································*/
+char*       DRAW__unit              (char *a_question, int n);
+/*········´ ´················DONE·´ ´·········································*/
+
 
 
 /*===[[ yASCII_font.c ]]======================================================*/
