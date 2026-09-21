@@ -35,46 +35,46 @@
 
 struct {
    char        l_name      [LEN_SHORT];
-   char        l_cnt;
+   char        l_ends      [LEN_TERSE];
    char        l_beg;
    char        l_1st;
    char        l_2nd;
    char        l_end;
-} S_lines [LEN_DESC] = {
+} const S_lines [LEN_DESC] = {
    /*---(up/north)------------------*/
-   { "NW"  ,  2  , 'ˆ' , '‚' , ' ' , '‡' },
-   { "NWN" ,  3  , 'ˆ' , '‚' , '„' , '‰' },
-   { "N"   ,  1  , 'ˆ' , ' ' , ' ' , '‰' },
-   { "NEN" ,  3  , 'ˆ' , 'ƒ' , '…' , '‰' },
-   { "NE"  ,  2  , 'ˆ' , 'ƒ' , ' ' , '†' },
-   { "NES" ,  3  , 'ˆ' , 'ƒ' , '‚' , 'ˆ' },
-   { "NWS" ,  3  , 'ˆ' , '‚' , 'ƒ' , 'ˆ' },
+   { "NW"  , " ˆ ‚ ‡ ´ " },
+   { "NWN" , " ˆ ‚ „ ‰ " },
+   { "N"   , " ˆ ‰ ´ ´ " },
+   { "NEN" , " ˆ ƒ … ‰ " },
+   { "NE"  , " ˆ ƒ † ´ " },
+   { "NES" , " ˆ ƒ ‚ ˆ " },
+   { "NWS" , " ˆ ‚ ƒ ˆ " },
    /*---(right/east)----------------*/
-   { "EN"  ,  2  , '‡' , '…' , ' ' , '‰' },
-   { "ENE" ,  3  , '‡' , '…' , 'ƒ' , '†' },
-   { "E"   ,  1  , '‡' , ' ' , ' ' , '†' },
-   { "ESE" ,  3  , '‡' , 'ƒ' , '„' , '†' },
-   { "ES"  ,  2  , '‡' , 'ƒ' , ' ' , 'ˆ' },
-   { "ESW" ,  3  , '‡' , '‚' , '…' , '‡' },
-   { "ENW" ,  3  , '‡' , '…' , '‚' , '‡' },
+   { "EN"  , " ‡ … ‰ ´ " },
+   { "ENE" , " ‡ … ƒ † " },
+   { "E"   , " ‡ † ´ ´ " },
+   { "ESE" , " ‡ ‚ „ † " },
+   { "ES"  , " ‡ ‚ ˆ ´ " },
+   { "ESW" , " ‡ ‚ … ‡ " },
+   { "ENW" , " ‡ … ‚ ‡ " },
    /*---(down/south)----------------*/
-   { "SE"  ,  2  , '‰' , '„' , ' ' , '†' },
-   { "SES" ,  3  , '‰' , '„' , '‚' , 'ˆ' },
-   { "S"   ,  1  , '‰' , ' ' , ' ' , 'ˆ' },
-   { "SWS" ,  3  , '‰' , '…' , 'ƒ' , 'ˆ' },
-   { "SW"  ,  2  , '‰' , '…' , ' ' , '‡' },
-   { "SEN" ,  3  , '‰' , '„' , '…' , '‰' },
-   { "SWN" ,  3  , '‰' , '…' , '„' , '‰' },
+   { "SE"  , " ‰ „ † ´ " },
+   { "SES" , " ‰ „ ‚ ˆ " },
+   { "S"   , " ‰ ˆ ´ ´ " },
+   { "SWS" , " ‰ … ƒ ˆ " },
+   { "SW"  , " ‰ … ‡ ´ " },
+   { "SEN" , " ‰ „ … ‰ " },
+   { "SWN" , " ‰ … „ ‰ " },
    /*---(left/west)-----------------*/
-   { "WS"  ,  2  , '†' , 'ƒ' , ' ' , 'ˆ' },
-   { "WSW" ,  3  , '†' , 'ƒ' , '…' , '‡' },
-   { "W"   ,  1  , '†' , ' ' , ' ' , '‡' },
-   { "WNW" ,  3  , '†' , '„' , '‚' , '‡' },
-   { "WN"  ,  2  , '†' , '„' , ' ' , '‰' },
-   { "WSE" ,  3  , '†' , 'ƒ' , '„' , '†' },
-   { "WNE" ,  3  , '†' , '„' , 'ƒ' , '†' },
+   { "WS"  , " † ƒ ˆ ´ " },
+   { "WSW" , " † ƒ … ‡ " },
+   { "W"   , " † ‡ ´ ´ " },
+   { "WNW" , " † „ ‚ ‡ " },
+   { "WN"  , " † „ ‰ ´ " },
+   { "WSE" , " † ƒ „ † " },
+   { "WNE" , " † „ ƒ † " },
    /*---(DONE)----------------------*/
-   { "end" ,  0  , ' ' , ' ' , ' ' , ' ' },
+   { "end" , " x x x x " },
 };
 
 
@@ -868,8 +868,96 @@ yASCII_connector        (short bx, short by, char a_dir, short ex, short ey, cha
 
 char yASCII_uconnect  (short bx, short by, char a_dir, short ex, short ey) { return yASCII_connector (bx, by, a_dir, ex, ey, '²', NULL, 0, 0); }
 
+
+
+/*====================------------------------------------====================*/
+/*===----                    drawing coonecting lines                  ----===*/
+/*====================------------------------------------====================*/
+static void      o___LINES______________o (void) {;}
+
 char
-yascii__line            (char a_dir, char a_beg, short a_bx, short a_by, char a_line, short a_ex, short a_ey, char a_end)
+yascii__line_ends       (char a_path [LEN_SHORT], char r_ends [LEN_TERSE])
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   int         l           =    0;
+   int         i           =    0;
+   char        n           =   -1;
+   /*---(defense)------------------------*/
+   if (r_ends != NULL)   strcpy (r_ends, " - - - - ");
+   /*---(defense)------------------------*/
+   --rce;  if (a_path == NULL || a_path [0] == '\0')  return rce;
+   --rce;  if (r_ends == NULL)                        return rce;
+   /*---(prepare)------------------------*/
+   l = strlen (a_path);
+   /*---(walk entries)-------------------*/
+   for (i = 0; i < LEN_DESC; ++i) {
+      if (strcmp (S_lines [i].l_name, "end")  == 0)  break;
+      if (strcmp (S_lines [i].l_name, a_path) != 0)  continue;
+      strlcpy (r_ends, S_lines [i].l_ends, LEN_TERSE);
+      return 1;
+   }
+   /*---(save-back)----------------------*/
+   return --rce;
+}
+
+char
+yascii__line_coords     (char a_len, char a_cnt, char a_dir, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, short *r_x1, short *r_y1, short *r_x2, short *r_y2)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   short       x1, y1, x2, y2;
+   /*---(defense)------------------------*/
+   --rce;  if (a_len <  1  || a_len >  3)                      return rce;
+   --rce;  if (a_cnt <  0  || a_cnt >= a_len)                  return rce;
+   --rce;  if (a_dir == 0  || strchr ("NSEW", a_dir) == NULL)  return rce;
+   --rce;  if (r_x1  == NULL)                                  return rce;
+   --rce;  if (r_y1  == NULL)                                  return rce;
+   --rce;  if (r_x2  == NULL)                                  return rce;
+   --rce;  if (r_y2  == NULL)                                  return rce;
+   /*---(initial point)------------------*/
+   if (a_cnt == 0) {
+      x1 = *r_x1 = a_bx;
+      y1 = *r_y1 = a_by;
+   } else {
+      x1 = *r_x1 = *r_x2;
+      y1 = *r_y1 = *r_y2;
+   }
+   /*---(handle final)----------------*/
+   if (a_cnt == a_len - 1) {
+      *r_x2 = a_ex;
+      *r_y2 = a_ey;
+      return a_cnt;
+   }
+   /*---(default final)------------------*/
+   *r_x2 = x1;
+   *r_y2 = y1;
+   /*---(first waypoint)--------------*/
+   if (a_cnt == 0) {
+      if (a_len == 2) {
+         switch (a_dir) {
+         case 'N' :case 'S' : *r_y2 = a_ey;  break;
+         case 'E' :case 'W' : *r_x2 = a_ex;  break;
+         }
+      } else {
+         switch (a_dir) {
+         case 'N' :case 'S' : *r_y2 = a_vy;  break;
+         case 'E' :case 'W' : *r_x2 = a_vx;  break;
+         }
+      }
+      return a_cnt;
+   }
+   /*---(second waypoint)-------------*/
+   switch (a_dir) {
+   case 'N' :case 'S' : *r_y2 = a_ey;  break;
+   case 'E' :case 'W' : *r_x2 = a_ex;  break;
+   }
+   /*---(complete)-----------------------*/
+   return a_cnt;
+}
+
+char
+yascii__line_draw       (char a_dir, char a_beg, short a_bx, short a_by, char a_line, short a_ex, short a_ey, char a_end)
 {
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
@@ -918,65 +1006,94 @@ yascii__label           (short a_bx, short a_by, short a_ex, short a_ey, char a_
 }
 
 char
-yascii__path            (char a_path [LEN_SHORT])
-{
-}
-
-char
 yASCII_line             (char a_path [LEN_SHORT], char a_heavy, char a_bef, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_aft, char a_seg, char a_align [LEN_SHORT], char a_label [LEN_LABEL])
 {
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
-   char        rc          =  -10;
-   char        x_dir       =  '-';
-   char        l           =    0;
+   char        rc          =    0;
    char        x_vert, x_horz;
+   char        x_ends      [LEN_TERSE] = " ?  ?  ?  ? ";
+   char        l           =    0;
+   char        x_dir       =  '-';
+   char        x_beg, x_end;
    int         i           =    0;
-   char        n           =   -1;
-   char        x_beg, x_1st, x_2nd, x_end;
+   short       x1, y1, x2, y2;
+   /*---(header)-------------------------*/
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
    /*---(defense)------------------------*/
-   --rce;  if (a_path == NULL || a_path [0] == '\0')                     return rce;
-   --rce;  if (a_bef  == 0 || strchr ("+-Ï´³ · "      , a_bef) == NULL)  return rce;
-   --rce;  if (a_aft  == 0 || strchr ("+-Ï´³ · "      , a_bef) == NULL)  return rce;
-   /*---(before)-------------------------*/
-   /*> switch (x_dir) {                                                               <* 
-    *> case 'E' :  yASCII_single (a_bx - 1, a_by    , a_bef);    break;               <* 
-    *> case 'W' :  yASCII_single (a_bx + 1, a_by    , a_bef);    break;               <* 
-    *> case 'S' :  yASCII_single (a_bx    , a_by - 1, a_bef);    break;               <* 
-    *> case 'N' :  yASCII_single (a_bx    , a_by + 1, a_bef);    break;               <* 
-    *> }                                                                              <*/
-   /*---(find pattern)-------------------*/
-   rc = yascii__heaviness (a_heavy, &x_vert, &x_horz, NULL, NULL);
-   l = strlen (a_path);
-   for (i = 0; i < LEN_DESC; ++i) {
-      if (strcmp (S_lines [i].l_name, "end")  == 0)  break;
-      if (strcmp (S_lines [i].l_name, a_path) != 0)  continue;
-      n = i;
+   DEBUG_YASCII   yLOG_point   ("a_path"    , a_path);
+   --rce;  if (a_path == NULL || a_path [0] == '\0') {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
    }
-   --rce;  if (n < 0)  return rce;
-   x_beg = S_lines [n].l_beg;
-   x_1st = S_lines [n].l_1st;
-   x_2nd = S_lines [n].l_2nd;
-   x_end = S_lines [n].l_end;
-   /*---(handle straights)---------------*/
-   if (l == 1) {
-      switch (a_path [0]) {
-      case 'N' : case 'S' :
-         yascii__line (a_path [0], x_beg, a_bx, a_by, x_vert, a_ex, a_ey, x_end);
-         break;
-      case 'E' : case 'W' :
-         yascii__line (a_path [0], x_beg, a_bx, a_by, x_horz, a_ex, a_ey, x_end);
-         break;
+   DEBUG_YASCII   yLOG_info    ("a_path"    , a_path);
+   DEBUG_YASCII   yLOG_char    ("a_bef"     , a_bef);
+   --rce;  if (a_bef  == 0 || strchr ("+-Ï´³ · "      , a_bef) == NULL) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_char    ("a_aft"     , a_bef);
+   --rce;  if (a_aft  == 0 || strchr ("+-Ï´³ · "      , a_bef) == NULL) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   /*---(set line type)------------------*/
+   rc = yascii__heaviness  (a_heavy, &x_vert, &x_horz, NULL, NULL);
+   DEBUG_YASCII   yLOG_value   ("heavy"     , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   /*---(get ends)-----------------------*/
+   rc = yascii__line_ends (a_path, x_ends);
+   DEBUG_YASCII   yLOG_value   ("ends"      , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_info    ("x_ends"    , x_ends);
+   /*---(prepare)------------------------*/
+   l = strlen (a_path);
+   x_dir = a_path [0];
+   /*---(before)-------------------------*/
+   if (a_bef != ' ') {
+      switch (x_dir) {
+      case 'E' :  yASCII_single (a_bx - 1, a_by    , a_bef);    break;
+      case 'W' :  yASCII_single (a_bx + 1, a_by    , a_bef);    break;
+      case 'S' :  yASCII_single (a_bx    , a_by - 1, a_bef);    break;
+      case 'N' :  yASCII_single (a_bx    , a_by + 1, a_bef);    break;
+      }
+   }
+   /*---(draw lines)---------------------*/
+   --rce;  for (i = 0; i < l; ++i) {
+      /*---(prepare)---------------------*/
+      x_dir  = a_path [i];
+      x_beg  = x_ends [(i * 2) + 1];
+      x_end  = x_ends [(i * 2) + 3];
+      /*---(get endpoints)---------------*/
+      rc = yascii__line_coords (l, i, x_dir, a_bx, a_by, a_vx, a_vy, a_ex, a_ey, &x1, &y1, &x2, &y2);
+      DEBUG_YASCII   yLOG_complex ("LOOP"      , "%2d, %2d, %c, %c, %c, %d", l, i, x_dir, x_beg, x_end, rc);
+      if (rc < 0) {
+         DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+         return rce;
+      }
+      /*---(draw)------------------------*/
+      switch (x_dir) {
+      case 'N' : case 'S' : yascii__line_draw (x_dir, x_beg, x1, y1, x_vert, x2, y2, x_end); break;
+      case 'E' : case 'W' : yascii__line_draw (x_dir, x_beg, x1, y1, x_horz, x2, y2, x_end); break;
       }
    }
    /*---(after)--------------------------*/
-   /*> switch (x_dir) {                                                               <* 
-    *> case 'E' :  yASCII_single (a_bx + 1, a_by    , a_aft);    break;               <* 
-    *> case 'W' :  yASCII_single (a_bx - 1, a_by    , a_aft);    break;               <* 
-    *> case 'S' :  yASCII_single (a_bx    , a_by + 1, a_aft);    break;               <* 
-    *> case 'N' :  yASCII_single (a_bx    , a_by - 1, a_aft);    break;               <* 
-    *> }                                                                              <*/
+   if (a_aft != ' ') {
+      switch (x_dir) {
+      case 'E' :  yASCII_single (a_bx + 1, a_by    , a_aft);    break;
+      case 'W' :  yASCII_single (a_bx - 1, a_by    , a_aft);    break;
+      case 'S' :  yASCII_single (a_bx    , a_by + 1, a_aft);    break;
+      case 'N' :  yASCII_single (a_bx    , a_by - 1, a_aft);    break;
+      }
+   }
    /*---(complete)-----------------------*/
+   DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return 1;
 }
 
