@@ -118,10 +118,10 @@ struct {
  *       ƒ€€€€€€€€€€€€†Ï                        ‡€€€€€€€€€€€€‚
  *             ƒ€€€€€†Ï  Ï Ï    Ï Ï Ï    Ï Ï  Ï‡€€€€€‚      
  *                  „€€€‰€‰€€€€‰€‰€‰€€€€‰€‰€€€…           
- *                                                 
- *          SE                                ES   
- *             ˆ   SW      ƒ€€…  „€€‚      SE   ˆ      
- *             ‰  ‡€€€€€€…            „€€€€€€†  ‰      
+ *                                           E      
+ *          SE                               S      
+ *             ˆ   SW      ƒ€€…  „€€‚           ˆ      
+ *             ‰  ‡€€€€€€…            „€€€SE€†  ‰      
  *       „€€€†                                    ‡€€€…
  *        WSE   „€€€€€€€€€€€… ˆ    ˆ    ˆ „€€€€€€€€€€€…   ESW
  *                   SWN      SWS  S  SES      SEN
@@ -586,6 +586,30 @@ yASCII_get              (int x, int y)
 }
 
 char
+yASCII_force            (int x, int y, char a_new)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        t           [LEN_SHORT] = "";
+   /*---(enter)--------------------------*/
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
+   /*---(quick-out)----------------------*/
+   if (x < 0 || x >= myASCII.x_max) {
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   if (y < 0 || y >= myASCII.y_max) {
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   /*---(replace)------------------------*/
+   sprintf (t, "%c", a_new);
+   yASCII_print (x, y, t, YASCII_CLEAR);
+   /*---(complete)-----------------------*/
+   DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+   return 0;
+}
+
+char
 yASCII_single           (int x, int y, char a_new)
 {
    /*---(locals)-----------+-----+-----+-*/
@@ -985,24 +1009,64 @@ yascii__line_draw       (char a_dir, char a_beg, short a_bx, short a_by, char a_
 }
 
 char
-yascii__label           (short a_bx, short a_by, short a_ex, short a_ey, char a_align [LEN_SHORT], char a_label [LEN_LABEL])
+yascii__label           (char a_dir, short a_bx, short a_by, short a_ex, short a_ey, char a_align [LEN_SHORT], char a_label [LEN_LABEL])
 {
    /*---(design notes)-------------------*/
    /* 
-    *                                           TL C TR
-    *                                              ‰
-    *                                           UL U UR
-    *                                              C  
-    *             US UL   UC   UR UE               
-    *            MS ‡€ML€€MC€€MR€† ME           ML M MR
-    *             DS DL   DC   DR DE               
-    *                                              M
-    *                                           DL C DR
-    *                                              ˆ
-    *                                           BL B BR
+    *          bottom-left is origin             ] ] ]                     testing
+    *                                              ‰              €€€€€€€€†         
+    *                                            > > >            €€€€€€€€†testing
+    *                                                            €€€€€€€€†        
+    *       +    [ <      x      > ]                                      testing
+    *       O    [ƒ€<€€€€€x€€€€€>€†]             x x x
+    *       -    [ <      x      > ]               
+    *                                              
+    *                                            < < <
+    *     €€€€€€€†testing                          ˆ
+    *                                            [ [ [
+    *    
+    *                                            - O +
     */
-   /*> short       x_min, x_max, x_len, x_off;                                        <* 
-    *> short       y_min, y_max, y_len, y_off;                                        <*/
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   char        rc          =    0;
+   char        l, lx, ly;
+   char        ox, oy;
+   char        x, y;
+   /*---(defense)------------------------*/
+   --rce;  if (a_dir == 0 || strchr ("NSEW", a_dir) == NULL)   return rce;
+   --rce;  if (a_align == NULL || a_align [0] == '\0')         return rce;
+   l = strlen (a_align);
+   --rce;  if (l     != 2)                                     return rce;
+   --rce;  if (strchr ("[<x>]", a_align [0]) == NULL)          return rce;
+   --rce;  if (strchr ("+O-"  , a_align [1]) == NULL)          return rce;
+   --rce;  if (a_label == NULL || a_label [0] == '\0')         return rce;
+   /*---(prepare)------------------------*/
+   l  = strlen (a_label);
+   if (a_bx <= a_ex)  ox = a_bx;   else ox = a_ex;
+   if (a_by <= a_ey)  oy = a_by;   else oy = a_ey;
+   lx = abs (a_ex - a_bx);
+   ly = abs (a_ey - a_by);
+   /*---(horizontal)---------------------*/
+   if (strchr ("EW", a_dir) != NULL) {
+      /*---(xpos)------------------------*/
+      switch (a_align [0]) {
+      case '[' :  x = ox - 2 - l;    break;
+      case '<' :  x = ox + 2;        break;
+      case 'x' :  x = ox + (lx / 2); break;
+      case '>' :  x = ox + lx - 2;   break;
+      case ']' :  x = ox + lx + 2;   break;
+      }
+      /*---(ypos)------------------------*/
+      switch (a_align [1]) {
+      case '+' :  y = oy + 1;  break;
+      case 'O' :  y = oy;      break;
+      case '-' :  y = oy - 1;  break;
+      }
+      rc = yASCII_print  (x, y, a_label, YASCII_CLEAR);
+   }
+   /*---(complete)-----------------------*/
+   return 1;
 }
 
 char
@@ -1028,12 +1092,12 @@ yASCII_line             (char a_path [LEN_SHORT], char a_heavy, char a_bef, shor
    }
    DEBUG_YASCII   yLOG_info    ("a_path"    , a_path);
    DEBUG_YASCII   yLOG_char    ("a_bef"     , a_bef);
-   --rce;  if (a_bef  == 0 || strchr ("+-Ï´³ · "      , a_bef) == NULL) {
+   --rce;  if (a_bef  == 0) {
       DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
    }
    DEBUG_YASCII   yLOG_char    ("a_aft"     , a_bef);
-   --rce;  if (a_aft  == 0 || strchr ("+-Ï´³ · "      , a_bef) == NULL) {
+   --rce;  if (a_aft  == 0) {
       DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
    }
@@ -1056,12 +1120,14 @@ yASCII_line             (char a_path [LEN_SHORT], char a_heavy, char a_bef, shor
    l = strlen (a_path);
    x_dir = a_path [0];
    /*---(before)-------------------------*/
+   DEBUG_YASCII   yLOG_char    ("a_bef"     , a_bef);
    if (a_bef != ' ') {
+      DEBUG_YASCII   yLOG_note    ("writing before marker");
       switch (x_dir) {
-      case 'E' :  yASCII_single (a_bx - 1, a_by    , a_bef);    break;
-      case 'W' :  yASCII_single (a_bx + 1, a_by    , a_bef);    break;
-      case 'S' :  yASCII_single (a_bx    , a_by - 1, a_bef);    break;
-      case 'N' :  yASCII_single (a_bx    , a_by + 1, a_bef);    break;
+      case 'E' :  yASCII_force (a_bx - 1, a_by    , a_bef);    break;
+      case 'W' :  yASCII_force (a_bx + 1, a_by    , a_bef);    break;
+      case 'S' :  yASCII_force (a_bx    , a_by - 1, a_bef);    break;
+      case 'N' :  yASCII_force (a_bx    , a_by + 1, a_bef);    break;
       }
    }
    /*---(draw lines)---------------------*/
@@ -1086,10 +1152,10 @@ yASCII_line             (char a_path [LEN_SHORT], char a_heavy, char a_bef, shor
    /*---(after)--------------------------*/
    if (a_aft != ' ') {
       switch (x_dir) {
-      case 'E' :  yASCII_single (a_bx + 1, a_by    , a_aft);    break;
-      case 'W' :  yASCII_single (a_bx - 1, a_by    , a_aft);    break;
-      case 'S' :  yASCII_single (a_bx    , a_by + 1, a_aft);    break;
-      case 'N' :  yASCII_single (a_bx    , a_by - 1, a_aft);    break;
+      case 'E' :  yASCII_force (a_ex + 1, a_ey    , a_aft);    break;
+      case 'W' :  yASCII_force (a_ex - 1, a_ey    , a_aft);    break;
+      case 'S' :  yASCII_force (a_ex    , a_ey + 1, a_aft);    break;
+      case 'N' :  yASCII_force (a_ex    , a_ey - 1, a_aft);    break;
       }
    }
    /*---(complete)-----------------------*/

@@ -160,6 +160,7 @@ char        yASCII_grid_new         (char a_size, char a_decor, char a_col, char
 char        yASCII_write            (char a_name [LEN_PATH]);
 /*---(chars)----------------*/
 char        yASCII_get              (int x, int y);
+char        yASCII_force            (int x, int y, char a_new);
 char        yASCII_single           (int x, int y, char a_new);
 char        yASCII_print            (int x, int y, char a_text [LEN_RECD], char a_mode);
 char        yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD], char a_mode);

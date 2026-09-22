@@ -79,8 +79,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.1-, stable for ouroboros"
-#define     P_VERNUM    "3.1g"
-#define     P_VERTXT    "yascii__line_coords, yascii__line_entry unit-tested on complex image"
+#define     P_VERNUM    "3.1h"
+#define     P_VERTXT    "yASCII_line before and after markers working and unit-tested"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
