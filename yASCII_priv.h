@@ -79,8 +79,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.1-, stable for ouroboros"
-#define     P_VERNUM    "3.1h"
-#define     P_VERTXT    "yASCII_line before and after markers working and unit-tested"
+#define     P_VERNUM    "3.1i"
+#define     P_VERTXT    "yascii__line_label passed unit-testing on straight horz/vert"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -181,7 +181,7 @@ char        yASCII_uconnect         (short bx, short by, char a_dir, short ex, s
 char        yascii__line_ends       (char a_path [LEN_SHORT], char r_ends [LEN_TERSE]);
 char        yascii__line_coords     (char a_len, char a_cnt, char a_dir, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, short *r_x1, short *r_y1, short *r_x2, short *r_y2);
 char        yascii__line_draw       (char a_dir, char a_beg, short a_bx, short a_by, char a_line, short a_ex, short a_ey, char a_end);
-char        yASCII_line             (char a_path [LEN_SHORT], char a_heavy, char a_bef, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_aft, char a_seg, char a_align [LEN_SHORT], char a_label [LEN_LABEL]);
+char        yASCII_line             (char a_path [LEN_SHORT], char a_heavy, char a_bef, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_aft, char a_seg, char a_align [LEN_SHORT], char a_label [LEN_HUND]);
 /*········´ ´···············boxes·´ ´·········································*/
 char        yascii__outline         (char a_heavy, short x, short y, short w, short t, char a_mode);
 char        yASCII_box_full         (char a_heavy, char a_arrange, short x, short y, short w, short t, char a_title [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
