@@ -79,8 +79,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.1-, stable for ouroboros"
-#define     P_VERNUM    "3.1i"
-#define     P_VERTXT    "yascii__line_label passed unit-testing on straight horz/vert"
+#define     P_VERNUM    "3.1j"
+#define     P_VERTXT    "yascii__line_label passed my semi-complicated circuit-board test"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"

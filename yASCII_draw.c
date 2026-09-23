@@ -1117,18 +1117,14 @@ yascii__line_label      (char a_len, char a_cnt, char a_dir, char a_bef, short a
          DEBUG_YASCII   yLOG_value   ("x-adapt"   , x);
       }
       /*---(adapt to markers)------------*/
-      switch (a_align [0]) {
-      case '[' : if (a_cnt == 0         && a_bef != ' ') { --x;  if (a_align [1] == '=') --x; }  break;
-      case ']' : if (a_cnt == a_len - 1 && a_aft != ' ') { ++x;  if (a_align [1] == '=') ++x; }  break;
+      if ((a_bef != ' ' && a_cnt == 0) ||
+            (a_aft != ' ' && a_cnt == a_len - 1)) {
+         switch (a_align [0]) {
+         case '[' :  --x;  if (a_align [1] == '=')  --x;  break;
+         case ']' :  ++x;  if (a_align [1] == '=')  ++x;  break;
+         }
+         DEBUG_YASCII   yLOG_value   ("x-marker"  , x);
       }
-      DEBUG_YASCII   yLOG_value   ("x-marker"  , x);
-
-
-      /*> if (a_align [1] == '=') {                                                             <* 
-       *>    /+> if (a_cnt == 0         && a_bef != ' ' && a_align [0] == '[')  --x;      <+/   <* 
-       *>    if (a_cnt == a_len - 1 && a_aft != ' ' && a_align [0] == ']')  ++x;                <* 
-       *>    DEBUG_YASCII   yLOG_value   ("x-marker"  , x);                                     <* 
-       *> }                                                                                     <*/
       /*---(done)------------------------*/
    }
    /*---(vertical)-----------------------*/
@@ -1157,9 +1153,12 @@ yascii__line_label      (char a_len, char a_cnt, char a_dir, char a_bef, short a
       }
       DEBUG_YASCII   yLOG_value   ("y"         , y);
       /*---(adapt to markers)------------*/
-      switch (a_align [0]) {
-      case '[' : if (a_cnt == 0         && a_bef != ' ')  --y;  break;
-      case ']' : if (a_cnt == a_len - 1 && a_aft != ' ')  ++y;  break;
+      if ((a_bef != ' ' && a_cnt == 0) ||
+            (a_aft != ' ' && a_cnt == a_len - 1)) {
+         switch (a_align [0]) {
+         case '[' :  --y;   break;
+         case ']' :  ++y;   break;
+         }
       }
       DEBUG_YASCII   yLOG_value   ("y-marker"  , y);
    }
