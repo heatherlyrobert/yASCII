@@ -180,6 +180,11 @@ char        yASCII_tie_grid         (char a_bcol, char a_brow, char a_ecol, char
 char        yASCII_tie_grid_heavy   (char a_heavy, char a_bcol, char a_brow, char a_ecol, char a_erow);
 char        yASCII_tie_exact        (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_blane, char a_vlane, char a_elane);
 char        yASCII_tie_exact_heavy  (char a_heavy, char a_bcol, char a_brow, char a_ecol, char a_erow, char a_blane, char a_vlane, char a_elane);
+/*········´ ´···············lines·´ ´·········································*/
+char        yASCII_line_full        (char a_path [LEN_SHORT], char a_heavy, char a_bef, char a_beg, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_end, char a_aft, char a_seg, char a_align [LEN_SHORT], char a_label [LEN_HUND]);
+char        yASCII_line_label       (char a_path [LEN_SHORT], char a_heavy, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_seg, char a_align [LEN_SHORT], char a_label [LEN_HUND]);
+char        yASCII_line_mark        (char a_path [LEN_SHORT], char a_heavy, char a_bef, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_aft);
+char        yASCII_line             (char a_path [LEN_SHORT], char a_heavy, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey);
 /*---(specialty)------------*/
 char        yASCII_frame_full       (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_title [LEN_TITLE], char a_1col, char a_1head [LEN_TITLE], char a_2col, char a_2head [LEN_TITLE], char a_3col, char a_3head [LEN_TITLE], char a_4col, char a_4head [LEN_TITLE]);
 char        yASCII_frame            (char a_bcol, char a_brow, char a_ecol, char a_erow, char a_title [LEN_TITLE]);

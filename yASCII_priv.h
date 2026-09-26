@@ -78,9 +78,9 @@
 #define     P_CREATED   ""
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
-#define     P_VERMINOR  "3.1-, stable for ouroboros"
-#define     P_VERNUM    "3.1j"
-#define     P_VERTXT    "yascii__line_label passed my semi-complicated circuit-board test"
+#define     P_VERMINOR  "3.2-, breaking out draw into manageable pieces"
+#define     P_VERNUM    "3.2a"
+#define     P_VERTXT    "broke out lines and added validation on coordintates"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -177,11 +177,6 @@ char        yASCII_print            (int x, int y, char a_text [LEN_RECD], char 
 char        yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD], char a_mode);
 char        yASCII_connector        (short bx, short by, char a_dir, short ex, short ey, char a_heavy, char a_label [LEN_LABEL], short lx, short ly);
 char        yASCII_uconnect         (short bx, short by, char a_dir, short ex, short ey);
-/*········´ ´···············lines·´ ´·········································*/
-char        yascii__line_ends       (char a_path [LEN_SHORT], char r_ends [LEN_TERSE]);
-char        yascii__line_coords     (char a_len, char a_cnt, char a_dir, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, short *r_x1, short *r_y1, short *r_x2, short *r_y2);
-char        yascii__line_draw       (char a_dir, char a_beg, short a_bx, short a_by, char a_line, short a_ex, short a_ey, char a_end);
-char        yASCII_line             (char a_path [LEN_SHORT], char a_heavy, char a_bef, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_aft, char a_seg, char a_align [LEN_SHORT], char a_label [LEN_HUND]);
 /*········´ ´···············boxes·´ ´·········································*/
 char        yascii__outline         (char a_heavy, short x, short y, short w, short t, char a_mode);
 char        yASCII_box_full         (char a_heavy, char a_arrange, short x, short y, short w, short t, char a_title [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
@@ -227,6 +222,7 @@ char        yASCII_wrapping         (char *a_text, int x, int y, int *a_wide, in
 char*       yascii__font_unit       (char *a_question, int a_num);
 
 
+
 /*===[[ yASCII_font.c ]]======================================================*/
 /*··········>·······················>·········································*/
 char        yascii__getlang         (char a_iso [LEN_SHORT], char r_name [LEN_LABEL]);
@@ -234,6 +230,26 @@ char        yascii__getlang         (char a_iso [LEN_SHORT], char r_name [LEN_LA
 
 char        yascii__heaviness       (char a_heavy, char *r_left, char *r_topp, char *r_righ, char *r_bott);
 char        yascii__outline         (char a_heavy, short x, short y, short w, short t, char a_mode);
+
+
+
+
+/*===[[ yASCII_line.c ]]======================================================*/
+/*········´ ´··············search·´ ´·········································*/
+char        yascii__line_find       (char a_path [LEN_SHORT]);
+/*········´ ´·············support·´ ´·········································*/
+char        yascii__line_comp       (char a_comp, short a_one, short a_two);
+char        yascii__line_valid      (char a_path [LEN_SHORT], char n, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey);
+char        yascii__line_ends       (char a_path [LEN_SHORT], char r_ends [LEN_TERSE]);
+char        yascii__line_coords     (char a_len, char a_cnt, char a_dir, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, short *r_x1, short *r_y1, short *r_x2, short *r_y2);
+/*········´ ´·············drawing·´ ´·········································*/
+char        yascii__line_draw       (char a_dir, char a_beg, short a_bx, short a_by, char a_line, short a_ex, short a_ey, char a_end);
+char        yASCII_line_full        (char a_path [LEN_SHORT], char a_heavy, char a_bef, char a_beg, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_end, char a_aft, char a_seg, char a_align [LEN_SHORT], char a_label [LEN_HUND]);
+char        yASCII_line_label       (char a_path [LEN_SHORT], char a_heavy, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_seg, char a_align [LEN_SHORT], char a_label [LEN_HUND]);
+char        yASCII_line_mark        (char a_path [LEN_SHORT], char a_heavy, char a_bef, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_aft);
+char        yASCII_line             (char a_path [LEN_SHORT], char a_heavy, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey);
+/*········´ ´················DONE·´ ´·········································*/
+
 
 
 #endif
