@@ -33,50 +33,77 @@
 /*´´·········1·········2·········3·········4·········5·········6·········7·········8  */
 /*===[[ GNU GENERAL PUBLIC LICENSE (GPL) ]]===================================*/
 
-struct {
-   char        l_name      [LEN_SHORT];
-   char        l_ends      [LEN_TERSE];
-   char        l_bx2ex;
-   char        l_by2ey;
-   char        l_bx2vx;
-   char        l_by2vy;
-   char        l_vx2ex;
-   char        l_vy2ey;
-} const S_lines [LEN_DESC] = {
-   /*---(up/north)------------------*/
-   { "NW"  , " ˆ ‚ ‡ ´ " , '>' , '>' , '´' , '´' , '´' , '´' },
-   { "NWS" , " ˆ ‚ ƒ ˆ " , '>' , '>' , '´' , '>' , '´' , '<' },
-   { "NWN" , " ˆ ‚ „ ‰ " , '>' , '>' , '´' , '>' , '´' , '>' },
-   { "N"   , " ˆ ‰ ´ ´ " , '=' , '>' , '´' , '´' , '´' , '´' },
-   { "NEN" , " ˆ ƒ … ‰ " , '<' , '>' , '´' , '>' , '´' , '>' },
-   { "NES" , " ˆ ƒ ‚ ˆ " , '<' , '>' , '´' , '>' , '´' , '<' },
-   { "NE"  , " ˆ ƒ † ´ " , '<' , '>' , '´' , '´' , '´' , '´' },
-   /*---(down/south)----------------*/
-   { "SE"  , " ‰ „ † ´ " , '<' , '<' , '´' , '´' , '´' , '´' },
-   { "SEN" , " ‰ „ … ‰ " , '<' , '<' , '´' , '<' , '´' , '>' },
-   { "SES" , " ‰ „ ‚ ˆ " , '<' , '<' , '´' , '<' , '´' , '<' },
-   { "S"   , " ‰ ˆ ´ ´ " , '=' , '<' , '´' , '´' , '´' , '´' },
-   { "SWS" , " ‰ … ƒ ˆ " , '>' , '<' , '´' , '<' , '´' , '<' },
-   { "SWN" , " ‰ … „ ‰ " , '>' , '<' , '´' , '<' , '´' , '>' },
-   { "SW"  , " ‰ … ‡ ´ " , '>' , '<' , '´' , '´' , '´' , '´' },
+
+
+const tLINES S_lines [LEN_HUND] = {
+   /*---(up/north)----left-to-right-*/
+   { "NW"   ,"NW"   , " ˆ ‚ ‡ ´ " , " > > ´ ´ ´ ´ " },
+   /*·······························*/
+   { "NWT"  ,"NWS"  , " ˆ ‚ ƒ ˆ " , " > = ´ > ´ < " },
+   { "NWS"  ,"NWS"  , " ˆ ‚ ƒ ˆ " , " > > ´ < ´ < " },
+   { "NWSS" ,"NWS"  , " ˆ ‚ ƒ ˆ " , " > < ´ < ´ < " },
+   /*·······························*/
+   { "NWN"  ,"NWN"  , " ˆ ‚ „ ‰ " , " > > ´ > ´ > " },
+   { "N"    ,"N"    , " ˆ ‰ ´ ´ " , " = > ´ ´ ´ ´ " },
+   { "NEN"  ,"NEN"  , " ˆ ƒ … ‰ " , " < > ´ > ´ > " },
+   /*·······························*/
+   { "NESS" ,"NES"  , " ˆ ƒ ‚ ˆ " , " < > ´ < ´ < " },
+   { "NES"  ,"NES"  , " ˆ ƒ ‚ ˆ " , " < > ´ > ´ < " },
+   { "NET"  ,"NES"  , " ˆ ƒ ‚ ˆ " , " < > ´ < ´ < " },
+   /*·······························*/
+   { "NE"   ,"NE"   , " ˆ ƒ † ´ " , " < > ´ ´ ´ ´ " },
+   /*---(down/south)--left-to-right-*/
+   { "SW"   ,"SW"   , " ‰ … ‡ ´ " , " > < ´ ´ ´ ´ " },
+   /*·······························*/
+   { "SWB"  ,"SWN"  , " ‰ … „ ‰ " , " > = ´ > ´ > " },
+   { "SWN"  ,"SWN"  , " ‰ … „ ‰ " , " > < ´ < ´ > " },
+   { "SWNN" ,"SWN"  , " ‰ … „ ‰ " , " > > ´ < ´ > " },
+   /*·······························*/
+   { "SWS"  ,"SWS"  , " ‰ … ƒ ˆ " , " > < ´ < ´ < " },
+   { "S"    ,"S"    , " ‰ ˆ ´ ´ " , " = < ´ ´ ´ ´ " },
+   { "SES"  ,"SES"  , " ‰ „ ‚ ˆ " , " < < ´ < ´ < " },
+   /*·······························*/
+   { "SENN" ,"SEN"  , " ‰ „ … ‰ " , " < > ´ > ´ > " },
+   { "SEN"  ,"SEN"  , " ‰ „ … ‰ " , " < < ´ > ´ > " },
+   { "SEB"  ,"SEN"  , " ‰ „ … ‰ " , " < = ´ > ´ > " },
+   /*·······························*/
+   { "SE"   ,"SE"   , " ‰ „ † ´ " , " < < ´ ´ ´ ´ " },
    /*---(right/east)----------------*/
-   { "EN"  , " ‡ … ‰ ´ " , '<' , '>' , '´' , '´' , '´' , '´' },
-   { "ENW" , " ‡ … ‚ ‡ " , '<' , '>' , '<' , '´' , '>' , '´' },
-   { "ENE" , " ‡ … ƒ † " , '<' , '>' , '<' , '´' , '<' , '´' },
-   { "E"   , " ‡ † ´ ´ " , '<' , '=' , '´' , '´' , '´' , '´' },
-   { "ESE" , " ‡ ‚ „ † " , '<' , '<' , '<' , '´' , '<' , '´' },
-   { "ESW" , " ‡ ‚ … ‡ " , '<' , '<' , '<' , '´' , '>' , '´' },
-   { "ES"  , " ‡ ‚ ˆ ´ " , '<' , '<' , '´' , '´' , '´' , '´' },
+   { "EN"   ,"EN"   , " ‡ … ‰ ´ " , " < > ´ ´ ´ ´ " },
+   /*·······························*/
+   { "ENW"  ,"ENW"  , " ‡ … ‚ ‡ " , " < > < ´ > ´ " },
+   { "ENU"  ,"ENW"  , " ‡ … ‚ ‡ " , " < > < ´ > ´ " },
+   { "ENWW" ,"ENW"  , " ‡ … ‚ ‡ " , " < > < ´ > ´ " },
+   /*·······························*/
+   { "ENE"  ,"ENE"  , " ‡ … ƒ † " , " < > < ´ < ´ " },
+   { "E"    ,"E"    , " ‡ † ´ ´ " , " < = ´ ´ ´ ´ " },
+   { "ESE"  ,"ESE"  , " ‡ ‚ „ † " , " < < < ´ < ´ " },
+   /*·······························*/
+   { "ESWW" ,"ESW"  , " ‡ ‚ … ‡ " , " < < < ´ < ´ " },
+   { "ESD"  ,"ESW"  , " ‡ ‚ … ‡ " , " < < < ´ < ´ " },
+   { "ESW"  ,"ESW"  , " ‡ ‚ … ‡ " , " < < < ´ > ´ " },
+   /*·······························*/
+   { "ES"   ,"ES"   , " ‡ ‚ ˆ ´ " , " < < ´ ´ ´ ´ " },
    /*---(left/west)-----------------*/
-   { "WS"  , " † ƒ ˆ ´ " , '>' , '<' , '´' , '´' , '´' , '´' },
-   { "WSE" , " † ƒ „ † " , '>' , '<' , '>' , '´' , '<' , '´' },
-   { "WSW" , " † ƒ … ‡ " , '>' , '<' , '>' , '´' , '>' , '´' },
-   { "W"   , " † ‡ ´ ´ " , '>' , '=' , '´' , '´' , '´' , '´' },
-   { "WNW" , " † „ ‚ ‡ " , '>' , '>' , '>' , '´' , '>' , '´' },
-   { "WNE" , " † „ ƒ † " , '>' , '>' , '>' , '´' , '<' , '´' },
-   { "WN"  , " † „ ‰ ´ " , '>' , '>' , '´' , '´' , '´' , '´' },
+   { "WN"   ,"WN"   , " † „ ‰ ´ " , " > > ´ ´ ´ ´ " },
+   /*·······························*/
+   { "WNE"  ,"WNE"  , " † „ ƒ † " , " > > > ´ < ´ " },
+   { "WNU"  ,"WNE"  , " † „ ƒ † " , " > > > ´ > ´ " },
+   { "WNEE" ,"WNE"  , " † „ ƒ † " , " > > > ´ > ´ " },
+   /*·······························*/
+
+
+   { "WS"   ,"WS"   , " † ƒ ˆ ´ " , " > < ´ ´ ´ ´ " },
+   /*·······························*/
+   { "WSE"  ,"WSE"  , " † ƒ „ † " , " > < > ´ < ´ " },
+   { "WSD"  ,"WSE"  , " † ƒ „ † " , " > < > ´ > ´ " },
+   { "WSEE" ,"WSE"  , " † ƒ „ † " , " > < > ´ > ´ " },
+   /*·······························*/
+   { "WSW"  ,"WSW"  , " † ƒ … ‡ " , " > < > ´ > ´ " },
+   { "W"    ,"W"    , " † ‡ ´ ´ " , " > = ´ ´ ´ ´ " },
+   { "WNW"  ,"WNW"  , " † „ ‚ ‡ " , " > > > ´ > ´ " },
    /*---(DONE)----------------------*/
-   { "end" , " x x x x " },
+   { "end"  ,"end"  , " x x x x " , " ´ ´ ´ ´ ´ ´ " },
 };
 
 
@@ -87,17 +114,24 @@ struct {
 static void      o___SEARCH_____________o (void) {;}
 
 char
-yascii__line_find       (char a_path [LEN_SHORT])
+yascii__line_data       (char a_name [LEN_SHORT], char r_path [LEN_SHORT], char r_ends [LEN_TERSE], char r_valid [LEN_LABEL])
 {
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
    int         i           =    0;
+   /*---(default)------------------------*/
+   if (r_path  != NULL)  strcpy (r_path , "");
+   if (r_ends  != NULL)  strcpy (r_ends , "");
+   if (r_valid != NULL)  strcpy (r_valid, "");
    /*---(defense)------------------------*/
-   --rce;  if (a_path == NULL || a_path [0] == '\0')  return rce;
+   --rce;  if (a_name == NULL || a_name [0] == '\0')  return rce;
    /*---(walk entries)-------------------*/
-   for (i = 0; i < LEN_DESC; ++i) {
+   for (i = 0; i < LEN_HUND; ++i) {
       if (strcmp (S_lines [i].l_name, "end")  == 0)  break;
-      if (strcmp (S_lines [i].l_name, a_path) != 0)  continue;
+      if (strcmp (S_lines [i].l_name, a_name) != 0)  continue;
+      if (r_path  != NULL)  strlcpy (r_path , S_lines [i].l_path , LEN_SHORT);
+      if (r_ends  != NULL)  strlcpy (r_ends , S_lines [i].l_ends , LEN_TERSE);
+      if (r_valid != NULL)  strlcpy (r_valid, S_lines [i].l_valid, LEN_LABEL);
       return i;
    }
    /*---(complete)-----------------------*/
@@ -129,7 +163,7 @@ yascii__line_comp       (char a_comp, short a_one, short a_two)
    case '>' : if (a_one >  a_two)               return 1;  break;
    case 'Ý' : if (a_one >= a_two)               return 1;  break;
    case '´' : if (a_one == -1 && a_two >  -1)   return 1;
-              if (a_one >  -1 && a_two == -1)   return 1;  break;
+                 if (a_one >  -1 && a_two == -1)   return 1;  break;
    default  : return rce;                       break;
    }
    /*---(complete)-----------------------*/
@@ -137,14 +171,27 @@ yascii__line_comp       (char a_comp, short a_one, short a_two)
 }
 
 char
-yascii__line_valid      (char a_path [LEN_SHORT], char n, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey)
+yascii__line_revcomp    (char a_one, char a_two)
+{
+   char        x_comp      =  ' ';
+   if      (a_one == -1)     x_comp = '´';
+   else if (a_two == -1)     x_comp = '´';
+   else if (a_one <  a_two)  x_comp = '<';
+   else if (a_one == a_two)  x_comp = '=';
+   else if (a_one >  a_two)  x_comp = '>';
+   else                      x_comp = '?';
+   return x_comp;
+}
+
+char
+yascii__line_valid      (char a_name [LEN_SHORT], char n, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey)
 {
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
    char        x_ends      [LEN_SHORT] = "";
    /*---(defense)------------------------*/
-   --rce;  if (a_path == NULL || a_path [0] == '\0')  return rce;
-   --rce;  if (n       < -1 || n >= LEN_DESC)         return rce;
+   --rce;  if (a_name == NULL || a_name [0] == '\0')  return rce;
+   --rce;  if (n       < -1 || n >= LEN_HUND)         return rce;
    --rce;  if (a_bx    < 0)                           return rce;
    --rce;  if (a_by    < 0)                           return rce;
    --rce;  if (a_vx    <  -1)                         return rce;
@@ -153,34 +200,51 @@ yascii__line_valid      (char a_path [LEN_SHORT], char n, short a_bx, short a_by
    --rce;  if (a_ey    < 0)                           return rce;
    /*---(check path)---------------------*/
    --rce;  if (n == -1) {
-      n = yascii__line_find (a_path);
+      n = yascii__line_data (a_name, NULL, NULL, NULL);
       if (n < 0)   return rce;
    }
    /*---(check bounds)-------------------*/
-   --rce;  if (yascii__line_comp (S_lines [n].l_bx2ex, a_bx, a_ex) != 1)  return rce;
-   --rce;  if (yascii__line_comp (S_lines [n].l_by2ey, a_by, a_ey) != 1)  return rce;
-   --rce;  if (yascii__line_comp (S_lines [n].l_bx2vx, a_bx, a_vx) != 1)  return rce;
-   --rce;  if (yascii__line_comp (S_lines [n].l_by2vy, a_by, a_vy) != 1)  return rce;
-   --rce;  if (yascii__line_comp (S_lines [n].l_vx2ex, a_vx, a_ex) != 1)  return rce;
-   --rce;  if (yascii__line_comp (S_lines [n].l_vy2ey, a_vy, a_ey) != 1)  return rce;
+   --rce;  if (yascii__line_comp (S_lines [n].l_valid [ 1], a_bx, a_ex) != 1)  return rce;
+   --rce;  if (yascii__line_comp (S_lines [n].l_valid [ 3], a_by, a_ey) != 1)  return rce;
+   --rce;  if (yascii__line_comp (S_lines [n].l_valid [ 5], a_bx, a_vx) != 1)  return rce;
+   --rce;  if (yascii__line_comp (S_lines [n].l_valid [ 7], a_by, a_vy) != 1)  return rce;
+   --rce;  if (yascii__line_comp (S_lines [n].l_valid [ 9], a_vx, a_ex) != 1)  return rce;
+   --rce;  if (yascii__line_comp (S_lines [n].l_valid [11], a_vy, a_ey) != 1)  return rce;
    /*---(complete)-----------------------*/
    return 1;
 }
 
-char
-yascii__line_ends       (char a_path [LEN_SHORT], char r_ends [LEN_TERSE])
+char*
+yascii__line_which      (char r_path [LEN_SHORT], char *r, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey)
 {
    /*---(locals)-----------+-----+-----+-*/
-   char        n           =   -1;
+   char        i           =    0;
+   char        c           =    0;
+   char        x_valid     [LEN_LABEL] = " - - - - - - ";
    /*---(default)------------------------*/
-   if (r_ends != NULL)   strcpy (r_ends, " - - - - ");
-   /*---(find entry)---------------------*/
-   n = yascii__line_find (a_path);
-   if (n < 0)  return n;
-   /*---(save-back)----------------------*/
-   if (r_ends != NULL)  strlcpy (r_ends, S_lines [n].l_ends, LEN_TERSE);
-   /*---(complete)-----------------------*/
-   return n;
+   if (r_path != NULL)   strcpy (r_path, "");
+   if (r      != NULL)   *r = -1;
+   strcpy (unit_answer, "");
+   /*---(check each rule)----------------*/
+   x_valid [ 1] = yascii__line_revcomp (a_bx, a_ex);
+   x_valid [ 3] = yascii__line_revcomp (a_by, a_ey);
+   x_valid [ 5] = yascii__line_revcomp (a_bx, a_vx);
+   x_valid [ 7] = yascii__line_revcomp (a_by, a_vy);
+   x_valid [ 9] = yascii__line_revcomp (a_vx, a_ex);
+   x_valid [11] = yascii__line_revcomp (a_vy, a_ey);
+   /*> printf ("x_valid å%sæ\n", x_valid);                                            <*/
+   /*---(walk entries)-------------------*/
+   for (i = 0; i < LEN_HUND; ++i) {
+      if (strcmp (S_lines [i].l_name , "end")    == 0)  break;
+      if (strcmp (S_lines [i].l_valid, x_valid) != 0)   continue;
+      if (r_path != NULL)  strlcpy (r_path, S_lines [i].l_name, LEN_SHORT);
+      if (r      != NULL)   *r = i;
+      if (c != 0)  strcat (unit_answer, ",");
+      strcat (unit_answer, S_lines [i].l_name);
+      ++c;
+   }
+   /*---(failure)------------------------*/
+   return unit_answer;
 }
 
 char
@@ -395,13 +459,15 @@ yascii__line_label      (char a_len, char a_cnt, char a_dir, char a_bef, short a
 }
 
 char
-yASCII_line_full        (char a_path [LEN_SHORT], char a_heavy, char a_bef, char a_beg, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_end, char a_aft, char a_seg, char a_align [LEN_SHORT], char a_label [LEN_HUND])
+yASCII_line_full        (char a_name [LEN_SHORT], char a_heavy, char a_bef, char a_beg, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_end, char a_aft, char a_seg, char a_align [LEN_SHORT], char a_label [LEN_HUND])
 {
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
    char        rc          =    0;
    char        x_vert, x_horz;
-   char        x_ends      [LEN_TERSE] = " ?  ?  ?  ? ";
+   char        x_path      [LEN_SHORT] = "";
+   char        x_ends      [LEN_TERSE] = " ? ? ? ? ";
+   char        x_valid     [LEN_LABEL] = " ´ ´ ´ ´ ´ ´ ";
    char        l           =    0;
    char        x_dir       =  '-';
    char        x_beg, x_end;
@@ -410,12 +476,12 @@ yASCII_line_full        (char a_path [LEN_SHORT], char a_heavy, char a_bef, char
    /*---(header)-------------------------*/
    DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
    /*---(defense)------------------------*/
-   DEBUG_YASCII   yLOG_point   ("a_path"    , a_path);
-   --rce;  if (a_path == NULL || a_path [0] == '\0') {
+   DEBUG_YASCII   yLOG_point   ("a_name"    , a_name);
+   --rce;  if (a_name == NULL || a_name [0] == '\0') {
       DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
    }
-   DEBUG_YASCII   yLOG_info    ("a_path"    , a_path);
+   DEBUG_YASCII   yLOG_info    ("a_name"    , a_name);
    DEBUG_YASCII   yLOG_char    ("a_bef"     , a_bef);
    --rce;  if (a_bef  == 0) {
       DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
@@ -426,6 +492,16 @@ yASCII_line_full        (char a_path [LEN_SHORT], char a_heavy, char a_bef, char
       DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
    }
+   /*---(find data)----------------------*/
+   rc = yascii__line_data (a_name, x_path, x_ends, x_valid);
+   DEBUG_YASCII   yLOG_value   ("data"      , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_info    ("x_path"    , x_path);
+   DEBUG_YASCII   yLOG_info    ("x_ends"    , x_ends);
+   DEBUG_YASCII   yLOG_info    ("x_valid"   , x_valid);
    /*---(set line type)------------------*/
    rc = yascii__heaviness  (a_heavy, &x_vert, &x_horz, NULL, NULL);
    DEBUG_YASCII   yLOG_value   ("heavy"     , rc);
@@ -433,17 +509,9 @@ yASCII_line_full        (char a_path [LEN_SHORT], char a_heavy, char a_bef, char
       DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
    }
-   /*---(get ends)-----------------------*/
-   rc = yascii__line_ends (a_path, x_ends);
-   DEBUG_YASCII   yLOG_value   ("ends"      , rc);
-   --rce;  if (rc < 0) {
-      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
-      return rce;
-   }
-   DEBUG_YASCII   yLOG_info    ("x_ends"    , x_ends);
    /*---(prepare)------------------------*/
-   l = strlen (a_path);
-   x_dir = a_path [0];
+   l = strlen (x_path);
+   x_dir = x_path [0];
    /*---(before)-------------------------*/
    DEBUG_YASCII   yLOG_char    ("a_bef"     , a_bef);
    if (a_bef != ' ') {
@@ -458,7 +526,7 @@ yASCII_line_full        (char a_path [LEN_SHORT], char a_heavy, char a_bef, char
    /*---(draw lines)---------------------*/
    --rce;  for (i = 0; i < l; ++i) {
       /*---(prepare)---------------------*/
-      x_dir  = a_path [i];
+      x_dir  = x_path [i];
       x_beg  = x_ends [(i * 2) + 1];
       if (a_beg != ' ' && i == 0)      x_beg = a_beg;
       x_end  = x_ends [(i * 2) + 3];
@@ -495,19 +563,22 @@ yASCII_line_full        (char a_path [LEN_SHORT], char a_heavy, char a_bef, char
 }
 
 char
-yASCII_line_label       (char a_path [LEN_SHORT], char a_heavy, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_seg, char a_align [LEN_SHORT], char a_label [LEN_HUND])
+yASCII_line_label       (char a_name [LEN_SHORT], char a_heavy, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_seg, char a_align [LEN_SHORT], char a_label [LEN_HUND])
 {
-   return yASCII_line_full (a_path, a_heavy, ' ', ' ', a_bx, a_by, a_vx, a_vy, a_ex, a_ey, ' ', ' ', a_seg, a_align, a_label);
+   return yASCII_line_full (a_name, a_heavy, ' ', ' ', a_bx, a_by, a_vx, a_vy, a_ex, a_ey, ' ', ' ', a_seg, a_align, a_label);
 }
 
 char
-yASCII_line_mark        (char a_path [LEN_SHORT], char a_heavy, char a_bef, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_aft)
+yASCII_line_mark        (char a_name [LEN_SHORT], char a_heavy, char a_bef, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey, char a_aft)
 {
-   return yASCII_line_full (a_path, a_heavy, a_bef, ' ', a_bx, a_by, a_vx, a_vy, a_ex, a_ey, ' ', a_aft, -1, "", "");
+   return yASCII_line_full (a_name, a_heavy, a_bef, ' ', a_bx, a_by, a_vx, a_vy, a_ex, a_ey, ' ', a_aft, -1, "", "");
 }
 
 char
-yASCII_line             (char a_path [LEN_SHORT], char a_heavy, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey)
+yASCII_line             (char a_name [LEN_SHORT], char a_heavy, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey)
 {
-   return yASCII_line_full (a_path, a_heavy, ' ', ' ', a_bx, a_by, a_vx, a_vy, a_ex, a_ey, ' ', ' ', -1, "", "");
+   return yASCII_line_full (a_name, a_heavy, ' ', ' ', a_bx, a_by, a_vx, a_vy, a_ex, a_ey, ' ', ' ', -1, "", "");
 }
+
+
+
