@@ -91,6 +91,9 @@ typedef  unsigned char        uchar;
 /*---(line weights)---------*/
 #define     YASCII_SOLID     '-'
 #define     YASCII_DOTTED    'd'
+#define     YASCII_DOTMED    'm'
+#define     YASCII_DOTBIG    'b'
+#define     YASCII_DOTSQR    's'
 #define     YASCII_LIGHT     'l'
 #define     YASCII_WAVY      'w'
 #define     YASCII_INSIDE    'i'
@@ -159,9 +162,11 @@ char        yASCII_grid_new         (char a_size, char a_decor, char a_col, char
 /*---(exim)-----------------*/
 char        yASCII_write            (char a_name [LEN_PATH]);
 /*---(chars)----------------*/
-char        yASCII_get              (int x, int y);
-char        yASCII_force            (int x, int y, char a_new);
-char        yASCII_single           (int x, int y, char a_new);
+char        yASCII_draw_get         (short x, short y);
+char        yASCII_draw_full        (char c, short x, short y, char a_new, char a_alt, char a_mode);
+char        yASCII_draw_exact       (short x, short y, char a_new);
+char        yASCII_draw_merge       (short x, short y, char a_new);
+char        yASCII_draw_double      (char c, short x, short y, char a_new, char a_alt);
 char        yASCII_print            (int x, int y, char a_text [LEN_RECD], char a_mode);
 char        yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD], char a_mode);
 /*---(boxes)----------------*/

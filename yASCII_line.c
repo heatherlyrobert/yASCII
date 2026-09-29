@@ -354,16 +354,16 @@ yASCII_segment          (char a_dir, char a_beg, short a_bx, short a_by, char a_
    --rce;  if (a_line == 0)                                              return rce;
    --rce;  if (a_end  == 0 || strchr ("‰ˆ‡†ƒ‚„…Ï´³ · ", a_end) == NULL)  return rce;
    /*---(begin)--------------------------*/
-   if (a_beg != ' ')  yASCII_single (a_bx, a_by, a_beg);
+   if (a_beg != ' ')  yASCII_draw_merge (a_bx, a_by, a_beg);
    /*---(line)---------------------------*/
    switch (a_dir) {
-   case 'E' :  for (i = a_bx + 1; i < a_ex; ++i)   yASCII_single ( i, a_by, a_line);    break;
-   case 'W' :  for (i = a_bx - 1; i > a_ex; --i)   yASCII_single ( i, a_by, a_line);    break;
-   case 'S' :  for (i = a_by + 1; i < a_ey; ++i)   yASCII_single (a_bx,  i, a_line);    break;
-   case 'N' :  for (i = a_by - 1; i > a_ey; --i)   yASCII_single (a_bx,  i, a_line);    break;
+   case 'E' :  for (i = a_bx + 1; i < a_ex; ++i)   yASCII_draw_merge ( i, a_by, a_line);    break;
+   case 'W' :  for (i = a_bx - 1; i > a_ex; --i)   yASCII_draw_merge ( i, a_by, a_line);    break;
+   case 'S' :  for (i = a_by + 1; i < a_ey; ++i)   yASCII_draw_merge (a_bx,  i, a_line);    break;
+   case 'N' :  for (i = a_by - 1; i > a_ey; --i)   yASCII_draw_merge (a_bx,  i, a_line);    break;
    }
    /*---(end)----------------------------*/
-   if (a_end != ' ')  yASCII_single (a_ex, a_ey, a_end);
+   if (a_end != ' ')  yASCII_draw_merge (a_ex, a_ey, a_end);
    /*---(complete)-----------------------*/
    return 1;
 }
@@ -534,7 +534,7 @@ yASCII_line_full        (char a_name [LEN_SHORT], char a_heavy, char a_bef, char
    DEBUG_YASCII   yLOG_info    ("x_ends"    , x_ends);
    DEBUG_YASCII   yLOG_info    ("x_valid"   , x_valid);
    /*---(set line type)------------------*/
-   rc = yascii__heaviness  (a_heavy, &x_vert, &x_horz, NULL, NULL);
+   rc = yascii_heaviness  (a_heavy, &x_vert, &x_horz, NULL, NULL);
    DEBUG_YASCII   yLOG_value   ("heavy"     , rc);
    --rce;  if (rc < 0) {
       DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
@@ -548,10 +548,10 @@ yASCII_line_full        (char a_name [LEN_SHORT], char a_heavy, char a_bef, char
    if (a_bef != ' ') {
       DEBUG_YASCII   yLOG_note    ("writing before marker");
       switch (x_dir) {
-      case 'E' :  yASCII_force (a_bx - 1, a_by    , a_bef);    break;
-      case 'W' :  yASCII_force (a_bx + 1, a_by    , a_bef);    break;
-      case 'S' :  yASCII_force (a_bx    , a_by - 1, a_bef);    break;
-      case 'N' :  yASCII_force (a_bx    , a_by + 1, a_bef);    break;
+      case 'E' :  yASCII_draw_exact (a_bx - 1, a_by    , a_bef);    break;
+      case 'W' :  yASCII_draw_exact (a_bx + 1, a_by    , a_bef);    break;
+      case 'S' :  yASCII_draw_exact (a_bx    , a_by - 1, a_bef);    break;
+      case 'N' :  yASCII_draw_exact (a_bx    , a_by + 1, a_bef);    break;
       }
    }
    /*---(draw lines)---------------------*/
@@ -582,10 +582,10 @@ yASCII_line_full        (char a_name [LEN_SHORT], char a_heavy, char a_bef, char
    /*---(after)--------------------------*/
    if (a_aft != ' ') {
       switch (x_dir) {
-      case 'E' :  yASCII_force (a_ex + 1, a_ey    , a_aft);    break;
-      case 'W' :  yASCII_force (a_ex - 1, a_ey    , a_aft);    break;
-      case 'S' :  yASCII_force (a_ex    , a_ey + 1, a_aft);    break;
-      case 'N' :  yASCII_force (a_ex    , a_ey - 1, a_aft);    break;
+      case 'E' :  yASCII_draw_exact (a_ex + 1, a_ey    , a_aft);    break;
+      case 'W' :  yASCII_draw_exact (a_ex - 1, a_ey    , a_aft);    break;
+      case 'S' :  yASCII_draw_exact (a_ex    , a_ey + 1, a_aft);    break;
+      case 'N' :  yASCII_draw_exact (a_ex    , a_ey - 1, a_aft);    break;
       }
    }
    /*---(complete)-----------------------*/

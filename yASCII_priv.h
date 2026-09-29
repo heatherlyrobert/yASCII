@@ -79,8 +79,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.2-, breaking out draw into manageable pieces"
-#define     P_VERNUM    "3.2c"
-#define     P_VERTXT    "clean valid and audit on all 44 connector type unit test ;)"
+#define     P_VERNUM    "3.2d"
+#define     P_VERTXT    "broke-out canvas and draw, new unit-tests for character exact/merge"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -149,6 +149,8 @@ struct cASCII {
 extern tASCII   myASCII;
 
 
+extern char  *G_image;
+
 
 typedef struct cLINES     tLINES;
 struct cLINES {
@@ -167,7 +169,7 @@ char        yASCII_new              (int a_horz, int a_vert);
 char        yASCII_clear            (void);
 char        yASCII_free             (void);
 /*········´ ´··············config·´ ´·········································*/
-char        yascii__heaviness       (char a_heavy, char *r_left, char *r_topp, char *r_righ, char *r_bott);
+char        yascii_heaviness        (char a_heavy, char *r_left, char *r_topp, char *r_righ, char *r_bott);
 char        yASCII_grid_set_full    (char a_size, char a_decor, short x_left, short y_topp);
 char        yASCII_grid_set         (char a_size, char a_decor, char a_col, char a_row);
 char        yASCII_style            (char a_size, char a_decor);
@@ -177,9 +179,11 @@ char        yASCII_grid_new         (char a_size, char a_decor, char a_col, char
 /*········´ ´················exim·´ ´·········································*/
 char        yASCII_write            (char a_name [LEN_PATH]);
 /*········´ ´···············chars·´ ´·········································*/
-char        yASCII_get              (int x, int y);
-char        yASCII_single           (int x, int y, char a_new);
-char        yASCII_single_dos       (int c, int x, int y, char a_new, char a_alt);
+char        yASCII_draw_get         (short x, short y);
+char        yASCII_draw_full        (char c, short x, short y, char a_new, char a_alt, char a_mode);
+char        yASCII_draw_exact       (short x, short y, char a_new);
+char        yASCII_draw_merge       (short x, short y, char a_new);
+char        yASCII_draw_double      (char c, short x, short y, char a_new, char a_alt);
 char        yASCII_print            (int x, int y, char a_text [LEN_RECD], char a_mode);
 char        yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD], char a_mode);
 char        yASCII_connector        (short bx, short by, char a_dir, short ex, short ey, char a_heavy, char a_label [LEN_LABEL], short lx, short ly);
@@ -235,7 +239,7 @@ char*       yascii__font_unit       (char *a_question, int a_num);
 char        yascii__getlang         (char a_iso [LEN_SHORT], char r_name [LEN_LABEL]);
 
 
-char        yascii__heaviness       (char a_heavy, char *r_left, char *r_topp, char *r_righ, char *r_bott);
+char        yascii_heaviness        (char a_heavy, char *r_left, char *r_topp, char *r_righ, char *r_bott);
 char        yascii__outline         (char a_heavy, short x, short y, short w, short t, char a_mode);
 
 
