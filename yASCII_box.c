@@ -54,7 +54,7 @@ struct {
 struct {
    char        b_heavy, b_arrange;
    char        b_title     [LEN_TITLE];
-   uchar       b_x, b_y, b_w, b_t;
+   short       b_x, b_y, b_w, b_t;
    char        b_note      [LEN_SHORT];
    char        b_block, b_npred, b_nsucc;
 } static S_boxes [LEN_HUND];
@@ -71,7 +71,7 @@ static char S_cbox   = 0;
 static void  o___DATA____________o () { return; }
 
 char
-yascii_box__clear       (void)
+yascii_box_clear        (void)
 {
    int         i           =    0;
    for (i = 0; i < LEN_HUND; ++i) {
@@ -86,6 +86,44 @@ yascii_box__clear       (void)
    S_cbox = 0;
    return 0;
 }
+
+char
+yascii_box__add         (char a_heavy, char a_arrange, short x, short y, short w, short t, char a_title [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc)
+{  /*---(design notes)-------------------*/
+   /*
+    *    does not check quality/legality of data, only its existance
+    */
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   /*---(defense)------------------------*/
+   --rce;  if (S_nbox >= LEN_HUND)                       return rce;
+   --rce;  if (a_title == NULL || a_title [0] == '\0')   return rce;
+   --rce;  if (a_note  == NULL)                          return rce;
+   /*---(correction)---------------------*/
+   if (S_nbox < 0)  S_nbox = 0;
+   /*---(config)-------------------------*/
+   S_boxes [S_nbox].b_heavy   = a_heavy;
+   S_boxes [S_nbox].b_arrange = a_arrange;
+   /*---(placement)----------------------*/
+   S_boxes [S_nbox].b_x       = x;
+   S_boxes [S_nbox].b_y       = y;
+   /*---(size)---------------------------*/
+   S_boxes [S_nbox].b_w       = w;
+   S_boxes [S_nbox].b_t       = t;
+   /*---(labeling)-----------------------*/
+   strncpy (S_boxes [S_nbox].b_title, a_title, LEN_TITLE);
+   strncpy (S_boxes [S_nbox].b_note , a_note , LEN_SHORT);
+   S_boxes [S_nbox].b_block   = a_block;
+   /*---(statistics)---------------------*/
+   S_boxes [S_nbox].b_npred   = a_npred;
+   S_boxes [S_nbox].b_nsucc   = a_nsucc;
+   /*---(increment count)----------------*/
+   ++S_nbox;
+   /*---(complete)-----------------------*/
+   return 1;
+}
+
+char yascii_box_count        (void) { return S_nbox; }
 
 char
 yascii_box_find         (char a_title [LEN_TITLE])
@@ -360,18 +398,12 @@ yASCII_box_full         (char a_heavy, char a_arrange, short x, short y, short w
       }
    }
    /*---(add box)------------------------*/
-   S_boxes [S_nbox].b_heavy   = a_heavy;
-   S_boxes [S_nbox].b_arrange = a_arrange;
-   strncpy (S_boxes [S_nbox].b_title, x_title, LEN_TITLE);
-   S_boxes [S_nbox].b_x = x;
-   S_boxes [S_nbox].b_y = y;
-   S_boxes [S_nbox].b_w = w;
-   S_boxes [S_nbox].b_t = t;
-   strncpy (S_boxes [S_nbox].b_note , a_note , LEN_SHORT);
-   S_boxes [S_nbox].b_block   = a_block;
-   S_boxes [S_nbox].b_npred   = a_npred;
-   S_boxes [S_nbox].b_nsucc   = a_nsucc;
-   ++S_nbox;
+   rc = yascii_box__add  (a_heavy, a_arrange, x, y, w, t, x_title, a_note, a_block, a_npred, a_nsucc);
+   DEBUG_YASCII   yLOG_value   ("add"       , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return 0;

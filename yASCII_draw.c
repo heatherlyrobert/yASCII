@@ -325,6 +325,16 @@ yASCII_draw_full        (char c, short x, short y, char a_new, char a_alt, char 
       DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
       return rce;
    }
+   DEBUG_YASCII   yLOG_char    ("a_new"     , a_new);
+   --rce;  if ((unsigned) a_new < 32) {
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_char    ("a_alt"     , a_alt);
+   --rce;  if ((unsigned) a_alt < 32) {
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return rce;
+   }
    DEBUG_YASCII   yLOG_char    ("a_mode"    , a_mode);
    --rce;  if (a_mode != YASCII_CLEAR && a_mode != YASCII_MERGE) {
       DEBUG_YASCII   yLOG_exit    (__FUNCTION__);

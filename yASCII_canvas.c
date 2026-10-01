@@ -98,7 +98,7 @@ yASCII_new              (int a_horz, int a_vert)
    myASCII.d_bound = YASCII_SOLID;
    DEBUG_YASCII   yLOG_complex ("config"    , "%cb, %ct, %cb", ychrvisible (myASCII.d_box), ychrvisible (myASCII.d_tie), ychrvisible (myASCII.d_bound));
    /*---(clear boxes)--------------------*/
-   yascii_box__clear ();
+   yascii_box_clear ();
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return 0;

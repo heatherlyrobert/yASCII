@@ -255,7 +255,6 @@ SCRP  [0e/∑]  (DRAW) verify comparing values to rules                          
      exec     call valid                           yascii__line_valid          "ESD" , -1, 49 , 26 , 51 , -1 , 49 , 29                                                               z_equal     1                                                                                                    
      exec     ... reverse call                     yascii__line_which          'E'       , 49 , 26 , 51 , -1 , 49 , 29 , NULL , NULL                                                 w_equal     ÂESDÊ                                                                                                
 
-
    COND       program teardown                                                   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -   ((02.009))  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
      exec     wrap-up the program                  yascii__unit_end                                                                                                                  z_equal     0                                                                                                    
 

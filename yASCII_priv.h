@@ -79,8 +79,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.2-, breaking out draw into manageable pieces"
-#define     P_VERNUM    "3.2d"
-#define     P_VERTXT    "broke-out canvas and draw, new unit-tests for character exact/merge"
+#define     P_VERNUM    "3.2e"
+#define     P_VERTXT    "broke-out, improved, and unit tested box inventory functions"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -194,10 +194,6 @@ char        yASCII_box_full         (char a_heavy, char a_arrange, short x, shor
 char        yASCII_box_simple       (char a_col, char a_row, char a_title [LEN_TITLE]);
 char        yASCII_node             (short x, short y, char a);
 char        yASCII_node_grid         (char a_col, char a_row, char a);
-/*········´ ´················data·´ ´·········································*/
-char        yascii_box__clear       (void);
-char        yascii_box_find         (char a_title [LEN_TITLE]);
-char*       yascii_box_entry        (char a_dir);
 /*········´ ´·············connect·´ ´·········································*/
 char        yASCII_tie_heavy        (char a_heavy);
 char        yASCII_tie_full         (char a_heavy, short bx, short by, short ex, short ey, char a_tall, char a_blane, char a_vlane, char a_elane);
@@ -242,6 +238,16 @@ char        yascii__getlang         (char a_iso [LEN_SHORT], char r_name [LEN_LA
 char        yascii_heaviness        (char a_heavy, char *r_left, char *r_topp, char *r_righ, char *r_bott);
 char        yascii__outline         (char a_heavy, short x, short y, short w, short t, char a_mode);
 
+
+
+/*===[[ yASCII_box.c ]]=======================================================*/
+/*········´ ´················data·´ ´·········································*/
+char        yascii_box_clear        (void);
+char        yascii_box__add         (char a_heavy, char a_arrange, short x, short y, short w, short t, char a_title [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
+char        yascii_box_count        (void);
+char        yascii_box_find         (char a_title [LEN_TITLE]);
+char*       yascii_box_entry        (char a_dir);
+/*········´ ´················DONE·´ ´·········································*/
 
 
 
