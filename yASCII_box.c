@@ -212,7 +212,7 @@ yascii_box_entry        (char a_dir)
 static void      o___CREATE_____________o (void) {;}
 
 char
-yascii__outline         (char a_heavy, short x, short y, short w, short t, char a_mode)
+yascii_box__outline     (char a_heavy, short x, short y, short w, short t, char a_mode)
 {
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
@@ -281,6 +281,262 @@ yascii__outline         (char a_heavy, short x, short y, short w, short t, char 
 }
 
 char
+yascii_box__title       (char a_arrange, short x, short y, short w, short t, char a_title [LEN_TITLE])
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   char        rc          =    0;
+   char        x_title     [LEN_HUND]  = "";
+   short       lb, la;
+   /*---(header)-------------------------*/
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
+   /*---(quick-out)----------------------*/
+   DEBUG_YASCII   yLOG_char    ("a_arrange" , a_arrange);
+   if (a_arrange == YASCII_BASE) {
+      DEBUG_YASCII   yLOG_note    ("not applicable to YASCII_BASE");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   DEBUG_YASCII   yLOG_char    ("d_titles"  , myASCII.d_titles);
+   if (myASCII.d_titles != 'y') {
+      DEBUG_YASCII   yLOG_note    ("titles are globally turned-off");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   /*---(defenses)-----------------------*/
+   DEBUG_YASCII   yLOG_point   ("a_title"   , a_title);
+   --rce;  if (a_title == NULL || a_title [0] == '\0') {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_info    ("a_title"   , a_title);
+   /*---(hidden title)-------------------*/
+   if (a_title [0] == '·') {
+      DEBUG_YASCII   yLOG_note    ("leading space (·) means hidden title");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   lb = strlen (a_title);
+   /*---(print)--------------------------*/
+   switch (a_arrange) {
+   case YASCII_BIG  : case YASCII_TECH :
+      snprintf (x_title, w - 3, " %.*s ", w - 5, a_title);
+      la = strlen (x_title);
+      if (la < lb - 2)  x_title [la - 2] = '>';
+      DEBUG_YASCII   yLOG_info    ("x_title"   , x_title);
+      rc = yASCII_print (x + ((w - la) / 2.0), y, x_title, YASCII_CLEAR);
+      break;
+   case YASCII_STD  : default          :
+      ystrlcpy (x_title, a_title, w - 1);
+      la = strlen (x_title);
+      if (la < lb)  x_title [la - 1] = '>';
+      DEBUG_YASCII   yLOG_info    ("x_title"   , x_title);
+      rc = yASCII_print (x + 1          , y + 1, x_title, YASCII_CLEAR);
+      break;
+   }
+   DEBUG_YASCII   yLOG_value   ("print"     , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   /*---(complete)-----------------------*/
+   DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+   return 1;
+}
+
+char
+yascii_box__note        (char a_arrange, short x, short y, short w, short t, char a_note [LEN_SHORT])
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   char        rc          =    0;
+   char        x_note      [LEN_TERSE] = "";
+   short       l           =    0;
+   /*---(header)-------------------------*/
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
+   /*---(quick-out)----------------------*/
+   DEBUG_YASCII   yLOG_char    ("a_arrange" , a_arrange);
+   if (a_arrange == YASCII_BASE) {
+      DEBUG_YASCII   yLOG_note    ("not applicable to YASCII_BASE");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   DEBUG_YASCII   yLOG_char    ("d_notes"   , myASCII.d_notes);
+   if (myASCII.d_notes != 'y') {
+      DEBUG_YASCII   yLOG_note    ("notes are globally turned-off");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   DEBUG_YASCII   yLOG_char    ("d_size"    , myASCII.d_size);
+   if (myASCII.d_size   == 'u') {
+      DEBUG_YASCII   yLOG_note    ("notes skipped for micro boxes");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   /*---(defenses)-----------------------*/
+   DEBUG_YASCII   yLOG_point   ("a_note"    , a_note);
+   --rce;  if (a_note  == NULL) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   DEBUG_YASCII   yLOG_info    ("a_note"    , a_note);
+   /*---(hidden title)-------------------*/
+   if (a_note [0] == '\0') {
+      DEBUG_YASCII   yLOG_note    ("empty note, nothing to do");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   /*---(prepare)------------------------*/
+   sprintf (x_note, "(%.4s)", a_note);
+   l = strlen (x_note);
+   DEBUG_YASCII   yLOG_info    ("x_note"    , x_note);
+   /*---(print)--------------------------*/
+   rc = yASCII_print (x + w - l - 1, y + t - 1, x_note, YASCII_CLEAR);
+   DEBUG_YASCII   yLOG_value   ("print"     , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   /*---(complete)-----------------------*/
+   DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+   return 1;
+}
+
+char
+yascii_box__block       (char a_arrange, short x, short y, short w, short t, char a_block)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   char        rc          =    0;
+   char        x_block     [LEN_TERSE] = "";
+   short       l           =    0;
+   /*---(header)-------------------------*/
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
+   /*---(quick-out)----------------------*/
+   DEBUG_YASCII   yLOG_char    ("a_arrange" , a_arrange);
+   if (a_arrange == YASCII_BASE) {
+      DEBUG_YASCII   yLOG_note    ("not applicable to YASCII_BASE");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   DEBUG_YASCII   yLOG_char    ("d_blocks"  , myASCII.d_blocks);
+   if (myASCII.d_blocks != 'y') {
+      DEBUG_YASCII   yLOG_note    ("blocks are globally turned-off");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   DEBUG_YASCII   yLOG_char    ("d_size"    , myASCII.d_size);
+   if (myASCII.d_size   == 'u') {
+      DEBUG_YASCII   yLOG_note    ("blocks skipped for micro boxes");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   /*---(defenses)-----------------------*/
+   DEBUG_YASCII   yLOG_char    ("a_block"   , a_block);
+   --rce;  if ((unsigned) a_block <= 33) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   /*---(no block)-----------------------*/
+   if (a_block == '-') {
+      DEBUG_YASCII   yLOG_note    ("block is unassigned");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   /*---(prepare)------------------------*/
+   sprintf (x_block, "<%c>", a_block);
+   l = strlen (x_block);
+   DEBUG_YASCII   yLOG_info    ("x_block"   , x_block);
+   /*---(print)--------------------------*/
+   rc = yASCII_print (x + 1, y + t - 1, x_block, YASCII_CLEAR);
+   DEBUG_YASCII   yLOG_value   ("print"     , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   /*---(complete)-----------------------*/
+   DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+   return 1;
+}
+
+char
+yascii_box__counts      (char a_arrange, short x, short y, short w, short t, char a_npred, char a_nsucc)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   char        rc          =    0;
+   char        x_count     [LEN_TERSE] = "";
+   /*---(header)-------------------------*/
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
+   /*---(quick-out)----------------------*/
+   DEBUG_YASCII   yLOG_char    ("a_arrange" , a_arrange);
+   if (a_arrange == YASCII_BASE) {
+      DEBUG_YASCII   yLOG_note    ("not applicable to YASCII_BASE");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   DEBUG_YASCII   yLOG_char    ("d_counts"  , myASCII.d_counts);
+   if (myASCII.d_counts != 'y') {
+      DEBUG_YASCII   yLOG_note    ("counts are globally turned-off");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   DEBUG_YASCII   yLOG_char    ("d_size"    , myASCII.d_size);
+   if (myASCII.d_size   == 'u') {
+      DEBUG_YASCII   yLOG_note    ("counts skipped for micro boxes");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   /*---(predeccessors)------------------*/
+   if (a_npred >= 0) {
+      if (a_arrange == YASCII_TECH) {
+         switch (a_npred) {
+         case 0  : strcpy (x_count, "" );  break;
+         case 1  : strcpy (x_count, "Á");  break;
+         case 2  : strcpy (x_count, "Â");  break;
+         case 3  : strcpy (x_count, "Ã");  break;
+         case 4  : strcpy (x_count, "Ä");  break;
+         default : strcpy (x_count, "Å");  break;
+         }
+         rc = yASCII_print (x + 1, y + t - 2, x_count, YASCII_CLEAR);
+      } else {
+         if      (a_npred == 0)  strcpy  (x_count, "");
+         else if (a_npred == 1)  strcpy  (x_count, " ");
+         else                    sprintf (x_count, "%-3d", a_npred);
+         rc = yASCII_print (x + 1, y + t, x_count, YASCII_CLEAR);
+      }
+   }
+   /*---(successors)---------------------*/
+   if (a_nsucc >= 0) {
+      if (a_arrange == YASCII_TECH) {
+         switch (a_nsucc) {
+         case 0  : strcpy (x_count, "" );  break;
+         case 1  : strcpy (x_count, "Á");  break;
+         case 2  : strcpy (x_count, "Â");  break;
+         case 3  : strcpy (x_count, "Ã");  break;
+         case 4  : strcpy (x_count, "Ä");  break;
+         default : strcpy (x_count, "Å");  break;
+         }
+         rc = yASCII_print (x + w - 2, y + t - 2, x_count, YASCII_CLEAR);
+      } else {
+         if      (a_nsucc == 0)  strcpy  (x_count, "");
+         else if (a_nsucc == 1)  strcpy  (x_count, " ");
+         else                    sprintf (x_count, "%3d", a_nsucc);
+         rc = yASCII_print (x + w - 4, y + t, x_count, YASCII_CLEAR);
+      }
+   }
+   /*---(trouble)------------------------*/
+   DEBUG_YASCII   yLOG_value   ("print"     , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   /*---(complete)-----------------------*/
+   DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+   return 1;
+}
+
+char
 yASCII_box_full         (char a_heavy, char a_arrange, short x, short y, short w, short t, char a_title [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc)
 {
    /*---(locals)-----------+-----+-----+-*/
@@ -324,79 +580,107 @@ yASCII_box_full         (char a_heavy, char a_arrange, short x, short y, short w
       return rce;
    }
    DEBUG_YASCII   yLOG_info    ("a_note"    , a_note);
-   /*---(lines)--------------------------*/
-   rc = yascii__outline (a_heavy, x, y, w, t, YASCII_CLEAR);
+   /*---(outline)------------------------*/
+   rc = yascii_box__outline (a_heavy, x, y, w, t, YASCII_CLEAR);
    DEBUG_YASCII   yLOG_value   ("outline"   , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
    /*---(title)--------------------------*/
-   if (a_arrange != YASCII_BASE) {
-      if (myASCII.d_titles == 'y' && x_title [0] != '·') {
-         ystrlcpy (x_line, x_title, w - 1);
-         l = strlen (x_line);
-         switch (a_arrange) {
-         case YASCII_BIG  : case YASCII_TECH :
-            yASCII_print (x + (w - l) / 2, y    , x_line, YASCII_CLEAR);
-            break;
-         case YASCII_STD  : default          :
-            yASCII_print (x + 1          , y + 1, x_line, YASCII_CLEAR);
-            break;
-         }
-      }
+   rc = yascii_box__title   (a_arrange, x, y, w, t, x_title);
+   DEBUG_YASCII   yLOG_value   ("title"     , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
    }
+   /*> if (a_arrange != YASCII_BASE) {                                                <* 
+    *>    if (myASCII.d_titles == 'y' && x_title [0] != '·') {                        <* 
+    *>       ystrlcpy (x_line, x_title, w - 1);                                       <* 
+    *>       l = strlen (x_line);                                                     <* 
+    *>       switch (a_arrange) {                                                     <* 
+    *>       case YASCII_BIG  : case YASCII_TECH :                                    <* 
+    *>          yASCII_print (x + (w - l) / 2, y    , x_line, YASCII_CLEAR);          <* 
+    *>          break;                                                                <* 
+    *>       case YASCII_STD  : default          :                                    <* 
+    *>          yASCII_print (x + 1          , y + 1, x_line, YASCII_CLEAR);          <* 
+    *>          break;                                                                <* 
+    *>       }                                                                        <* 
+    *>    }                                                                           <* 
+    *> }                                                                              <*/
    /*---(note)---------------------------*/
-   if (a_arrange != YASCII_BASE) {
-      if (myASCII.d_notes == 'y' && myASCII.d_size != 'u') {
-         if (strcmp (a_note, "")  != 0) {
-            sprintf (x_line, "(%.5s)", a_note);
-            l = strlen (x_line);
-            yASCII_print (x + w - l - 1, y + t - 1, x_line, YASCII_CLEAR);
-         }
-      }
+   rc = yascii_box__note    (a_arrange, x, y, w, t, a_note);
+   DEBUG_YASCII   yLOG_value   ("note"      , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
    }
+   /*> if (a_arrange != YASCII_BASE) {                                                <* 
+    *>    if (myASCII.d_notes == 'y' && myASCII.d_size != 'u') {                      <* 
+    *>       if (strcmp (a_note, "")  != 0) {                                         <* 
+    *>          sprintf (x_line, "(%.5s)", a_note);                                   <* 
+    *>          l = strlen (x_line);                                                  <* 
+    *>          yASCII_print (x + w - l - 1, y + t - 1, x_line, YASCII_CLEAR);        <* 
+    *>       }                                                                        <* 
+    *>    }                                                                           <* 
+    *> }                                                                              <*/
    /*---(block)--------------------------*/
-   if (a_arrange != YASCII_BASE) {
-      if (myASCII.d_blocks == 'y') {
-         if (a_block != '-') {
-            sprintf (x_line, "<%c>", a_block);
-            yASCII_print (x + 1, y + t - 1, x_line, YASCII_CLEAR);
-         }
-      }
+   rc = yascii_box__block   (a_arrange, x, y, w, t, a_block);
+   DEBUG_YASCII   yLOG_value   ("block"     , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
    }
+   /*> if (a_arrange != YASCII_BASE) {                                                <* 
+    *>    if (myASCII.d_blocks == 'y') {                                              <* 
+    *>       if (a_block != '-') {                                                    <* 
+    *>          sprintf (x_line, "<%c>", a_block);                                    <* 
+    *>          yASCII_print (x + 1, y + t - 1, x_line, YASCII_CLEAR);                <* 
+    *>       }                                                                        <* 
+    *>    }                                                                           <* 
+    *> }                                                                              <*/
    /*---(stats)--------------------------*/
-   if (a_arrange != YASCII_BASE) {
-      if (myASCII.d_counts == 'y' && myASCII.d_size != 'u') {
-         if (a_arrange == YASCII_TECH) {
-            switch (a_npred) {
-            case 0  : strcpy (x_line, "" );  break;
-            case 1  : strcpy (x_line, "Á");  break;
-            case 2  : strcpy (x_line, "Â");  break;
-            case 3  : strcpy (x_line, "Ã");  break;
-            case 4  : strcpy (x_line, "Ä");  break;
-            default : strcpy (x_line, "Å");  break;
-            }
-            yASCII_print (x + 1, y + t - 2, x_line, YASCII_CLEAR);
-            switch (a_nsucc) {
-            case 0  : strcpy (x_line, "" );  break;
-            case 1  : strcpy (x_line, "Á");  break;
-            case 2  : strcpy (x_line, "Â");  break;
-            case 3  : strcpy (x_line, "Ã");  break;
-            case 4  : strcpy (x_line, "Ä");  break;
-            default : strcpy (x_line, "Å");  break;
-            }
-            yASCII_print (x + w - 2, y + t - 2, x_line, YASCII_CLEAR);
-         } else {
-            if (a_npred > 0) {
-               if (a_npred == 1)  strcpy  (x_line, " ");
-               else               sprintf (x_line, "%-3d", a_npred);
-               yASCII_print (x + 1, y + t, x_line, YASCII_CLEAR);
-            }
-            if (a_nsucc > 0) {
-               if (a_nsucc == 1)  strcpy  (x_line, "   ");
-               else               sprintf (x_line, "%3d" , a_nsucc);
-               yASCII_print (x + w - 4, y + t, x_line, YASCII_CLEAR);
-            }
-         }
-      }
+   rc = yascii_box__counts  (a_arrange, x, y, w, t, a_npred, a_nsucc);
+   DEBUG_YASCII   yLOG_value   ("block"     , rc);
+   --rce;  if (rc < 0) {
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
    }
+   /*> if (a_arrange != YASCII_BASE) {                                                <* 
+    *>    if (myASCII.d_counts == 'y' && myASCII.d_size != 'u') {                     <* 
+    *>       if (a_arrange == YASCII_TECH) {                                          <* 
+    *>          switch (a_npred) {                                                    <* 
+    *>          case 0  : strcpy (x_line, "" );  break;                               <* 
+    *>          case 1  : strcpy (x_line, "Á");  break;                               <* 
+    *>          case 2  : strcpy (x_line, "Â");  break;                               <* 
+    *>          case 3  : strcpy (x_line, "Ã");  break;                               <* 
+    *>          case 4  : strcpy (x_line, "Ä");  break;                               <* 
+    *>          default : strcpy (x_line, "Å");  break;                               <* 
+    *>          }                                                                     <* 
+    *>          yASCII_print (x + 1, y + t - 2, x_line, YASCII_CLEAR);                <* 
+    *>          switch (a_nsucc) {                                                    <* 
+    *>          case 0  : strcpy (x_line, "" );  break;                               <* 
+    *>          case 1  : strcpy (x_line, "Á");  break;                               <* 
+    *>          case 2  : strcpy (x_line, "Â");  break;                               <* 
+    *>          case 3  : strcpy (x_line, "Ã");  break;                               <* 
+    *>          case 4  : strcpy (x_line, "Ä");  break;                               <* 
+    *>          default : strcpy (x_line, "Å");  break;                               <* 
+    *>          }                                                                     <* 
+    *>          yASCII_print (x + w - 2, y + t - 2, x_line, YASCII_CLEAR);            <* 
+    *>       } else {                                                                 <* 
+    *>          if (a_npred > 0) {                                                    <* 
+    *>             if (a_npred == 1)  strcpy  (x_line, " ");                          <* 
+    *>             else               sprintf (x_line, "%-3d", a_npred);              <* 
+    *>             yASCII_print (x + 1, y + t, x_line, YASCII_CLEAR);                 <* 
+    *>          }                                                                     <* 
+    *>          if (a_nsucc > 0) {                                                    <* 
+    *>             if (a_nsucc == 1)  strcpy  (x_line, "   ");                        <* 
+    *>             else               sprintf (x_line, "%3d" , a_nsucc);              <* 
+    *>             yASCII_print (x + w - 4, y + t, x_line, YASCII_CLEAR);             <* 
+    *>          }                                                                     <* 
+    *>       }                                                                        <* 
+    *>    }                                                                           <* 
+    *> }                                                                              <*/
    /*---(add box)------------------------*/
    rc = yascii_box__add  (a_heavy, a_arrange, x, y, w, t, x_title, a_note, a_block, a_npred, a_nsucc);
    DEBUG_YASCII   yLOG_value   ("add"       , rc);
