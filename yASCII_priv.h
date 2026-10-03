@@ -79,8 +79,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.2-, breaking out draw into manageable pieces"
-#define     P_VERNUM    "3.2f"
-#define     P_VERTXT    "broke-out, improved, and unit tested box title function"
+#define     P_VERNUM    "3.2g"
+#define     P_VERTXT    "broke-out, improved, and unit tested box note/block functions"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -244,6 +244,7 @@ char*       yascii_box_entry        (char a_dir);
 char        yascii_box__outline     (char a_heavy, short x, short y, short w, short t, char a_mode);
 char        yascii_box__title       (char a_arrange, short x, short y, short w, short t, char a_title [LEN_TITLE]);
 char        yascii_box__note        (char a_arrange, short x, short y, short w, short t, char a_note [LEN_SHORT]);
+char        yascii_box__block       (char a_arrange, short x, short y, short w, short t, char a_block);
 char        yascii_box__counts      (char a_arrange, short x, short y, short w, short t, char a_npred, char a_nsucc);
 char        yASCII_box_full         (char a_heavy, char a_arrange, short x, short y, short w, short t, char a_title [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
 char        yASCII_box_simple       (char a_col, char a_row, char a_title [LEN_TITLE]);

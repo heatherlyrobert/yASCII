@@ -351,7 +351,7 @@ yascii_box__note        (char a_arrange, short x, short y, short w, short t, cha
    char        rce         =  -10;
    char        rc          =    0;
    char        x_note      [LEN_TERSE] = "";
-   short       l           =    0;
+   short       lb, la;
    /*---(header)-------------------------*/
    DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
    /*---(quick-out)----------------------*/
@@ -387,11 +387,13 @@ yascii_box__note        (char a_arrange, short x, short y, short w, short t, cha
       return 0;
    }
    /*---(prepare)------------------------*/
-   sprintf (x_note, "(%.4s)", a_note);
-   l = strlen (x_note);
+   lb = strlen (a_note);
+   if (lb > 4)  sprintf (x_note, "€%.4s>", a_note);
+   else         sprintf (x_note, "€%.4s€", a_note);
+   la = strlen (x_note);
    DEBUG_YASCII   yLOG_info    ("x_note"    , x_note);
    /*---(print)--------------------------*/
-   rc = yASCII_print (x + w - l - 1, y + t - 1, x_note, YASCII_CLEAR);
+   rc = yASCII_print (x + w - la - 1, y + t - 1, x_note, YASCII_CLEAR);
    DEBUG_YASCII   yLOG_value   ("print"     , rc);
    --rce;  if (rc < 0) {
       DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
@@ -409,7 +411,6 @@ yascii_box__block       (char a_arrange, short x, short y, short w, short t, cha
    char        rce         =  -10;
    char        rc          =    0;
    char        x_block     [LEN_TERSE] = "";
-   short       l           =    0;
    /*---(header)-------------------------*/
    DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
    /*---(quick-out)----------------------*/
@@ -433,7 +434,7 @@ yascii_box__block       (char a_arrange, short x, short y, short w, short t, cha
    }
    /*---(defenses)-----------------------*/
    DEBUG_YASCII   yLOG_char    ("a_block"   , a_block);
-   --rce;  if ((unsigned) a_block <= 33) {
+   --rce;  if ((unsigned) a_block <= 32) {
       DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
    }
@@ -444,8 +445,7 @@ yascii_box__block       (char a_arrange, short x, short y, short w, short t, cha
       return 0;
    }
    /*---(prepare)------------------------*/
-   sprintf (x_block, "<%c>", a_block);
-   l = strlen (x_block);
+   sprintf (x_block, "€%c€", a_block);
    DEBUG_YASCII   yLOG_info    ("x_block"   , x_block);
    /*---(print)--------------------------*/
    rc = yASCII_print (x + 1, y + t - 1, x_block, YASCII_CLEAR);
