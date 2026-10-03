@@ -487,41 +487,50 @@ yascii_box__counts      (char a_arrange, short x, short y, short w, short t, cha
       DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
       return 0;
    }
+   if (a_npred <= 0 && a_nsucc <= 0) {
+      DEBUG_YASCII   yLOG_note    ("counts are both empty, nothing to do");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
    /*---(predeccessors)------------------*/
+   DEBUG_YASCII   yLOG_char    ("a_npred"   , a_npred);
    if (a_npred >= 0) {
       if (a_arrange == YASCII_TECH) {
          switch (a_npred) {
-         case 0  : strcpy (x_count, "" );  break;
+         case 0  : strcpy (x_count, " ");  break;
          case 1  : strcpy (x_count, "Á");  break;
          case 2  : strcpy (x_count, "Â");  break;
          case 3  : strcpy (x_count, "Ã");  break;
          case 4  : strcpy (x_count, "Ä");  break;
          default : strcpy (x_count, "Å");  break;
          }
+         DEBUG_YASCII   yLOG_info    ("x_count"   , x_count);
          rc = yASCII_print (x + 1, y + t - 2, x_count, YASCII_CLEAR);
       } else {
-         if      (a_npred == 0)  strcpy  (x_count, "");
-         else if (a_npred == 1)  strcpy  (x_count, " ");
+         if      (a_npred == 0)  strcpy  (x_count, "   ");
          else                    sprintf (x_count, "%-3d", a_npred);
+         DEBUG_YASCII   yLOG_info    ("x_count"   , x_count);
          rc = yASCII_print (x + 1, y + t, x_count, YASCII_CLEAR);
       }
    }
    /*---(successors)---------------------*/
+   DEBUG_YASCII   yLOG_char    ("a_nsucc"   , a_nsucc);
    if (a_nsucc >= 0) {
       if (a_arrange == YASCII_TECH) {
          switch (a_nsucc) {
-         case 0  : strcpy (x_count, "" );  break;
+         case 0  : strcpy (x_count, " ");  break;
          case 1  : strcpy (x_count, "Á");  break;
          case 2  : strcpy (x_count, "Â");  break;
          case 3  : strcpy (x_count, "Ã");  break;
          case 4  : strcpy (x_count, "Ä");  break;
          default : strcpy (x_count, "Å");  break;
          }
+         DEBUG_YASCII   yLOG_info    ("x_count"   , x_count);
          rc = yASCII_print (x + w - 2, y + t - 2, x_count, YASCII_CLEAR);
       } else {
-         if      (a_nsucc == 0)  strcpy  (x_count, "");
-         else if (a_nsucc == 1)  strcpy  (x_count, " ");
+         if      (a_nsucc == 0)  strcpy  (x_count, "   ");
          else                    sprintf (x_count, "%3d", a_nsucc);
+         DEBUG_YASCII   yLOG_info    ("x_count"   , x_count);
          rc = yASCII_print (x + w - 4, y + t, x_count, YASCII_CLEAR);
       }
    }

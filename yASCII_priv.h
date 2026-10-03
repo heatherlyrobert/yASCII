@@ -79,8 +79,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.2-, breaking out draw into manageable pieces"
-#define     P_VERNUM    "3.2g"
-#define     P_VERTXT    "broke-out, improved, and unit tested box note/block functions"
+#define     P_VERNUM    "3.2h"
+#define     P_VERTXT    "box_full and all previous unit-tests pass"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
