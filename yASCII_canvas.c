@@ -40,6 +40,43 @@ char  *G_image = NULL;
 
 
 /*====================------------------------------------====================*/
+/*===----                      supporting functions                    ----===*/
+/*====================------------------------------------====================*/
+static void      o___SUPPORT____________o (void) {;}
+
+char
+yASCII_clear            (void)
+{
+   /*---(locals)-----------+-----------+-*/
+   char        rce         =  -10;
+   int         x           =    0;
+   int         y           =    0;
+   int         o           =    0;
+   /*---(header)-------------------------*/
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
+   /*---(defense)------------------------*/
+   DEBUG_YASCII   yLOG_point   ("G_image"   , G_image);
+   --rce;  if (G_image == NULL) {
+      DEBUG_YASCII   yLOG_note    ("image space does not exist");
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   /*---(clear)--------------------------*/
+   for (y = 0; y < myASCII.y_max; ++y) {
+      DEBUG_YASCII   yLOG_value   ("y"         , y);
+      for (x = 0; x < myASCII.x_max; ++x) {
+         o = y * myASCII.x_max + x;
+         G_image [o] = ' ';
+      }
+   }
+   /*---(complete)-----------------------*/
+   DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+   return 0;
+}
+
+
+
+/*====================------------------------------------====================*/
 /*===----                   creation and destruction                   ----===*/
 /*====================------------------------------------====================*/
 static void      o___EXIST______________o (void) {;}
@@ -92,43 +129,13 @@ yASCII_new              (int a_horz, int a_vert)
    /*---(clear)--------------------------*/
    yASCII_clear ();
    /*---(style)--------------------------*/
-   yASCII_grid_set_full  ('-', YASCII_NAMES, 0, 0);
+   yASCII_grid_set_full  (YASCII_DEFAULT, YASCII_NAMES, 0, 0);
    myASCII.d_box   = YASCII_SOLID;
    myASCII.d_tie   = YASCII_DOTTED;
    myASCII.d_bound = YASCII_SOLID;
    DEBUG_YASCII   yLOG_complex ("config"    , "%cb, %ct, %cb", ychrvisible (myASCII.d_box), ychrvisible (myASCII.d_tie), ychrvisible (myASCII.d_bound));
    /*---(clear boxes)--------------------*/
    yascii_box_clear ();
-   /*---(complete)-----------------------*/
-   DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
-   return 0;
-}
-
-char
-yASCII_clear            (void)
-{
-   /*---(locals)-----------+-----------+-*/
-   char        rce         =  -10;
-   int         x           =    0;
-   int         y           =    0;
-   int         o           =    0;
-   /*---(header)-------------------------*/
-   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
-   /*---(defense)------------------------*/
-   DEBUG_YASCII   yLOG_point   ("G_image"   , G_image);
-   --rce;  if (G_image == NULL) {
-      DEBUG_YASCII   yLOG_note    ("image space does not exist");
-      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
-      return rce;
-   }
-   /*---(clear)--------------------------*/
-   for (y = 0; y < myASCII.y_max; ++y) {
-      DEBUG_YASCII   yLOG_value   ("y"         , y);
-      for (x = 0; x < myASCII.x_max; ++x) {
-         o = y * myASCII.x_max + x;
-         G_image [o] = ' ';
-      }
-   }
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return 0;
@@ -154,6 +161,8 @@ yASCII_free             (void)
    G_image = NULL;
    myASCII.x_max  = -1;
    myASCII.y_max  = -1;
+   /*---(clear boxes)--------------------*/
+   yascii_box_clear ();
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return 0;

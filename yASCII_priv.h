@@ -79,8 +79,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.2-, breaking out draw into manageable pieces"
-#define     P_VERNUM    "3.2h"
-#define     P_VERTXT    "box_full and all previous unit-tests pass"
+#define     P_VERNUM    "3.2i"
+#define     P_VERTXT    "lots of new work, broke out and heavily unit-tested yascii_box_joiner"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -163,21 +163,29 @@ extern const tLINES S_lines [LEN_HUND];
 
 
 
-/*===[[ yASCII_draw.c ]]======================================================*/
+/*===[[ yASCII_canvas.c ]]====================================================*/
+/*········´ ´·············support·´ ´·········································*/
+char        yASCII_clear            (void);
 /*········´ ´···············exist·´ ´·········································*/
 char        yASCII_new              (int a_horz, int a_vert);
-char        yASCII_clear            (void);
 char        yASCII_free             (void);
+/*········´ ´················exim·´ ´·········································*/
+char        yASCII_write            (char a_name [LEN_PATH]);
+/*········´ ´················DONE·´ ´·········································*/
+
+
+
+/*===[[ yASCII_draw.c ]]======================================================*/
 /*········´ ´··············config·´ ´·········································*/
-char        yascii_heaviness        (char a_heavy, char *r_left, char *r_topp, char *r_righ, char *r_bott);
-char        yASCII_grid_set_full    (char a_size, char a_decor, short x_left, short y_topp);
-char        yASCII_grid_set         (char a_size, char a_decor, char a_col, char a_row);
-char        yASCII_style            (char a_size, char a_decor);
+char        yascii_draw_heaviness   (char a_heavy, char *r_left, char *r_topp, char *r_righ, char *r_bott);
+char        yascii_draw_joiner      (char a_old, char a_new);
+
+
+
+
 char        yASCII_grid_new_custom  (char a_size, char a_decor, char a_col, char a_row, char a_left, char a_righ, char a_topp, char a_bott, int a_wide, int a_tall);
 char        yASCII_grid_new_full    (char a_size, char a_decor, char a_col, char a_row, char a_left, char a_righ, char a_topp, char a_bott);
 char        yASCII_grid_new         (char a_size, char a_decor, char a_col, char a_row);
-/*········´ ´················exim·´ ´·········································*/
-char        yASCII_write            (char a_name [LEN_PATH]);
 /*········´ ´···············chars·´ ´·········································*/
 char        yASCII_draw_get         (short x, short y);
 char        yASCII_draw_full        (char c, short x, short y, char a_new, char a_alt, char a_mode);
@@ -229,28 +237,29 @@ char*       yascii__font_unit       (char *a_question, int a_num);
 char        yascii__getlang         (char a_iso [LEN_SHORT], char r_name [LEN_LABEL]);
 
 
-char        yascii_heaviness        (char a_heavy, char *r_left, char *r_topp, char *r_righ, char *r_bott);
 
 
 
 /*===[[ yASCII_box.c ]]=======================================================*/
 /*········´ ´················data·´ ´·········································*/
 char        yascii_box_clear        (void);
-char        yascii_box__add         (char a_heavy, char a_arrange, short x, short y, short w, short t, char a_title [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
+char        yascii_box__add         (char a_heavy, char a_arrange, char a_col, char a_row, short a_bx, short a_by, char a_wide, char a_tall, char a_title [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
 char        yascii_box_count        (void);
-char        yascii_box_find         (char a_title [LEN_TITLE]);
+char        yascii_box_by_name      (char a_title [LEN_TITLE]);
+char        yascii_box_by_pos       (short a_bx, short a_by);
+char        yascii_box_by_grid      (char a_col, char a_row);
+char        yascii_box_data         (char n, char r_title [LEN_TITLE], char *r_heavy, char *r_arrange, char *r_col, char *r_row, short *r_bx, short *r_by, char *r_wide, char *r_tall, short *r_ex, short *r_ey, char r_note [LEN_SHORT], char *r_block, char *r_npred, char *r_nsucc);
 char*       yascii_box_entry        (char a_dir);
 /*········´ ´···············boxes·´ ´·········································*/
-char        yascii_box__outline     (char a_heavy, short x, short y, short w, short t, char a_mode);
-char        yascii_box__title       (char a_arrange, short x, short y, short w, short t, char a_title [LEN_TITLE]);
-char        yascii_box__note        (char a_arrange, short x, short y, short w, short t, char a_note [LEN_SHORT]);
-char        yascii_box__block       (char a_arrange, short x, short y, short w, short t, char a_block);
-char        yascii_box__counts      (char a_arrange, short x, short y, short w, short t, char a_npred, char a_nsucc);
-char        yASCII_box_full         (char a_heavy, char a_arrange, short x, short y, short w, short t, char a_title [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
-char        yASCII_box_simple       (char a_col, char a_row, char a_title [LEN_TITLE]);
+char        yascii_box__erase       (short a_bx, short a_by, char a_wide, char a_tall);
+char        yascii_box__outline     (char a_heavy, short a_bx, short a_by, char a_wide, char a_tall, char a_mode);
+char        yascii_box__title       (char a_arrange, short a_bx, short a_by, char a_wide, char a_tall, char a_title [LEN_TITLE]);
+char        yascii_box__note        (char a_arrange, short a_bx, short a_by, char a_wide, char a_tall, char a_note [LEN_SHORT]);
+char        yascii_box__block       (char a_arrange, short a_bx, short a_by, char a_wide, char a_tall, char a_block);
+char        yascii_box__counts      (char a_arrange, short a_bx, short a_by, char a_wide, char a_tall, char a_npred, char a_nsucc);
+char        yASCII_box_full         (char a_heavy, char a_arrange, char a_col, char a_row, short a_bx, short a_by, char a_wide, char a_tall, char a_title [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
 /*········´ ´···············nodes·´ ´·········································*/
-char        yASCII_node             (short x, short y, char a);
-char        yASCII_node_grid        (char a_col, char a_row, char a);
+char        yASCII_node             (short a_bx, short a_by, char a_symbol);
 /*········´ ´················DONE·´ ´·········································*/
 
 
@@ -273,6 +282,26 @@ char        yASCII_line_mark        (char a_name [LEN_SHORT], char a_heavy, char
 char        yASCII_line             (char a_name [LEN_SHORT], char a_heavy, short a_bx, short a_by, short a_vx, short a_vy, short a_ex, short a_ey);
 /*········´ ´················DONE·´ ´·········································*/
 
+
+char        yASCII_grid_box_simple  (char a_col, char a_row, char a_title [LEN_TITLE]);
+char        yASCII_grid_node        (char a_col, char a_row, char a);
+
+
+
+/*===[[ yASCII_grid.c ]]======================================================*/
+/*········· ´········configuration· ´·········································*/
+char        yASCII_grid_set_full    (char a_size, char a_decor, short x_off, short y_off);
+char        yASCII_grid_set         (char a_size, char a_decor, char a_col, char a_row);
+char        yASCII_grid_style       (char a_size, char a_decor);
+/*········· ´·············creation· ´·········································*/
+char        yASCII_grid_new_custom  (char a_size, char a_decor, char a_col, char a_row, char a_left, char a_righ, char a_topp, char a_bott, int a_wide, int a_tall);
+char        yASCII_grid_new_full    (char a_size, char a_decor, char a_col, char a_row, char a_left, char a_righ, char a_topp, char a_bott);
+char        yASCII_grid_new         (char a_size, char a_decor, char a_col, char a_row);
+/*········· ´················boxes· ´·········································*/
+char        yASCII_grid_box         (char a_col, char a_row, char a_title [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
+char        yASCII_grid_box_simple  (char a_col, char a_row, char a_title [LEN_TITLE]);
+char        yASCII_grid_node        (char a_col, char a_row, char a);
+/*········´ ´················DONE·´ ´·········································*/
 
 
 #endif

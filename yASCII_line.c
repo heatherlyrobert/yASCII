@@ -552,7 +552,7 @@ yASCII_line_full        (char a_name [LEN_SHORT], char a_heavy, char a_bef, char
    DEBUG_YASCII   yLOG_info    ("x_ends"    , x_ends);
    DEBUG_YASCII   yLOG_info    ("x_valid"   , x_valid);
    /*---(set line type)------------------*/
-   rc = yascii_heaviness  (a_heavy, &x_vert, &x_horz, NULL, NULL);
+   rc = yascii_draw_heaviness  (a_heavy, &x_vert, &x_horz, NULL, NULL);
    DEBUG_YASCII   yLOG_value   ("heavy"     , rc);
    --rce;  if (rc < 0) {
       DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
