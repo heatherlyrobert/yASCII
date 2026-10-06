@@ -283,7 +283,7 @@ yascii_draw_heaviness   (char a_heavy, char *r_left, char *r_topp, char *r_righ,
 }
 
 char
-yascii_draw_joiner      (char a_old, char a_new)
+yascii_draw_joiner      (char a_old, char a_new, char *r_rc)
 {
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
@@ -297,17 +297,27 @@ yascii_draw_joiner      (char a_old, char a_new)
    /*---(enter)--------------------------*/
    DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
    /*---(defense)------------------------*/
-   if ((unsigned) a_old < 32)  return '°';
-   if ((unsigned) a_new < 32)  return '°';
+   DEBUG_YASCII   yLOG_char    ("a_old"     , a_old);
+   --rce;  if ((unsigned) a_old < 32 || (unsigned) a_old == 127)  {
+      if (r_rc    != NULL)  *r_rc    = rce;
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return '°';
+   }
+   DEBUG_YASCII   yLOG_char    ("a_new"     , a_new);
+   --rce;  if ((unsigned) a_new < 32 || (unsigned) a_new == 127) {
+      if (r_rc    != NULL)  *r_rc    = rce;
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return '°';
+   }
    /*---(load options)-------------------*/
-   ystrlcpy (x_valid, zASCII_join [0], LEN_HUND);
+   strlcpy (x_valid, zASCII_join [0], LEN_HUND);
    DEBUG_YASCII   yLOG_info    ("x_valid"   , x_valid);
    /*---(find existing)------------------*/
-   DEBUG_YASCII   yLOG_char    ("a_old"     , a_old);
    p = strchr (x_valid, a_old);
    DEBUG_YASCII   yLOG_point   ("p"         , p);
    if (p == NULL) {
       DEBUG_YASCII   yLOG_note    ("leave alone");
+      if (r_rc    != NULL)  *r_rc    = 3;
       DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
       return a_old;
    }
@@ -315,16 +325,17 @@ yascii_draw_joiner      (char a_old, char a_new)
    x_col = p - x_valid;
    DEBUG_YASCII   yLOG_value   ("x_col"     , x_col);
    /*---(get new)------------------------*/
-   DEBUG_YASCII   yLOG_char    ("a_new"     , a_new);
    p = strchr (x_valid, a_new);
    DEBUG_YASCII   yLOG_point   ("p"         , p);
    if (p == NULL) {
       if (a_old == ' ') {
          DEBUG_YASCII   yLOG_note    ("update empty spot");
+         if (r_rc    != NULL)  *r_rc    = 5;
          DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
          return a_new;
       }
       DEBUG_YASCII   yLOG_note    ("leave alone");
+      if (r_rc    != NULL)  *r_rc    = 4;
       DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
       return a_old;
    }
@@ -334,10 +345,12 @@ yascii_draw_joiner      (char a_old, char a_new)
    x_row = n / 2.0;
    DEBUG_YASCII   yLOG_value   ("x_row"     , x_row);
    /*---(identify replacement)-----------*/
-   ystrlcpy (x_valid, zASCII_join [x_row], LEN_HUND);
+   strlcpy (x_valid, zASCII_join [x_row], LEN_HUND);
    DEBUG_YASCII   yLOG_info    ("x_valid"   , x_valid);
    x_final = x_valid [x_col];
    DEBUG_YASCII   yLOG_char    ("x_final"   , x_final);
+   /*---(save-back)----------------------*/
+   if (r_rc    != NULL)  *r_rc    = 2;
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return x_final;
@@ -387,13 +400,9 @@ yASCII_draw_full        (char c, short x, short y, char a_new, char a_alt, char 
 {
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
+   char        rc          =    0;
    int         x_off       =    0;
    char        x_new       =  '-';
-   /*····································*/
-   char       *p           = NULL;
-   char        x_valid     [LEN_HUND] = "";
-   char        x_row       =   -1;
-   char        x_col       =   -1;
    char        x_exist     =   -1;
    char        x_final     =   -1;
    /*---(enter)--------------------------*/
@@ -401,23 +410,24 @@ yASCII_draw_full        (char c, short x, short y, char a_new, char a_alt, char 
    /*---(quick-out)----------------------*/
    DEBUG_YASCII   yLOG_value   ("x"         , x);
    DEBUG_YASCII   yLOG_value   ("x_max"     , myASCII.x_max);
-   --rce;  if (x < 0 || x >= myASCII.x_max) {
+   if (x < 0 || x >= myASCII.x_max) {
       DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
-      return rce;
+      return 0;
    }
    DEBUG_YASCII   yLOG_value   ("y"         , y);
    DEBUG_YASCII   yLOG_value   ("y_max"     , myASCII.y_max);
-   --rce;  if (y < 0 || y >= myASCII.y_max) {
+   if (y < 0 || y >= myASCII.y_max) {
       DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
-      return rce;
+      return 0;
    }
+   /*---(defense)------------------------*/
    DEBUG_YASCII   yLOG_char    ("a_new"     , a_new);
-   --rce;  if ((unsigned) a_new < 32) {
+   --rce;  if ((unsigned) a_new < 32 || (unsigned) a_new == 127) {
       DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
       return rce;
    }
    DEBUG_YASCII   yLOG_char    ("a_alt"     , a_alt);
-   --rce;  if ((unsigned) a_alt < 32) {
+   --rce;  if ((unsigned) a_alt < 32 || (unsigned) a_alt == 127) {
       DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
       return rce;
    }
@@ -426,9 +436,10 @@ yASCII_draw_full        (char c, short x, short y, char a_new, char a_alt, char 
       DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
       return rce;
    }
-   /*---(prepare)------------------------*/
+   /*---(prepare offset)-----------------*/
    x_off = (y * myASCII.x_max) + x;
    DEBUG_YASCII   yLOG_value   ("x_off"     , x_off);
+   /*---(choose character)---------------*/
    DEBUG_YASCII   yLOG_value   ("c"         , c);
    if (c < 0)       c == 0;
    if (c % 2 == 0)  x_new = a_new;
@@ -442,47 +453,17 @@ yASCII_draw_full        (char c, short x, short y, char a_new, char a_alt, char 
       return 1;
    }
    DEBUG_YASCII   yLOG_note    ("mode in merge, calculate right char");
-   /*---(get valid letters)--------------*/
-   ystrlcpy (x_valid, zASCII_join [0], LEN_HUND);
-   DEBUG_YASCII   yLOG_info    ("x_valid"   , x_valid);
-   /*---(get existing)-------------------*/
+   /*---(call joiiner)-------------------*/
    x_exist = yASCII_draw_get (x, y);
    DEBUG_YASCII   yLOG_char    ("x_exist"   , x_exist);
-   p = strchr (x_valid, x_exist);
-   DEBUG_YASCII   yLOG_point   ("p"         , p);
-   if (p == NULL) {
-      DEBUG_YASCII   yLOG_note    ("leave alone");
-      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
-      return 3;
-   }
-   x_col = p - x_valid;
-   DEBUG_YASCII   yLOG_value   ("x_col"     , x_col);
-   /*---(get new)------------------------*/
-   p = strchr (x_valid, x_new);
-   DEBUG_YASCII   yLOG_point   ("p"         , p);
-   if (p == NULL) {
-      if (x_exist == ' ') {
-         DEBUG_YASCII   yLOG_note    ("update empty spot");
-         G_image [x_off] = x_new;
-         DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
-         return 5;
-      }
-      DEBUG_YASCII   yLOG_note    ("leave alone");
-      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
-      return 4;
-   }
-   x_row = (p - x_valid) / 2;
-   DEBUG_YASCII   yLOG_char    ("x_row"     , x_row);
-   /*---(identify replacement)-----------*/
-   ystrlcpy (x_valid, zASCII_join [x_row], LEN_HUND);
-   DEBUG_YASCII   yLOG_info    ("x_valid"   , x_valid);
-   x_final = x_valid [x_col];
+   x_final = yascii_draw_joiner (x_exist, x_new, &rc);
+   DEBUG_YASCII   yLOG_char    ("joiner"    , rc);
    DEBUG_YASCII   yLOG_char    ("x_final"   , x_final);
-   /*---(replace)------------------------*/
+   /*---(save-back)----------------------*/
    G_image [x_off] = x_final;
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
-   return 2;
+   return rc;
 }
 
 char yASCII_draw_exact  (short x, short y, char a_new)  { return yASCII_draw_full (0, x, y, a_new, a_new, YASCII_CLEAR); }
@@ -497,56 +478,95 @@ char yASCII_draw_double (char c, short x, short y, char a_new, char a_alt)  { re
 static void      o___STRINGS____________o (void) {;}
 
 char
-yASCII_print            (int x, int y, char a_text [LEN_RECD], char a_mode)
+yASCII_print            (int x, int y, char a_text [LEN_RECD])
 {
    /*---(locals)-----------+-----+-----+-*/
-   char        rce         =    0;
+   char        rce         =  -10;
+   char        rc          =    0;
    int         x_len       =    0;
    int         i           =    0;
    char        c           =  '-';
-   int         o           =    0;
    int         n           =    0;
+   char        x_fails     =    0;
+   char        x_lines     =    1;
+   short       x_curr      =    0;
    /*---(enter)--------------------------*/
-   DEBUG_YASCII   yLOG_senter  (__FUNCTION__);
+   DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
    /*---(defense)------------------------*/
+   DEBUG_YASCII   yLOG_point   ("a_text"    , a_text);
    --rce;  if (a_text == NULL) {
-      DEBUG_YASCII   yLOG_sexitr  (__FUNCTION__, rce);
+      DEBUG_YASCII   yLOG_note    ("text is null");
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
    }
-   DEBUG_YASCII   yLOG_snote   (a_text);
+   DEBUG_YASCII   yLOG_info    ("a_text"    , a_text);
    /*---(filter)-------------------------*/
+   DEBUG_YASCII   yLOG_value   ("x"         , x);
+   DEBUG_YASCII   yLOG_value   ("y"         , y);
    if (y <  0) {
-      DEBUG_YASCII   yLOG_sexit   (__FUNCTION__);
+      DEBUG_YASCII   yLOG_note    ("y too low, nothing to display");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
       return 0;
    }
    if (y >= myASCII.y_max) {
-      DEBUG_YASCII   yLOG_sexit   (__FUNCTION__);
+      DEBUG_YASCII   yLOG_note    ("y too high, nothing to display");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
       return 0;
    }
    x_len = strlen (a_text);
-   DEBUG_YASCII   yLOG_sint    (x_len);
+   DEBUG_YASCII   yLOG_value   ("x_len"     , x_len);
    if (x_len <= 0) {
-      DEBUG_YASCII   yLOG_sexit   (__FUNCTION__);
+      DEBUG_YASCII   yLOG_note    ("text is empty, nothing to do");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
       return 0;
    }
    /*---(place characters)---------------*/
    for (i = 0; i < x_len; ++i) {
-      c = a_text [i];
-      if (a_mode == YASCII_MERGE && c == ' ')  continue;
-      if (x + i <  0)       continue;
-      if (x + i >= myASCII.x_max)  continue;
-      o = (y * myASCII.x_max) + (x + i);
-      /*> if (a_mode == YASCII_LAYER)   c = yascii_join (G_image [o], c);             <*/
-      G_image [o] = c;
-      ++n;
+      /*---(prepare)---------------------*/
+      c  = a_text [i];
+      ++x_curr;
+      /*---(new lines)-------------------*/
+      if (c == '|') {
+         ++n;
+         ++x_lines;
+         ++y;
+         x -= x_curr;
+         x_curr = 0;
+         continue;
+      }
+      /*---(display)---------------------*/
+      rc = yASCII_draw_full (-1, x + i, y, c, c, YASCII_CLEAR);
+      if (rc == 1) ++n;
+      if (rc <  0) ++x_fails;
+      /*---(done)------------------------*/
    }
-   DEBUG_YASCII   yLOG_sint    (n);
-   DEBUG_YASCII   yLOG_sexit   (__FUNCTION__);
-   return 0;
+   DEBUG_YASCII   yLOG_value   ("n"         , n);
+   DEBUG_YASCII   yLOG_value   ("x_lines"   , x_lines);
+   /*---(check for troubles)-------------*/
+   DEBUG_YASCII   yLOG_value   ("x_fails"   , x_fails);
+   --rce;  if (x_fails > 0) {
+      DEBUG_YASCII   yLOG_note    ("some characters where illegal");
+      DEBUG_YASCII   yLOG_exitr   (__FUNCTION__, rce);
+      return rce;
+   }
+   /*---(some not printed)---------------*/
+   if (n == 0) {
+      DEBUG_YASCII   yLOG_note    ("no text was visible");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 0;
+   }
+   if (n < x_len) {
+      DEBUG_YASCII   yLOG_note    ("some text was out of bounds");
+      DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+      return 1;
+   }
+   /*---(complete)-----------------------*/
+   DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
+   return 2;
 }
 
 char
-yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD], char a_mode)
+yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD])
 {
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
@@ -569,7 +589,7 @@ yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_
    }
    DEBUG_YASCII   yLOG_info    ("a_text"    , a_text);
    /*---(prepare)------------------------*/
-   ystrlcpy (x_str, a_text, LEN_RECD);
+   strlcpy (x_str, a_text, LEN_RECD);
    l = strlen (x_str);
    DEBUG_YASCII   yLOG_value   ("l"         , l);
    c = ystrldcnt (x_str, '¨', LEN_RECD);
@@ -593,13 +613,13 @@ yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_
       if (x_width > a_wide || x_str [i] == '¨') {
          DEBUG_YASCII  yLOG_note    ("passed width or newline, display");
          x_str [x_break] = '\0';
-         if (a_mode != YASCII_FILL) {
-            ystrlcpy  (x_str + x_head, x_out, LEN_RECD);
-         } else {
-            ystrlpad  (x_str + x_head, x_out, '.', '<', a_wide);
-            ystrldchg (x_out, ' ', '·', a_wide);
-         }
-         yASCII_print (x, y + x_lines, x_out, a_mode);
+         /*> if (a_mode != YASCII_FILL) {                                             <* 
+          *>    strlcpy  (x_str + x_head, x_out, LEN_RECD);                           <* 
+          *> } else {                                                                 <* 
+          *>    ystrlpad  (x_str + x_head, x_out, '.', '<', a_wide);                  <* 
+          *>    ystrldchg (x_out, ' ', '·', a_wide);                                  <* 
+          *> }                                                                        <*/
+         yASCII_print (x, y + x_lines, x_out);
          ++x_lines;
          x_width = 0;
          ++x_break;
@@ -617,20 +637,20 @@ yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_
    DEBUG_YASCII  yLOG_complex ("leftover"  , "%3d w, %3d s, %3d l", x_width, x_head, l);
    if (x_width > 0) {
       DEBUG_YASCII  yLOG_note    ("print final bits");
-      if (a_mode != YASCII_FILL) {
-         ystrlcpy  (x_str + x_head, x_out, LEN_RECD);
-      } else {
-         ystrlpad  (x_str + x_head, x_out, '.', '<', a_wide);
-         ystrldchg (x_out, ' ', '·', a_wide);
-      }
-      yASCII_print (x, y + x_lines, x_out, a_mode);
+      /*> if (a_mode != YASCII_FILL) {                                                <* 
+       *>    strlcpy  (x_str + x_head, x_out, LEN_RECD);                              <* 
+       *> } else {                                                                    <* 
+       *>    ystrlpad  (x_str + x_head, x_out, '.', '<', a_wide);                     <* 
+       *>    ystrldchg (x_out, ' ', '·', a_wide);                                     <* 
+       *> }                                                                           <*/
+      yASCII_print (x, y + x_lines, x_out);
       x_lines ++;
    } else {
       DEBUG_YASCII  yLOG_note    ("nothing left at end to print");
    }
    for (i = x_lines; i < a_tall; ++i) {
       ystrlpad  ("", x_out, '.', '<', a_wide);
-      yASCII_print (x, y + i, x_out, a_mode);
+      yASCII_print (x, y + i, x_out);
    }
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
@@ -679,32 +699,32 @@ yASCII_connector        (short bx, short by, char a_dir, short ex, short ey, cha
    DEBUG_YASCII   yLOG_schar   (a_dir);
    DEBUG_YASCII   yLOG_schar   (x_2nd);
    /*---(origination)--------------------*/
-   yASCII_print (bx, by, "Ï", YASCII_CLEAR); 
+   yASCII_print (bx, by, "Ï"); 
    /*---(first segment)------------------*/
    switch (a_dir) {
-   case 'Ö' :  for (i = bx + 1; i < ex; ++i)   yASCII_print ( i, by, x_horz, YASCII_CLEAR);    break;
-   case '×' :  for (i = bx - 1; i > ex; --i)   yASCII_print ( i, by, x_horz, YASCII_CLEAR);    break;
-   case 'Õ' :  for (i = by + 1; i < ey; ++i)   yASCII_print (bx,  i, x_vert, YASCII_CLEAR);    break;
-   case 'Ô' :  for (i = by - 1; i > ey; --i)   yASCII_print (bx,  i, x_vert, YASCII_CLEAR);    break;
+   case 'Ö' :  for (i = bx + 1; i < ex; ++i)   yASCII_print ( i, by, x_horz);    break;
+   case '×' :  for (i = bx - 1; i > ex; --i)   yASCII_print ( i, by, x_horz);    break;
+   case 'Õ' :  for (i = by + 1; i < ey; ++i)   yASCII_print (bx,  i, x_vert);    break;
+   case 'Ô' :  for (i = by - 1; i > ey; --i)   yASCII_print (bx,  i, x_vert);    break;
    }
    /*---(corner)-------------------------*/
-   switch (a_dir) { case 'Ö' :  if (x_dir == 3)  yASCII_print (ex, by, "…", YASCII_CLEAR);  else if (x_dir == 9)  yASCII_print (ex, by, "‚", YASCII_CLEAR);  break;
-   case '×' :  if (x_dir == 1)  yASCII_print (ex, by, "„", YASCII_CLEAR);  else if (x_dir == 7)  yASCII_print (ex, by, "ƒ", YASCII_CLEAR);  break;
-   case 'Õ' :  if (x_dir == 7)  yASCII_print (bx, ey, "…", YASCII_CLEAR);  else if (x_dir == 9)  yASCII_print (bx, ey, "„", YASCII_CLEAR);  break;
-   case 'Ô' :  if (x_dir == 1)  yASCII_print (bx, ey, "‚", YASCII_CLEAR);  else if (x_dir == 3)  yASCII_print (bx, ey, "ƒ", YASCII_CLEAR);  break;
+   switch (a_dir) { case 'Ö' :  if (x_dir == 3)  yASCII_print (ex, by, "…");  else if (x_dir == 9)  yASCII_print (ex, by, "‚");  break;
+   case '×' :  if (x_dir == 1)  yASCII_print (ex, by, "„");  else if (x_dir == 7)  yASCII_print (ex, by, "ƒ");  break;
+   case 'Õ' :  if (x_dir == 7)  yASCII_print (bx, ey, "…");  else if (x_dir == 9)  yASCII_print (bx, ey, "„");  break;
+   case 'Ô' :  if (x_dir == 1)  yASCII_print (bx, ey, "‚");  else if (x_dir == 3)  yASCII_print (bx, ey, "ƒ");  break;
    }
    /*---(second segment)-----------------*/
    switch (x_2nd) {
-   case 'Ö' :  for (i = bx + 1; i < ex; ++i)   yASCII_print ( i, ey, x_horz, YASCII_CLEAR);    break;
-   case '×' :  for (i = bx - 1; i > ex; --i)   yASCII_print ( i, ey, x_horz, YASCII_CLEAR);    break;
-   case 'Õ' :  for (i = by + 1; i < ey; ++i)   yASCII_print (ex,  i, x_vert, YASCII_CLEAR);    break;
-   case 'Ô' :  for (i = by - 1; i > ey; --i)   yASCII_print (ex,  i, x_vert, YASCII_CLEAR);    break;
+   case 'Ö' :  for (i = bx + 1; i < ex; ++i)   yASCII_print ( i, ey, x_horz);    break;
+   case '×' :  for (i = bx - 1; i > ex; --i)   yASCII_print ( i, ey, x_horz);    break;
+   case 'Õ' :  for (i = by + 1; i < ey; ++i)   yASCII_print (ex,  i, x_vert);    break;
+   case 'Ô' :  for (i = by - 1; i > ey; --i)   yASCII_print (ex,  i, x_vert);    break;
    }
    /*---(termination)--------------------*/
    sprintf (t, "%c", x_end);
-   yASCII_print (ex, ey, t, YASCII_CLEAR); 
+   yASCII_print (ex, ey, t); 
    /*---(label)--------------------------*/
-   if (a_label != NULL)  yASCII_print (lx, ly, a_label, YASCII_CLEAR);
+   if (a_label != NULL)  yASCII_print (lx, ly, a_label);
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_sexit   (__FUNCTION__);
    return 0;
@@ -724,7 +744,7 @@ DRAW__unit              (char *a_question, int n)
    char        rce         =  -10;
    int         rc          =    0;
    /*---(prepare)------------------------*/
-   ystrlcpy  (unit_answer, "DRAW             : question not understood", LEN_RECD);
+   strlcpy  (unit_answer, "DRAW             : question not understood", LEN_RECD);
    /*---(crontab name)-------------------*/
    if (strcmp (a_question, "grid"          )  == 0) {
       snprintf (unit_answer, LEN_RECD, "DRAW grid        : %c   H %3dn %3dx %3dw %3ds %3dg   V %3dn %3dx %3dt %3ds %3dg",

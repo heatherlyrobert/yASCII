@@ -266,13 +266,13 @@ yASCII_tie_full         (char a_heavy, short bx, short by, short ex, short ey, c
    else                                     x_dir = 'Ô';
    DEBUG_YASCII   yLOG_char    ("x_dir"     , x_dir);
    /*---(start)--------------------------*/
-   if      (a_blane == 0)            yASCII_print (bx, by             , "‰", YASCII_CLEAR); 
-   else if (a_blane == a_tall - 1)   yASCII_print (bx, by + a_tall - 1, "ˆ", YASCII_CLEAR); 
-   else                              yASCII_print (bx, by + a_blane   , "‡", YASCII_CLEAR); 
+   if      (a_blane == 0)            yASCII_print (bx, by             , "‰"); 
+   else if (a_blane == a_tall - 1)   yASCII_print (bx, by + a_tall - 1, "ˆ"); 
+   else                              yASCII_print (bx, by + a_blane   , "‡"); 
    /*---(finish)-------------------------*/
-   if      (a_elane == 0)            yASCII_print (ex, ey             , "‰", YASCII_CLEAR); 
-   else if (a_elane == a_tall - 1)   yASCII_print (ex, ey + a_tall - 1, "ˆ", YASCII_CLEAR); 
-   else                              yASCII_print (ex, ey + a_elane   , "†", YASCII_CLEAR); 
+   if      (a_elane == 0)            yASCII_print (ex, ey             , "‰"); 
+   else if (a_elane == a_tall - 1)   yASCII_print (ex, ey + a_tall - 1, "ˆ"); 
+   else                              yASCII_print (ex, ey + a_elane   , "†"); 
    /*---(connect)------------------------*/
    switch (x_dir) {
    case 'Ö' : 

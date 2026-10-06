@@ -79,8 +79,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.2-, breaking out draw into manageable pieces"
-#define     P_VERNUM    "3.2i"
-#define     P_VERTXT    "lots of new work, broke out and heavily unit-tested yascii_box_joiner"
+#define     P_VERNUM    "3.2j"
+#define     P_VERTXT    "yASCII_print updated and unit-tested with multi-line"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -178,7 +178,7 @@ char        yASCII_write            (char a_name [LEN_PATH]);
 /*===[[ yASCII_draw.c ]]======================================================*/
 /*········´ ´··············config·´ ´·········································*/
 char        yascii_draw_heaviness   (char a_heavy, char *r_left, char *r_topp, char *r_righ, char *r_bott);
-char        yascii_draw_joiner      (char a_old, char a_new);
+char        yascii_draw_joiner      (char a_old, char a_new, char *r_rc);
 
 
 
@@ -192,8 +192,9 @@ char        yASCII_draw_full        (char c, short x, short y, char a_new, char 
 char        yASCII_draw_exact       (short x, short y, char a_new);
 char        yASCII_draw_merge       (short x, short y, char a_new);
 char        yASCII_draw_double      (char c, short x, short y, char a_new, char a_alt);
-char        yASCII_print            (int x, int y, char a_text [LEN_RECD], char a_mode);
-char        yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD], char a_mode);
+/*········´ ´·············strings·´ ´·········································*/
+char        yASCII_print            (int x, int y, char a_text [LEN_RECD]);
+char        yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD]);
 char        yASCII_connector        (short bx, short by, char a_dir, short ex, short ey, char a_heavy, char a_label [LEN_LABEL], short lx, short ly);
 char        yASCII_uconnect         (short bx, short by, char a_dir, short ex, short ey);
 /*········´ ´·············connect·´ ´·········································*/

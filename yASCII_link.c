@@ -99,13 +99,13 @@ static void  o___LINK____________o () { return; }
  *>    else                                     x_dir = 'Ô';                                                                                                            <* 
  *>    DEBUG_YASCII   yLOG_char    ("x_dir"     , x_dir);                                                                                                               <* 
  *>    /+---(start)--------------------------+/                                                                                                                         <* 
- *>    if      (a_blane == 0)            yASCII_print (bx, by             , "‰", YASCII_CLEAR);                                                                         <* 
- *>    else if (a_blane == a_tall - 1)   yASCII_print (bx, by + a_tall - 1, "ˆ", YASCII_CLEAR);                                                                         <* 
- *>    else                              yASCII_print (bx, by + a_blane   , "‡", YASCII_CLEAR);                                                                         <* 
+ *>    if      (a_blane == 0)            yASCII_print (bx, by             , "‰");                                                                         <* 
+ *>    else if (a_blane == a_tall - 1)   yASCII_print (bx, by + a_tall - 1, "ˆ");                                                                         <* 
+ *>    else                              yASCII_print (bx, by + a_blane   , "‡");                                                                         <* 
  *>    /+---(finish)-------------------------+/                                                                                                                         <* 
- *>    if      (a_elane == 0)            yASCII_print (ex, ey             , "‰", YASCII_CLEAR);                                                                         <* 
- *>    else if (a_elane == a_tall - 1)   yASCII_print (ex, ey + a_tall - 1, "ˆ", YASCII_CLEAR);                                                                         <* 
- *>    else                              yASCII_print (ex, ey + a_elane   , "†", YASCII_CLEAR);                                                                         <* 
+ *>    if      (a_elane == 0)            yASCII_print (ex, ey             , "‰");                                                                         <* 
+ *>    else if (a_elane == a_tall - 1)   yASCII_print (ex, ey + a_tall - 1, "ˆ");                                                                         <* 
+ *>    else                              yASCII_print (ex, ey + a_elane   , "†");                                                                         <* 
  *>    /+---(connect)------------------------+/                                                                                                                         <* 
  *>    switch (x_dir) {                                                                                                                                                 <* 
  *>    case 'Ö' :                                                                                                                                                       <* 
@@ -281,8 +281,8 @@ yascii_link__detail     (char a_heavy, short a_bx, short a_by, char a_bbase [LEN
    else                     x_dir = 'Ô';
    DEBUG_YASCII   yLOG_char    ("x_dir"     , x_dir);
    /*---(display endpionts)--------------*/
-   yASCII_print (a_bx, a_by, a_bbase, YASCII_CLEAR); 
-   yASCII_print (a_ex, a_ey, a_ebase, YASCII_CLEAR); 
+   yASCII_print (a_bx, a_by, a_bbase); 
+   yASCII_print (a_ex, a_ey, a_ebase); 
    /*---(horizontal)---------------------*/
    if (x_dir == 'Ö') {
       DEBUG_YASCII   yLOG_note    ("horizontal");

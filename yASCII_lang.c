@@ -185,7 +185,7 @@ yascii__getlang         (char a_iso [LEN_SHORT], char r_name [LEN_LABEL])
       DEBUG_YASCII   yLOG_snote   ("FOUND");
       DEBUG_YASCII   yLOG_sint    (i);
       s_lang = i;
-      if (r_name != NULL)  ystrlcpy (r_name, yascii_langs [i].language, LEN_LABEL);
+      if (r_name != NULL)  strlcpy (r_name, yascii_langs [i].language, LEN_LABEL);
       DEBUG_YASCII   yLOG_sexit   (__FUNCTION__);
       return i;
    }
@@ -205,7 +205,7 @@ yASCII_language         (char a_iso [LEN_SHORT], char r_name [LEN_LABEL])
    if (rc < 0) {
       s_lang = rc = rand () % (CNT_LANGS - 1);
       DEBUG_YASCII   yLOG_value   ("random"    , rc);
-      if (r_name != NULL)  ystrlcpy (r_name, yascii_langs [s_lang].language, LEN_LABEL);
+      if (r_name != NULL)  strlcpy (r_name, yascii_langs [s_lang].language, LEN_LABEL);
    }
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return rc;
@@ -237,8 +237,8 @@ yASCII_host             (char n, char r_title [LEN_LABEL], char r_host [LEN_LABE
    n %= CNT_HOST;
    DEBUG_YASCII   yLOG_sint    (n);
    /*---(return)-------------------------*/
-   if (r_title   != NULL)  ystrlcpy (r_title  , yascii_langs [s_lang].host , LEN_LABEL);
-   if (r_host    != NULL)  ystrlcpy (r_host   , yascii_hosts [n]           , LEN_LABEL);
+   if (r_title   != NULL)  strlcpy (r_title  , yascii_langs [s_lang].host , LEN_LABEL);
+   if (r_host    != NULL)  strlcpy (r_host   , yascii_hosts [n]           , LEN_LABEL);
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_sexitr  (__FUNCTION__, rce);
    return n;
@@ -266,8 +266,8 @@ yASCII_cluster          (char n, char r_title [LEN_LABEL], char r_cluster [LEN_L
    n %= CNT_CLUSTER;
    DEBUG_YASCII   yLOG_value   ("n"         , n);
    /*---(return)-------------------------*/
-   if (r_title   != NULL)  ystrlcpy (r_title  , yascii_langs [s_lang].cluster, LEN_LABEL);
-   if (r_cluster != NULL)  ystrlcpy (r_cluster, yascii_clusters [n]          , LEN_LABEL);
+   if (r_title   != NULL)  strlcpy (r_title  , yascii_langs [s_lang].cluster, LEN_LABEL);
+   if (r_cluster != NULL)  strlcpy (r_cluster, yascii_clusters [n]          , LEN_LABEL);
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_sexitr  (__FUNCTION__, rce);
    return n;
@@ -483,28 +483,28 @@ yASCII_prompt_box       (char a_cluster, char a_host, char a_date [LEN_LABEL], i
    /*---(build box)----------------------*/
    i = 0;
    sprintf (t, "%-12.12s [%-20.20s]"         , yascii_langs [s_lang].cluster , yascii_clusters [a_cluster]);
-   ystrlcpy (g_working [i    ], t, LEN_DESC);
+   strlcpy (g_working [i    ], t, LEN_DESC);
    yascii_oneline (t, x, y++, YASCII_CLEAR);
    sprintf (t, "%-12.12s [%02d/%02d%-15.15s]", yascii_langs [s_lang].seq     , a_cluster, a_host, "");
-   ystrlcpy (g_working [++i]  , t, LEN_DESC);
+   strlcpy (g_working [++i]  , t, LEN_DESC);
    yascii_oneline (t, x, y++, YASCII_CLEAR);
    sprintf (t, "%-12.12s [%-20.20s]"         , yascii_langs [s_lang].host    , yascii_hosts [a_host]);
-   ystrlcpy (g_working [++i]  , t, LEN_DESC);
+   strlcpy (g_working [++i]  , t, LEN_DESC);
    yascii_oneline (t, x, y++, YASCII_CLEAR);
    sprintf (t, "%-12.12s [%-20.20s]"         , yascii_langs [s_lang].date    , a_date);
-   ystrlcpy (g_working [++i]  , t, LEN_DESC);
+   strlcpy (g_working [++i]  , t, LEN_DESC);
    yascii_oneline (t, x, y++, YASCII_CLEAR);
    sprintf (t, "%-12.12s [%-20.20s]"         , yascii_langs [s_lang].user    , " ");
-   ystrlcpy (g_working [++i]  , t, LEN_DESC);
+   strlcpy (g_working [++i]  , t, LEN_DESC);
    yascii_oneline (t, x, y++, YASCII_CLEAR);
    sprintf (t, "%-12.12s [%-20.20s]"         , yascii_langs [s_lang].token   , " ");
-   ystrlcpy (g_working [++i]  , t, LEN_DESC);
+   strlcpy (g_working [++i]  , t, LEN_DESC);
    yascii_oneline (t, x, y++, YASCII_CLEAR);
    sprintf (t, "%-12.12s [%-20.20s]"         , yascii_langs [s_lang].password, " ");
-   ystrlcpy (g_working [++i]  , t, LEN_DESC);
+   strlcpy (g_working [++i]  , t, LEN_DESC);
    yascii_oneline (t, x, y++, YASCII_CLEAR);
    sprintf (t, "%-12.12s [%-20.20s]"         , yascii_langs [s_lang].attempt , x_rand);
-   ystrlcpy (g_working [++i]  , t, LEN_DESC);
+   strlcpy (g_working [++i]  , t, LEN_DESC);
    yascii_oneline (t, x, y++, YASCII_CLEAR);
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);

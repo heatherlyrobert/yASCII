@@ -501,7 +501,7 @@ yascii__line_label      (char a_len, char a_cnt, char a_dir, char a_bef, short a
       DEBUG_YASCII   yLOG_value   ("y-marker"  , y);
    }
    /*---(on-line adaptations)---------*/
-   rc = yASCII_print  (x, y, a_label, YASCII_CLEAR);
+   rc = yASCII_print  (x, y, a_label);
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
    return 1;
