@@ -79,8 +79,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "3.--, extracted from ySTR to simplify and target"
 #define     P_VERMINOR  "3.2-, breaking out draw into manageable pieces"
-#define     P_VERNUM    "3.2j"
-#define     P_VERTXT    "yASCII_print updated and unit-tested with multi-line"
+#define     P_VERNUM    "3.2k"
+#define     P_VERTXT    "yASCII_printw mostly updated and mostly unit-tested"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -193,8 +193,9 @@ char        yASCII_draw_exact       (short x, short y, char a_new);
 char        yASCII_draw_merge       (short x, short y, char a_new);
 char        yASCII_draw_double      (char c, short x, short y, char a_new, char a_alt);
 /*········´ ´·············strings·´ ´·········································*/
-char        yASCII_print            (int x, int y, char a_text [LEN_RECD]);
-char        yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD]);
+char        yASCII_print            (int a_bx, int a_by, char a_text [LEN_RECD]);
+char        yascii_printw           (int a_bx, int a_by, int a_wide, int a_tall, char a_text [LEN_RECD], char r_out [LEN_RECD], char c_unit);
+char        yASCII_printw           (int a_bx, int a_by, int a_wide, int a_tall, char a_text [LEN_RECD]);
 char        yASCII_connector        (short bx, short by, char a_dir, short ex, short ey, char a_heavy, char a_label [LEN_LABEL], short lx, short ly);
 char        yASCII_uconnect         (short bx, short by, char a_dir, short ex, short ey);
 /*········´ ´·············connect·´ ´·········································*/

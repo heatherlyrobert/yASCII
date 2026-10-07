@@ -164,7 +164,7 @@ char        yASCII_draw_exact       (short x, short y, char a_new);
 char        yASCII_draw_merge       (short x, short y, char a_new);
 char        yASCII_draw_double      (char c, short x, short y, char a_new, char a_alt);
 char        yASCII_print            (int x, int y, char a_text [LEN_RECD]);
-char        yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD]);
+char        yASCII_printw           (int a_bx, int a_by, int a_wide, int a_tall, char a_text [LEN_RECD]);
 /*---(boxes)----------------*/
 char        yASCII_box_full         (char a_heavy, char a_arrange, char a_col, char a_row, short a_bx, short a_by, char a_wide, char a_tall, char a_title [LEN_TITLE], char a_note [LEN_SHORT], char a_block, char a_npred, char a_nsucc);
 char        yASCII_node             (short x, short y, char a);

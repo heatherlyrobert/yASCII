@@ -478,7 +478,7 @@ char yASCII_draw_double (char c, short x, short y, char a_new, char a_alt)  { re
 static void      o___STRINGS____________o (void) {;}
 
 char
-yASCII_print            (int x, int y, char a_text [LEN_RECD])
+yASCII_print            (int a_bx, int a_by, char a_text [LEN_RECD])
 {
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
@@ -500,16 +500,19 @@ yASCII_print            (int x, int y, char a_text [LEN_RECD])
       return rce;
    }
    DEBUG_YASCII   yLOG_info    ("a_text"    , a_text);
+   /*---(prepare)------------------------*/
+   c = ystrlddcnt (a_text, '›', LEN_RECD);
+   DEBUG_YASCII   yLOG_value   ("c"         , c);
    /*---(filter)-------------------------*/
-   DEBUG_YASCII   yLOG_value   ("x"         , x);
-   DEBUG_YASCII   yLOG_value   ("y"         , y);
-   if (y <  0) {
-      DEBUG_YASCII   yLOG_note    ("y too low, nothing to display");
+   DEBUG_YASCII   yLOG_value   ("a_bx"      , a_bx);
+   DEBUG_YASCII   yLOG_value   ("a_by"      , a_by);
+   if (a_by + c <  0) {
+      DEBUG_YASCII   yLOG_note    ("a_by too low, nothing to display");
       DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
       return 0;
    }
-   if (y >= myASCII.y_max) {
-      DEBUG_YASCII   yLOG_note    ("y too high, nothing to display");
+   if (a_by >= myASCII.y_max) {
+      DEBUG_YASCII   yLOG_note    ("a_by too high, nothing to display");
       DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
       return 0;
    }
@@ -526,16 +529,16 @@ yASCII_print            (int x, int y, char a_text [LEN_RECD])
       c  = a_text [i];
       ++x_curr;
       /*---(new lines)-------------------*/
-      if (c == '|') {
+      if (c == '›') {
          ++n;
          ++x_lines;
-         ++y;
-         x -= x_curr;
+         ++a_by;
+         a_bx -= x_curr;
          x_curr = 0;
          continue;
       }
       /*---(display)---------------------*/
-      rc = yASCII_draw_full (-1, x + i, y, c, c, YASCII_CLEAR);
+      rc = yASCII_draw_full (-1, a_bx + i, a_by, c, c, YASCII_CLEAR);
       if (rc == 1) ++n;
       if (rc <  0) ++x_fails;
       /*---(done)------------------------*/
@@ -566,21 +569,30 @@ yASCII_print            (int x, int y, char a_text [LEN_RECD])
 }
 
 char
-yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_RECD])
-{
+yascii_printw           (int a_bx, int a_by, int a_wide, int a_tall, char a_text [LEN_RECD], char r_out [LEN_RECD], char c_unit)
+{  /*---(design notes)-------------------*/
+   /*
+    *  very simplistic parsing.  move to ySTR and improve
+    *  to handle dash (-) and slash (/) properly, as well
+    *  as, inserting mark (¬) where line had to be
+    *  broken forcefully at a non-break point.  also
+    *  need an overrun indicator chevon (>).
+    *
+    */
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
+   char        rc          =    0;
    int         i           =    0;
    int         l           =    0;
+   char        c           =    0;
    char        x_str       [LEN_RECD]  = "";
-   int         x_head      =    0;
    int         x_break     =    0;
    int         x_width     =    0;
-   int         x_lines     =    0;
-   int         c           =    0;
-   char        x_out       [LEN_RECD]  = "";
+   int         x_lines     =    1;
    /*---(enter)--------------------------*/
    DEBUG_YASCII   yLOG_enter   (__FUNCTION__);
+   /*---(default)------------------------*/
+   if (r_out != NULL)  strcpy (r_out, "");
    /*---(defense)------------------------*/
    DEBUG_YASCII   yLOG_point   ("a_text"    , a_text);
    --rce;  if (a_text == NULL) {
@@ -592,69 +604,69 @@ yASCII_printw           (int x, int y, int a_wide, int a_tall, char a_text [LEN_
    strlcpy (x_str, a_text, LEN_RECD);
    l = strlen (x_str);
    DEBUG_YASCII   yLOG_value   ("l"         , l);
-   c = ystrldcnt (x_str, '¨', LEN_RECD);
-   DEBUG_YASCII   yLOG_value   ("c"         , c);
+   /*---(clear space)--------------------*/
+   if (c_unit != 'y') {
+      rc = yascii_box__erase (a_bx, a_by, a_wide, a_tall);
+      DEBUG_YASCII   yLOG_value   ("erase"     , rc);
+   }
    /*---(walk text)----------------------*/
    --rce;  for (i = 0; i < l; i++) {
-      DEBUG_YASCII  yLOG_complex ("char"      , "%4d, %3d, %3d, %c", l, i, x_str [i], x_str [i]);
-      /*---(watch for breaks)------------*/
-      if (strchr("· ² - /", x_str[i]) != NULL) {
+      /*---(prepare)---------------------*/
+      c = x_str [i];
+      DEBUG_YASCII  yLOG_complex ("LOOP"      , "%3d, wide %3dx v %3dw, %c/%-3d, tall %3dx v %3dt", i, a_wide, x_width, ychrvisible (c), c, a_tall, x_lines);
+      /*---(check for end-of-line)-------*/
+      if (x_width >= a_wide) {
+         DEBUG_YASCII  yLOG_note    ("hit width, use last break");
+         ++x_lines;
+         if (x_break == 0)   x_break = i;
+         x_str [x_break] = '›';
+         if (x_lines > a_tall) {
+            DEBUG_YASCII  yLOG_note    ("hitting max height, stop printing");
+            x_str [x_break] = '\0';
+            --x_lines;
+            break;
+         }
+         x_width = i - x_break;
+         x_break = 0;
+         continue;
+      }
+      /*---(watch for hard-breaks)-------*/
+      if (c == '›') {
+         DEBUG_YASCII  yLOG_note    ("found new line, force break");
+         ++x_lines;
+         if (x_lines > a_tall) {
+            DEBUG_YASCII  yLOG_note    ("hitting max height, stop printing");
+            x_str [i] = '\0';
+            --x_lines;
+            break;
+         }
+         x_break = x_width = 0;
+         continue;
+      }
+      /*---(watch for soft-breaks)-------*/
+      if (strchr("· ² - /", c) != NULL) {
          DEBUG_YASCII  yLOG_note    ("found a delimiter/space");
          x_break = i;
       }
-      /*---(watch for newlines)----------*/
-      if (x_str [i] == '¨') {
-         DEBUG_YASCII  yLOG_note    ("found new line");
-         x_break = i;
-      } else {
-         ++x_width;
-      }
-      DEBUG_YASCII  yLOG_complex ("width"     , "%4db, %3dw", x_break, x_width);
-      if (x_width > a_wide || x_str [i] == '¨') {
-         DEBUG_YASCII  yLOG_note    ("passed width or newline, display");
-         x_str [x_break] = '\0';
-         /*> if (a_mode != YASCII_FILL) {                                             <* 
-          *>    strlcpy  (x_str + x_head, x_out, LEN_RECD);                           <* 
-          *> } else {                                                                 <* 
-          *>    ystrlpad  (x_str + x_head, x_out, '.', '<', a_wide);                  <* 
-          *>    ystrldchg (x_out, ' ', '·', a_wide);                                  <* 
-          *> }                                                                        <*/
-         yASCII_print (x, y + x_lines, x_out);
-         ++x_lines;
-         x_width = 0;
-         ++x_break;
-         i = x_head = x_break;
-         if (x_lines >= a_tall) {
-            DEBUG_YASCII  yLOG_note    ("more text after box filled");
-            DEBUG_YASCII  yLOG_exitr   (__FUNCTION__, rce);
-            return rce;
-         }
-      } else {
-         DEBUG_YASCII  yLOG_note    ("under width limit, get next char");
-      }
+      /*---(add character)---------------*/
+      ++x_width;
    }
-   /*---(left-over)----------------------*/
-   DEBUG_YASCII  yLOG_complex ("leftover"  , "%3d w, %3d s, %3d l", x_width, x_head, l);
-   if (x_width > 0) {
-      DEBUG_YASCII  yLOG_note    ("print final bits");
-      /*> if (a_mode != YASCII_FILL) {                                                <* 
-       *>    strlcpy  (x_str + x_head, x_out, LEN_RECD);                              <* 
-       *> } else {                                                                    <* 
-       *>    ystrlpad  (x_str + x_head, x_out, '.', '<', a_wide);                     <* 
-       *>    ystrldchg (x_out, ' ', '·', a_wide);                                     <* 
-       *> }                                                                           <*/
-      yASCII_print (x, y + x_lines, x_out);
-      x_lines ++;
-   } else {
-      DEBUG_YASCII  yLOG_note    ("nothing left at end to print");
+   /*---(print)--------------------------*/
+   if (c_unit != 'y') {
+      rc = yASCII_print (a_bx, a_by, x_str);
+      DEBUG_YASCII   yLOG_value   ("print"     , rc);
    }
-   for (i = x_lines; i < a_tall; ++i) {
-      ystrlpad  ("", x_out, '.', '<', a_wide);
-      yASCII_print (x, y + i, x_out);
-   }
+   /*---(default)------------------------*/
+   if (r_out != NULL)  ystrlcpy (r_out, x_str, LEN_RECD);
    /*---(complete)-----------------------*/
    DEBUG_YASCII   yLOG_exit    (__FUNCTION__);
-   return 0;
+   return x_lines;
+}
+
+char
+yASCII_printw           (int a_bx, int a_by, int a_wide, int a_tall, char a_text [LEN_RECD])
+{
+   return yascii_printw (a_bx, a_by, a_wide, a_tall, a_text, NULL, '-');
 }
 
 char
